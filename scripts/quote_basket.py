@@ -67,7 +67,7 @@ def wrap_text(text, max_chars=45):
 lines = wrap_text(q["text"])
 LINE_H = 28
 TEXT_H = len(lines) * LINE_H
-SVG_H = TEXT_H + 120
+SVG_H = TEXT_H + 130
 SVG_W = 680
 
 def svg_lines(lines, start_y):
@@ -89,8 +89,8 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   <circle cx="44" cy="44" r="26" fill="none" stroke="#c0580a" stroke-width="1.5"/>
 
   <!-- header -->
-  <text x="80" y="36" font-family="monospace" font-size="13" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
-  <text x="80" y="56" font-family="monospace" font-size="13" fill="#e6861a">🏀 @AndreaBonn</text>
+  <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">🏀 @AndreaBonn</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="{SVG_W-24}" y2="74" stroke="#30363d" stroke-width="1"/>
@@ -99,8 +99,8 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   {svg_lines(lines, 100)}
 
   <!-- autore -->
-  <text x="{SVG_W-24}" y="{SVG_H-30}" font-family="monospace" font-size="16" fill="#e6861a" text-anchor="end" font-weight="bold">— {q["author"]}</text>
-  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="12" fill="#484f58" text-anchor="end">{TODAY.strftime("%d %b %Y")}</text>
+  <text x="{SVG_W-24}" y="{SVG_H-32}" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— {q["author"]}</text>
+  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">{TODAY.strftime("%d %b %Y")}</text>
 </svg>'''
 
 out = Path(__file__).parent.parent / "assets" / "quote.svg"
