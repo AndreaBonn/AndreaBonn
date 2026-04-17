@@ -1,7 +1,6 @@
 # Andrea Bonacci
 
-> Center/Pivot sul campo. Developer fuori.
-> Scrivo codice come gioco a basket: con pazienza, precisione e qualche rimbalzo offensivo.
+> La vita è un susseguirsi di *one-shot learning*: un solo esempio per i prompt, un solo tiro per fare canestro.
 
 ---
 
