@@ -2,8 +2,7 @@ name: Update Profile README
 
 on:
   schedule:
-    - cron: "0 7 * * 1"       # snake basket: ogni lunedì alle 7:00 UTC
-    - cron: "0 7 * * 2-7,0"   # widget giornalieri: tutti gli altri giorni
+    - cron: "0 7 * * *"       # tutti i giorni alle 7:00 UTC
   workflow_dispatch:
     inputs:
       force_snake:
@@ -21,6 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get day of week
+        id: day
+        run: echo "dow=$(date +%u)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -31,7 +34,7 @@ jobs:
 
       # --- Snake Basket (solo lunedì o forzato) ---
       - name: Snake Basket
-        if: github.event.schedule == '0 7 * * 1' || inputs.force_snake == true
+        if: steps.day.outputs.dow == '1' || (github.event_name == 'workflow_dispatch' && inputs.force_snake == true)
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: python scripts/snake_basket.py --token "$SNAKE_TOKEN" --output assets/snake_basket.gif
