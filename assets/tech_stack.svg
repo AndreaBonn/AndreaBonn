@@ -7,7 +7,7 @@
   <circle cx="16" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
   <circle cx="864" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
   <text x="440" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>
-  <text x="24" y="56" font-family="monospace" font-size="12" fill="#3fb950" letter-spacing="2" font-weight="bold">LINGUAGGI</text>
+  <text x="24" y="56" font-family="monospace" font-size="12" fill="#3fb950" letter-spacing="2" font-weight="bold">LANGUAGES</text>
   <line x1="24" y1="62" x2="856" y2="62" stroke="#3fb950" stroke-width="0.5" opacity="0.3"/>
   <rect x="164" y="66" width="87" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
   <text x="207" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">Python</text>
@@ -63,7 +63,7 @@
   <text x="401" y="325" text-anchor="middle" font-family="monospace" font-size="16" fill="#bc8cff" font-weight="bold">Firebase</text>
   <rect x="463" y="306" width="68" height="28" rx="14" fill="#2a1a3a" stroke="#bc8cff" stroke-width="0.8" opacity="0.9"/>
   <text x="497" y="323" text-anchor="middle" font-family="monospace" font-size="11" fill="#bc8cff" font-weight="normal">SQLite</text>
-  <text x="24" y="376" font-family="monospace" font-size="12" fill="#8b949e" letter-spacing="2" font-weight="bold">TOOL</text>
+  <text x="24" y="376" font-family="monospace" font-size="12" fill="#8b949e" letter-spacing="2" font-weight="bold">TOOLS</text>
   <line x1="24" y1="382" x2="856" y2="382" stroke="#8b949e" stroke-width="0.5" opacity="0.3"/>
   <rect x="114" y="386" width="57" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
   <text x="142" y="405" text-anchor="middle" font-family="monospace" font-size="16" fill="#8b949e" font-weight="bold">Git</text>
