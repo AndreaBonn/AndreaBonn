@@ -48,6 +48,14 @@ jobs:
       - name: Oggi nella storia NBA
         run: python scripts/nba_today.py
 
+      # --- Tech Stack (solo lunedì o forzato) ---
+      - name: Tech Stack
+        if: steps.day.outputs.dow == '1' || github.event_name == 'workflow_dispatch'
+        env:
+          SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
+        run: python scripts/tech_stack.py --token "$SNAKE_TOKEN"
+        continue-on-error: true
+
       # --- Tamagotchi + Ultimo commit ---
       - name: Tamagotchi e ultimo commit
         env:

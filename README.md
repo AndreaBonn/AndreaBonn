@@ -58,12 +58,7 @@
 
 ### stack
 
-```
-linguaggi      Python · JavaScript · TypeScript · Shell · SQL
-framework      React · FastAPI · Firebase · Telegram Bot API
-AI/ML          YOLO · Scikit-learn · Pandas · Polars
-tool           Git · GitHub Actions · Docker · Claude Code
-```
+![Tech Stack](./assets/tech_stack.svg)
 
 ---
 
