@@ -69,27 +69,15 @@ tool           Git · GitHub Actions · Docker · Claude Code
 
 ### contatti
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-AndreaBonn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/andreabonn)
-[![GitHub](https://img.shields.io/badge/GitHub-@AndreaBonn-181717?style=flat&logo=github&logoColor=white)](https://github.com/AndreaBonn)
+<p align="center">
+  <a href="mailto:andreabonacci95@protonmail.com"><img src="./assets/contact_email.svg" width="48" alt="Email"/></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://it.linkedin.com/in/andrea-bonacci"><img src="./assets/contact_linkedin.svg" width="48" alt="LinkedIn"/></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://www.instagram.com/_a.bonn_/"><img src="./assets/contact_instagram.svg" width="48" alt="Instagram"/></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/AndreaBonn"><img src="./assets/contact_github.svg" width="48" alt="GitHub"/></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://andreabonn.github.io/"><img src="./assets/contact_cv.svg" width="48" alt="CV"/></a>
+</p>
 
----
-
-<details>
-<summary>come funziona questo profilo</summary>
-
-Un workflow GitHub Actions gira ogni mattina alle 7:00 UTC e rigenera tutti gli asset:
-
-| Widget | Script | Frequenza |
-|--------|--------|-----------|
-| Snake Basket | `scripts/snake_basket.py` | ogni lunedì |
-| Quote del giorno | `scripts/quote_basket.py` | ogni giorno |
-| Oggi nella storia NBA | `scripts/nba_today.py` | ogni giorno |
-| Ultimo commit | `scripts/tamagotchi.py` | ogni giorno |
-
-Per usarlo nel tuo profilo: crea un repo con lo stesso nome del tuo username, aggiungi un secret `SNAKE_TOKEN` con un GitHub Personal Access Token (permessi `read:user` e `public_repo`) e abilita il workflow.
-
-</details>
-
----
-
-*Il README si aggiorna da solo. Come un buon pivot sotto canestro.*

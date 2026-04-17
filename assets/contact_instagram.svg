@@ -1,0 +1,18 @@
+<svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFDC80"/>
+      <stop offset="25%" stop-color="#F56040"/>
+      <stop offset="50%" stop-color="#C13584"/>
+      <stop offset="75%" stop-color="#833AB4"/>
+      <stop offset="100%" stop-color="#5B51D8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="23" fill="url(#ig)"/>
+  <!-- camera body -->
+  <rect x="14" y="14" width="20" height="20" rx="6" fill="none" stroke="white" stroke-width="1.8"/>
+  <!-- lens -->
+  <circle cx="24" cy="24" r="5" fill="none" stroke="white" stroke-width="1.8"/>
+  <!-- flash dot -->
+  <circle cx="30.5" cy="17.5" r="1.5" fill="white"/>
+</svg>
