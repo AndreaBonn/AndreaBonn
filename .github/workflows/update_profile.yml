@@ -29,45 +29,32 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Installa dipendenze
+      - name: Install dependencies
         run: pip install Pillow requests
 
-      # --- Snake Basket (solo lunedì o forzato) ---
-      - name: Snake Basket
+      - name: Snake Basket (Monday or manual)
         if: steps.day.outputs.dow == '1' || (github.event_name == 'workflow_dispatch' && inputs.force_snake == true)
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: python scripts/snake_basket.py --token "$SNAKE_TOKEN" --output assets/snake_basket.gif
         continue-on-error: true
 
-      # --- Quote del giorno ---
-      - name: Quote del giorno
+      - name: Quote of the day
         run: python scripts/quote_basket.py
 
-      # --- Oggi nella storia NBA ---
-      - name: Oggi nella storia NBA
+      - name: Today in NBA history
         run: python scripts/nba_today.py
 
-      # --- Tech Stack (solo lunedì o forzato) ---
-      - name: Tech Stack
-        if: steps.day.outputs.dow == '1' || github.event_name == 'workflow_dispatch'
-        env:
-          SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
-        run: python scripts/tech_stack.py --token "$SNAKE_TOKEN"
-        continue-on-error: true
-
-      # --- Tamagotchi + Ultimo commit ---
-      - name: Tamagotchi e ultimo commit
+      - name: Tamagotchi and last commit
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: python scripts/tamagotchi.py --token "$SNAKE_TOKEN"
         continue-on-error: true
 
-      # --- Commit e push ---
-      - name: Commit assets aggiornati
+      - name: Commit updated assets
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/
-          git diff --cached --quiet || git commit -m "chore: aggiorna profilo $(date +'%Y-%m-%d')"
+          git diff --cached --quiet || git commit -m "chore: update profile $(date +'%Y-%m-%d')"
           git push

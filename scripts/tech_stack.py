@@ -1,7 +1,7 @@
 """
 Tech Stack Word Cloud Generator
-Fetcha linguaggi e dipendenze da tutti i repo GitHub pubblici,
-categorizza automaticamente e genera un SVG con pill colorate.
+Fetches languages and dependencies from all public GitHub repos,
+auto-categorizes and generates an SVG with colored pills.
 
 Usage: python tech_stack.py --token <GITHUB_TOKEN>
        python tech_stack.py --demo
@@ -13,12 +13,9 @@ import math
 import os
 import re
 import sys
+import urllib.request
+import urllib.error
 from pathlib import Path
-
-try:
-    import requests
-except ImportError:
-    requests = None
 
 USERNAME = "AndreaBonn"
 GITHUB_API = "https://api.github.com"
@@ -165,34 +162,42 @@ LANG_DISPLAY = {
     "Makefile": "Make",
 }
 
-# Linguaggi da escludere (troppo generici/non significativi)
 LANG_EXCLUDE = {"Procfile", "Batchfile", "Nix", "Nunjucks", "EJS", "Pug"}
 
 CATEGORIES = {
-    "linguaggio": {"label": "LINGUAGGI", "color": "#3fb950", "bg": "#1a3a2a"},
+    "linguaggio": {"label": "LANGUAGES", "color": "#3fb950", "bg": "#1a3a2a"},
     "framework": {"label": "FRAMEWORK", "color": "#388bfd", "bg": "#1a2a3a"},
     "ai_ml": {"label": "AI / ML", "color": "#e6861a", "bg": "#3a2a1a"},
     "database": {"label": "DATABASE", "color": "#bc8cff", "bg": "#2a1a3a"},
-    "tool": {"label": "TOOL", "color": "#8b949e", "bg": "#1c2128"},
+    "tool": {"label": "TOOLS", "color": "#8b949e", "bg": "#1c2128"},
 }
 
 # ---------------------------------------------------------------------------
-# Fetch da GitHub API
+# Fetch from GitHub API (stdlib only)
 # ---------------------------------------------------------------------------
 
+def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") -> bytes | None:
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"token {token}",
+        "Accept": accept,
+        "User-Agent": "tech-stack-generator",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return resp.read()
+    except urllib.error.HTTPError:
+        return None
+
+
 def fetch_repos(token: str) -> list[dict]:
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
     repos = []
     page = 1
     while True:
-        resp = requests.get(
-            f"{GITHUB_API}/users/{USERNAME}/repos",
-            headers=headers,
-            params={"per_page": 100, "page": page, "type": "public"},
-            timeout=15,
-        )
-        resp.raise_for_status()
-        batch = resp.json()
+        url = f"{GITHUB_API}/users/{USERNAME}/repos?per_page=100&page={page}&type=public"
+        data = _api_get(url, token)
+        if data is None:
+            break
+        batch = json.loads(data)
         if not batch:
             break
         repos.extend(batch)
@@ -201,37 +206,25 @@ def fetch_repos(token: str) -> list[dict]:
 
 
 def fetch_languages(token: str, repo_name: str) -> dict[str, int]:
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
-    resp = requests.get(
-        f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/languages",
-        headers=headers,
-        timeout=10,
-    )
-    if resp.status_code == 200:
-        return resp.json()
+    data = _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/languages", token)
+    if data:
+        return json.loads(data)
     return {}
 
 
 def fetch_file(token: str, repo_name: str, path: str) -> str | None:
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.raw+json"}
-    resp = requests.get(
+    data = _api_get(
         f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}",
-        headers=headers,
-        timeout=10,
+        token,
+        accept="application/vnd.github.raw+json",
     )
-    if resp.status_code == 200:
-        return resp.text
+    if data:
+        return data.decode("utf-8")
     return None
 
 
 def check_file_exists(token: str, repo_name: str, path: str) -> bool:
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
-    resp = requests.head(
-        f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}",
-        headers=headers,
-        timeout=10,
-    )
-    return resp.status_code == 200
+    return _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}", token) is not None
 
 
 # ---------------------------------------------------------------------------
@@ -294,11 +287,11 @@ def parse_pyproject_toml(content: str) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def scan_repos(token: str) -> dict[str, dict[str, int]]:
-    """Ritorna {category: {display_name: count}}"""
+    """Returns {category: {display_name: count}}."""
     result: dict[str, dict[str, int]] = {cat: {} for cat in CATEGORIES}
 
     repos = fetch_repos(token)
-    print(f"Trovati {len(repos)} repo pubblici")
+    print(f"Found {len(repos)} public repos")
 
     for repo in repos:
         name = repo["name"]
@@ -541,9 +534,6 @@ def main():
         print("Demo mode")
         data = DEMO_DATA
     else:
-        if requests is None:
-            print("Errore: requests non installato")
-            sys.exit(1)
         data = scan_repos(token)
 
     # Stampa riepilogo
@@ -557,7 +547,7 @@ def main():
     out = Path(__file__).parent.parent / "assets" / "tech_stack.svg"
     out.parent.mkdir(exist_ok=True)
     out.write_text(svg, encoding="utf-8")
-    print(f"\ntech_stack.svg generato ({len(svg)} bytes)")
+    print(f"\ntech_stack.svg generated ({len(svg)} bytes)")
 
 
 if __name__ == "__main__":
