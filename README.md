@@ -5,39 +5,28 @@
 
 ---
 
-### il serpente pivot
+![Ultimo commit](./assets/last_commit.svg)
 
-Il serpente **#5** percorre il mio contribution graph ogni settimana e trasforma le celle vuote in palloni da basket. La forma dipende dai commit reali, quindi ogni settimana è diversa.
+---
 
 ![Snake Basket](./assets/snake_basket.gif)
 
 ---
 
-### giorni dall'ultimo commit
-
-![Ultimo commit](./assets/last_commit.svg)
-
----
-
-### il mio tamagotchi
-
-Committo → è felice. Sparisco → soffre. Dopo 14 giorni muore e lascia un messaggio di addio.
-
-![Tamagotchi](./assets/tamagotchi.svg)
-
----
-
-### quote del giorno
-
-*Si aggiorna ogni mattina alle 7:00 UTC.*
+<table>
+<tr>
+<td width="50%">
 
 ![Quote](./assets/quote.svg)
 
----
-
-### oggi nella storia NBA
+</td>
+<td width="50%">
 
 ![NBA Today](./assets/nba_today.svg)
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -98,7 +87,6 @@ Un workflow GitHub Actions gira ogni mattina alle 7:00 UTC e rigenera tutti gli 
 | Snake Basket | `scripts/snake_basket.py` | ogni lunedì |
 | Quote del giorno | `scripts/quote_basket.py` | ogni giorno |
 | Oggi nella storia NBA | `scripts/nba_today.py` | ogni giorno |
-| Tamagotchi | `scripts/tamagotchi.py` | ogni giorno |
 | Ultimo commit | `scripts/tamagotchi.py` | ogni giorno |
 
 Per usarlo nel tuo profilo: crea un repo con lo stesso nome del tuo username, aggiungi un secret `SNAKE_TOKEN` con un GitHub Personal Access Token (permessi `read:user` e `public_repo`) e abilita il workflow.
