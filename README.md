@@ -58,13 +58,5 @@
 ### 
 
 <p align="center">
-  <a href="mailto:andreabonacci95@protonmail.com"><img src="./assets/contact_email.svg" width="48" alt="Email"/></a>
-     
-  <a href="https://it.linkedin.com/in/andrea-bonacci"><img src="./assets/contact_linkedin.svg" width="48" alt="LinkedIn"/></a>
-     
-  <a href="https://www.instagram.com/_a.bonn_/"><img src="./assets/contact_instagram.svg" width="48" alt="Instagram"/></a>
-     
-  <a href="https://github.com/AndreaBonn"><img src="./assets/contact_github.svg" width="48" alt="GitHub"/></a>
-     
-  <a href="https://andreabonn.github.io/"><img src="./assets/contact_cv.svg" width="48" alt="CV"/></a>
+  <a href="mailto:andreabonacci95@protonmail.com"><img src="./assets/contact_email.svg" width="48" alt="Email"/></a>&nbsp;&nbsp;&nbsp;<a href="https://it.linkedin.com/in/andrea-bonacci"><img src="./assets/contact_linkedin.svg" width="48" alt="LinkedIn"/></a>&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/_a.bonn_/"><img src="./assets/contact_instagram.svg" width="48" alt="Instagram"/></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/AndreaBonn"><img src="./assets/contact_github.svg" width="48" alt="GitHub"/></a>&nbsp;&nbsp;&nbsp;<a href="https://andreabonn.github.io/"><img src="./assets/contact_cv.svg" width="48" alt="CV"/></a>
 </p>
