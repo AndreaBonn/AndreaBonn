@@ -1,22 +1,23 @@
-<svg width="680" height="132" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="132" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="130" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
+<svg width="680" height="176" xmlns="http://www.w3.org/2000/svg">
+  <rect width="680" height="176" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="678" height="174" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
 
   <!-- icona evento -->
   <rect x="16" y="16" width="52" height="52" rx="10" fill="#1c2128"/>
   <text x="42" y="50" font-size="26" text-anchor="middle">💥</text>
 
   <!-- header -->
-  <text x="80" y="36" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">OGGI NELLA STORIA NBA</text>
-  <text x="80" y="56" font-family="monospace" font-size="11" fill="#388bfd">17 APRIL</text>
+  <text x="80" y="36" font-family="monospace" font-size="13" fill="#8b949e" letter-spacing="2">OGGI NELLA STORIA NBA</text>
+  <text x="80" y="56" font-family="monospace" font-size="13" fill="#388bfd">17 APRIL</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- testo evento -->
-  <text x="340" y="100" font-family="monospace" font-size="14" fill="#e6edf3" text-anchor="middle">Nel 1990 Michael Jordan segna 61 punti contro Cleveland.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Nel 1990 Michael Jordan segna 61 punti contro</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Cleveland.</text>
 
 
   <!-- footer -->
-  <text x="656" y="120" font-family="monospace" font-size="10" fill="#484f58" text-anchor="end">@AndreaBonn • storia NBA</text>
+  <text x="656" y="164" font-family="monospace" font-size="12" fill="#484f58" text-anchor="end">@AndreaBonn • storia NBA</text>
 </svg>

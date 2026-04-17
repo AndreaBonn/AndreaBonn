@@ -1,6 +1,6 @@
-<svg width="680" height="154" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="154" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="152" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+<svg width="680" height="176" xmlns="http://www.w3.org/2000/svg">
+  <rect width="680" height="176" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="678" height="174" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
 
   <!-- pallone decorativo -->
   <circle cx="44" cy="44" r="26" fill="#e6861a"/>
@@ -11,18 +11,18 @@
   <circle cx="44" cy="44" r="26" fill="none" stroke="#c0580a" stroke-width="1.5"/>
 
   <!-- header -->
-  <text x="80" y="36" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
-  <text x="80" y="56" font-family="monospace" font-size="11" fill="#e6861a">🏀 @AndreaBonn</text>
+  <text x="80" y="36" font-family="monospace" font-size="13" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
+  <text x="80" y="56" font-family="monospace" font-size="13" fill="#e6861a">🏀 @AndreaBonn</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- citazione -->
-  <text x="340" y="100" font-family="monospace" font-size="14" fill="#e6edf3" text-anchor="middle" font-style="italic">Good, better, best. Never let it rest. Until your good</text>
-<text x="340" y="122" font-family="monospace" font-size="14" fill="#e6edf3" text-anchor="middle" font-style="italic">is better and your better is best.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">Good, better, best. Never let it rest. Until</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">your good is better and your better is best.</text>
 
 
   <!-- autore -->
-  <text x="656" y="126" font-family="monospace" font-size="13" fill="#e6861a" text-anchor="end" font-weight="bold">— Tim Duncan</text>
-  <text x="656" y="142" font-family="monospace" font-size="10" fill="#484f58" text-anchor="end">17 Apr 2026</text>
+  <text x="656" y="146" font-family="monospace" font-size="16" fill="#e6861a" text-anchor="end" font-weight="bold">— Tim Duncan</text>
+  <text x="656" y="164" font-family="monospace" font-size="12" fill="#484f58" text-anchor="end">17 Apr 2026</text>
 </svg>

@@ -52,7 +52,7 @@ def get_today_event():
     all_events = [e for events in NBA_HISTORY.values() for e in events]
     return random.choice(all_events)
 
-def wrap_text(text, max_chars=58):
+def wrap_text(text, max_chars=45):
     words = text.split()
     lines, line = [], ""
     for word in words:
@@ -68,14 +68,14 @@ def wrap_text(text, max_chars=58):
 today = datetime.now(timezone.utc)
 event = get_today_event()
 lines = wrap_text(event["text"])
-LINE_H = 22
-SVG_H = max(120, len(lines) * LINE_H + 110)
+LINE_H = 28
+SVG_H = max(130, len(lines) * LINE_H + 120)
 SVG_W = 680
 
 def svg_lines(lines, start_y):
     out = ""
     for i, l in enumerate(lines):
-        out += f'<text x="340" y="{start_y + i*LINE_H}" font-family="monospace" font-size="14" fill="#e6edf3" text-anchor="middle">{l}</text>\n'
+        out += f'<text x="340" y="{start_y + i*LINE_H}" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">{l}</text>\n'
     return out
 
 svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/svg">
@@ -87,8 +87,8 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   <text x="42" y="50" font-size="26" text-anchor="middle">{event["icon"]}</text>
 
   <!-- header -->
-  <text x="80" y="36" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">OGGI NELLA STORIA NBA</text>
-  <text x="80" y="56" font-family="monospace" font-size="11" fill="#388bfd">{today.strftime("%d %B").upper()}</text>
+  <text x="80" y="36" font-family="monospace" font-size="13" fill="#8b949e" letter-spacing="2">OGGI NELLA STORIA NBA</text>
+  <text x="80" y="56" font-family="monospace" font-size="13" fill="#388bfd">{today.strftime("%d %B").upper()}</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="{SVG_W-24}" y2="74" stroke="#30363d" stroke-width="1"/>
@@ -97,7 +97,7 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   {svg_lines(lines, 100)}
 
   <!-- footer -->
-  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="10" fill="#484f58" text-anchor="end">@AndreaBonn • storia NBA</text>
+  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="12" fill="#484f58" text-anchor="end">@AndreaBonn • storia NBA</text>
 </svg>'''
 
 out = Path(__file__).parent.parent / "assets" / "nba_today.svg"
