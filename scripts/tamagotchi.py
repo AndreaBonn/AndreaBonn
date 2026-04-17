@@ -22,6 +22,30 @@ except ImportError:
 
 USERNAME = "AndreaBonn"
 GITHUB_API = "https://api.github.com"
+KOMAREV_URL = "https://komarev.com/ghpvc/"
+
+# ---------------------------------------------------------------------------
+# Fetch visitor count da komarev badge SVG
+# ---------------------------------------------------------------------------
+
+def fetch_visitor_count() -> int:
+    if requests is None:
+        return 0
+    try:
+        import re
+        resp = requests.get(
+            KOMAREV_URL,
+            params={"username": USERNAME, "style": "flat", "label": "visite"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        # Il badge SVG contiene il conteggio come ultimo <text> numerico
+        numbers = re.findall(r">(\d[\d,.]*)<", resp.text)
+        if numbers:
+            return int(numbers[-1].replace(",", "").replace(".", ""))
+    except Exception:
+        pass
+    return 0
 
 # ---------------------------------------------------------------------------
 # Fetch giorni dall'ultimo commit (eventi pubblici)
@@ -49,45 +73,73 @@ def fetch_days_since_last_commit(token: str) -> int:
 # SVG: giorni dall'ultimo commit
 # ---------------------------------------------------------------------------
 
-def make_last_commit_svg(days: int) -> str:
+def make_last_commit_svg(days: int, visitors: int) -> str:
     if days == 0:
         color = "#3fb950"
-        label = "oggi — fresco di commit!"
-        bar_w = 600
+        label = "fresco di commit!"
+        quarter = "Q4"
     elif days <= 2:
         color = "#3fb950"
-        label = f"{days} {'giorno' if days == 1 else 'giorni'} fa — ottimo ritmo"
-        bar_w = max(60, 600 - days * 80)
+        label = f"{days}{'g' if days == 1 else 'gg'} fa — ottimo ritmo"
+        quarter = "Q3"
     elif days <= 5:
         color = "#e6861a"
-        label = f"{days} giorni fa — stai scaldando?"
-        bar_w = max(60, 600 - days * 60)
+        label = f"{days}gg fa — stai scaldando?"
+        quarter = "Q2"
     elif days <= 14:
         color = "#f85149"
-        label = f"{days} giorni fa — torna in campo!"
-        bar_w = max(30, 200 - days * 8)
+        label = f"{days}gg fa — torna in campo!"
+        quarter = "Q1"
     else:
         color = "#8b949e"
-        label = f"{days} giorni fa — il coach ti cerca"
-        bar_w = 20
+        label = f"{days}gg fa — il coach ti cerca"
+        quarter = "OT"
 
-    bar_pct = min(100, max(3, int(bar_w / 6)))
+    bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
+    visitors_str = f"{visitors:,}".replace(",", ".")
 
-    return f'''<svg width="680" height="90" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="90" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="88" rx="11" fill="none" stroke="{color}" stroke-width="1.5"/>
+    return f'''<svg width="680" height="130" xmlns="http://www.w3.org/2000/svg">
+  <!-- sfondo tabellone -->
+  <rect width="680" height="130" rx="10" fill="#0d1117"/>
+  <rect x="1" y="1" width="678" height="128" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
 
-  <!-- icona orologio -->
-  <circle cx="42" cy="45" r="22" fill="#1c2128" stroke="{color}" stroke-width="1.5"/>
-  <line x1="42" y1="28" x2="42" y2="45" stroke="{color}" stroke-width="2" stroke-linecap="round"/>
-  <line x1="42" y1="45" x2="54" y2="52" stroke="{color}" stroke-width="2" stroke-linecap="round"/>
+  <!-- top bar -->
+  <rect x="1" y="1" width="678" height="26" rx="9" fill="#1c2128"/>
+  <rect x="1" y="18" width="678" height="9" fill="#1c2128"/>
+  <line x1="1" y1="27" x2="679" y2="27" stroke="#30363d" stroke-width="1"/>
+  <!-- led decorativi -->
+  <circle cx="16" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
+  <circle cx="664" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
+  <text x="340" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">SCOREBOARD</text>
 
-  <text x="76" y="32" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">ULTIMO COMMIT</text>
-  <text x="76" y="52" font-family="monospace" font-size="16" fill="{color}" font-weight="bold">{label}</text>
+  <!-- quarter badge al centro -->
+  <rect x="318" y="38" width="44" height="22" rx="4" fill="#1c2128" stroke="#30363d" stroke-width="1"/>
+  <text x="340" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#e6861a" font-weight="bold">{quarter}</text>
 
-  <!-- barra progressione -->
-  <rect x="76" y="62" width="580" height="6" rx="3" fill="#21262d"/>
-  <rect x="76" y="62" width="{bar_pct*5.8:.0f}" height="6" rx="3" fill="{color}"/>
+  <!-- pannello HOME (commit) -->
+  <text x="120" y="46" text-anchor="middle" font-family="monospace" font-size="9" fill="#484f58" letter-spacing="2">HOME</text>
+  <text x="120" y="59" text-anchor="middle" font-family="monospace" font-size="10" fill="#8b949e" letter-spacing="1">COMMIT</text>
+  <rect x="70" y="66" width="100" height="38" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="120" y="93" text-anchor="middle" font-family="monospace" font-size="28" fill="{color}" font-weight="bold">{days}</text>
+
+  <!-- pallone al centro (SVG basketball) -->
+  <circle cx="340" cy="84" r="14" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+  <line x1="326" y1="84" x2="354" y2="84" stroke="#e6861a" stroke-width="1"/>
+  <path d="M340 70 Q347 84 340 98" fill="none" stroke="#e6861a" stroke-width="1"/>
+  <path d="M340 70 Q333 84 340 98" fill="none" stroke="#e6861a" stroke-width="1"/>
+
+  <!-- pannello GUEST (visite) -->
+  <text x="560" y="46" text-anchor="middle" font-family="monospace" font-size="9" fill="#484f58" letter-spacing="2">GUEST</text>
+  <text x="560" y="59" text-anchor="middle" font-family="monospace" font-size="10" fill="#8b949e" letter-spacing="1">VISITE</text>
+  <rect x="498" y="66" width="124" height="38" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="560" y="93" text-anchor="middle" font-family="monospace" font-size="28" fill="#e6861a" font-weight="bold">{visitors_str}</text>
+
+  <!-- barra progressione commit -->
+  <rect x="24" y="112" width="632" height="6" rx="3" fill="#21262d"/>
+  <rect x="24" y="112" width="{bar_pct*6.32:.0f}" height="6" rx="3" fill="{color}"/>
+
+  <!-- label stato -->
+  <text x="340" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="{color}">{label}</text>
 </svg>'''
 
 # ---------------------------------------------------------------------------
@@ -247,17 +299,21 @@ def main():
     parser.add_argument("--token", help="GitHub token")
     parser.add_argument("--demo", action="store_true")
     parser.add_argument("--days", type=int, default=3, help="Giorni da simulare in demo")
+    parser.add_argument("--visitors", type=int, default=None, help="Visite da simulare in demo")
     args = parser.parse_args()
 
     token = args.token or os.environ.get("SNAKE_TOKEN", "")
     if args.demo or not token:
         days = args.days
-        print(f"Demo mode — simulando {days} giorni senza commit")
+        visitors = args.visitors if args.visitors is not None else 42
+        print(f"Demo mode — simulando {days} giorni, {visitors} visite")
     else:
         print(f"Fetching dati per @{USERNAME}...")
         days = fetch_days_since_last_commit(token)
+        visitors = fetch_visitor_count()
 
     print(f"Giorni dall'ultimo commit: {days}")
+    print(f"Visite profilo: {visitors}")
     state = get_state(days)
     print(f"Stato tamagotchi: {state['status']}")
 
@@ -265,7 +321,7 @@ def main():
     base.mkdir(exist_ok=True)
 
     (base / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
-    (base / "last_commit.svg").write_text(make_last_commit_svg(days), encoding="utf-8")
+    (base / "last_commit.svg").write_text(make_last_commit_svg(days, visitors=visitors), encoding="utf-8")
 
     print("tamagotchi.svg generato")
     print("last_commit.svg generato")

@@ -75,8 +75,6 @@ tool           Git · GitHub Actions · Docker · Claude Code
 
 ---
 
-![Visitors](https://komarev.com/ghpvc/?username=AndreaBonn&color=E6861A&style=flat&label=visite)
-
 <details>
 <summary>come funziona questo profilo</summary>
 
