@@ -1,0 +1,9 @@
+[project]
+name = "andreabonn-readme"
+version = "1.0.0"
+description = "GitHub profile README automation — basket-themed widgets"
+requires-python = ">=3.11"
+dependencies = [
+    "Pillow>=10.0",
+    "requests>=2.31",
+]

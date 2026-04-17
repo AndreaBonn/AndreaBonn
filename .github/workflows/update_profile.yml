@@ -1,0 +1,62 @@
+name: Update Profile README
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"       # snake basket: ogni lunedì alle 7:00 UTC
+    - cron: "0 7 * * 2-7,0"   # widget giornalieri: tutti gli altri giorni
+  workflow_dispatch:
+    inputs:
+      force_snake:
+        description: "Forza rigenerazione snake basket"
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa dipendenze
+        run: pip install Pillow requests
+
+      # --- Snake Basket (solo lunedì o forzato) ---
+      - name: Snake Basket
+        if: github.event.schedule == '0 7 * * 1' || inputs.force_snake == true
+        env:
+          SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
+        run: python scripts/snake_basket.py --token "$SNAKE_TOKEN" --output assets/snake_basket.gif
+        continue-on-error: true
+
+      # --- Quote del giorno ---
+      - name: Quote del giorno
+        run: python scripts/quote_basket.py
+
+      # --- Oggi nella storia NBA ---
+      - name: Oggi nella storia NBA
+        run: python scripts/nba_today.py
+
+      # --- Tamagotchi + Ultimo commit ---
+      - name: Tamagotchi e ultimo commit
+        env:
+          SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
+        run: python scripts/tamagotchi.py --token "$SNAKE_TOKEN"
+        continue-on-error: true
+
+      # --- Commit e push ---
+      - name: Commit assets aggiornati
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/
+          git diff --cached --quiet || git commit -m "chore: aggiorna profilo $(date +'%Y-%m-%d')"
+          git push
