@@ -1,25 +1,25 @@
-# Hey, sono Andrea 👋🏀
+# Andrea Bonacci
 
-> *Center/Pivot sul campo. Developer fuori.*
-> Scrivo codice come gioco a basket — con pazienza, precisione e qualche rimbalzo offensivo.
+> Center/Pivot sul campo. Developer fuori.
+> Scrivo codice come gioco a basket: con pazienza, precisione e qualche rimbalzo offensivo.
 
 ---
 
-## 🐍 il serpente pivot
+### il serpente pivot
 
-Il serpente **#5** percorre il mio contribution graph ogni settimana e trasforma le celle vuote in palloni da basket. La forma dipende dai miei commit reali — ogni settimana è diversa.
+Il serpente **#5** percorre il mio contribution graph ogni settimana e trasforma le celle vuote in palloni da basket. La forma dipende dai commit reali, quindi ogni settimana è diversa.
 
 ![Snake Basket](./assets/snake_basket.gif)
 
 ---
 
-## ⏱ giorni dall'ultimo commit
+### giorni dall'ultimo commit
 
 ![Ultimo commit](./assets/last_commit.svg)
 
 ---
 
-## 🐣 il mio tamagotchi
+### il mio tamagotchi
 
 Committo → è felice. Sparisco → soffre. Dopo 14 giorni muore e lascia un messaggio di addio.
 
@@ -27,7 +27,7 @@ Committo → è felice. Sparisco → soffre. Dopo 14 giorni muore e lascia un me
 
 ---
 
-## 💬 quote del giorno
+### quote del giorno
 
 *Si aggiorna ogni mattina alle 7:00 UTC.*
 
@@ -35,70 +35,63 @@ Committo → è felice. Sparisco → soffre. Dopo 14 giorni muore e lascia un me
 
 ---
 
-## 📅 oggi nella storia NBA
+### oggi nella storia NBA
 
 ![NBA Today](./assets/nba_today.svg)
 
 ---
 
-## 👁 visitatori
-
-![Visitors](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=github.com%2FAndreaBonn&count_bg=%23E6861A&title_bg=%23161B22&icon=github.svg&icon_color=%23E6EDF3&title=visite&edge_flat=true)
-
----
-
-## 🏀 roster — i miei progetti
-
-> *Come in una squadra, ogni progetto ha il suo ruolo.*
+### roster
 
 **Starting Five**
 
 | # | Progetto | Ruolo | Cosa fa |
 |---|----------|-------|---------|
-| 5 | [**Video Anonimyzer**](https://github.com/AndreaBonn/video-anonimyzer) | Center | Anonimizzazione automatica persone in video sorveglianza. YOLO v8 + ByteTrack |
-| 4 | [**RoomMates**](https://github.com/AndreaBonn/RoomMatesByBonn) | Power Forward | Gestione coinquilini — spese condivise, pulizie con AI, lista spesa real-time. React + Firebase |
-| 3 | [**LifeTrack**](https://github.com/AndreaBonn/LifeTrackByBonn) | Small Forward | Tracking salute personale — peso, sonno, calorie, parametri vitali. PWA con Google Fit e Telegram |
-| 2 | [**Budgee**](https://github.com/AndreaBonn/BudgeeByBonn) | Shooting Guard | Finanze personali — spese, budget, investimenti con grafici interattivi. Installabile, cloud-sync, offline |
-| 1 | [**text-to-speech**](https://github.com/AndreaBonn/text-to-speech) | Point Guard | Converti documenti in audio ITA/ENG — 5 voci neurali, supporto MD/EPUB/PDF/DOCX |
+| 5 | [**Video Anonimyzer**](https://github.com/AndreaBonn/video-anonimyzer) | Center | Anonimizzazione automatica di persone in video sorveglianza. YOLO v8 + ByteTrack |
+| 4 | [**RoomMates**](https://github.com/AndreaBonn/RoomMatesByBonn) | Power Forward | Gestione coinquilini: spese condivise, pulizie con AI, lista spesa real-time. React + Firebase |
+| 3 | [**LifeTrack**](https://github.com/AndreaBonn/LifeTrackByBonn) | Small Forward | Tracking salute personale: peso, sonno, calorie, parametri vitali. PWA con Google Fit e Telegram |
+| 2 | [**Budgee**](https://github.com/AndreaBonn/BudgeeByBonn) | Shooting Guard | Finanze personali: spese, budget, investimenti con grafici interattivi. Installabile, cloud-sync, offline |
+| 1 | [**text-to-speech**](https://github.com/AndreaBonn/text-to-speech) | Point Guard | Converte documenti in audio ITA/ENG con 5 voci neurali. Supporta MD, EPUB, PDF, DOCX |
 
 **Dalla panchina**
 
 | Progetto | Cosa fa |
 |----------|---------|
-| [**web-article-summarizer**](https://github.com/AndreaBonn/web-article-summarizer) | Riassumi articoli web e PDF con AI — Groq, OpenAI, Claude, Gemini |
+| [**web-article-summarizer**](https://github.com/AndreaBonn/web-article-summarizer) | Riassunti di articoli web e PDF via Groq, OpenAI, Claude, Gemini |
 | [**audio-filename-fixer**](https://github.com/AndreaBonn/audio-filename-fixer) | Tag e rinomina automatica file audio via AcoustID + MusicBrainz |
-| [**nautilus-extensions**](https://github.com/AndreaBonn/nautilus-extensions) | Superpoteri per Nautilus — preview dati, merge PDF, analisi Dockerfile |
-| [**cli-image-paste**](https://github.com/AndreaBonn/cli-image-paste) | Incolla immagini dalla clipboard nel terminale — perfetto per AI assistants |
-| [**download-organizer**](https://github.com/AndreaBonn/download-organizer) | Organizza automaticamente la cartella Downloads per tipo di file |
-| [**dipendenti-in-cloud**](https://github.com/AndreaBonn/dipendenti-in-cloud-notifier) | Estensione Chrome — reminder timbratura su dipendentincloud.it |
-| [**AutoGPS**](https://github.com/AndreaBonn/AutoGPS-by-Bonn) | GPS automatico in auto via Bluetooth/Android Auto. Zero cloud, zero tracking |
-| [**CV interattivo**](https://github.com/AndreaBonn/AndreaBonn.github.io) | Portfolio e CV con GitHub Pages e PDF scaricabile |
+| [**nautilus-extensions**](https://github.com/AndreaBonn/nautilus-extensions) | Estensioni per Nautilus: preview dati, merge PDF, analisi Dockerfile |
+| [**cli-image-paste**](https://github.com/AndreaBonn/cli-image-paste) | Incolla immagini dalla clipboard nel terminale, utile con AI assistants |
+| [**download-organizer**](https://github.com/AndreaBonn/download-organizer) | Organizza la cartella Downloads per tipo di file, ogni 3 ore |
+| [**dipendenti-in-cloud**](https://github.com/AndreaBonn/dipendenti-in-cloud-notifier) | Estensione Chrome per non dimenticarsi di timbrare su dipendentincloud.it |
+| [**AutoGPS**](https://github.com/AndreaBonn/AutoGPS-by-Bonn) | GPS automatico in auto via Bluetooth/Android Auto. Niente cloud, niente tracking |
+| [**CV interattivo**](https://github.com/AndreaBonn/AndreaBonn.github.io) | Portfolio e CV con GitHub Pages |
 
 ---
 
-## 🛠 stack
+### stack
 
 ```
 linguaggi      Python · JavaScript · TypeScript · Shell · SQL
 framework      React · FastAPI · Firebase · Telegram Bot API
 AI/ML          YOLO · Scikit-learn · Pandas · Polars
 tool           Git · GitHub Actions · Docker · Claude Code
-interessi      basket · open source · automazione · AI
 ```
 
 ---
 
-## 📬 contatti
+### contatti
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-AndreaBonn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/andreabonn)
 [![GitHub](https://img.shields.io/badge/GitHub-@AndreaBonn-181717?style=flat&logo=github&logoColor=white)](https://github.com/AndreaBonn)
 
 ---
 
-<details>
-<summary>⚙️ come funziona questo profilo</summary>
+![Visitors](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=github.com%2FAndreaBonn&count_bg=%23E6861A&title_bg=%23161B22&icon=github.svg&icon_color=%23E6EDF3&title=visite&edge_flat=true)
 
-Tutto è automatizzato con **GitHub Actions** — un workflow gira ogni mattina alle 7:00 UTC e aggiorna tutti gli asset:
+<details>
+<summary>come funziona questo profilo</summary>
+
+Un workflow GitHub Actions gira ogni mattina alle 7:00 UTC e rigenera tutti gli asset:
 
 | Widget | Script | Frequenza |
 |--------|--------|-----------|
