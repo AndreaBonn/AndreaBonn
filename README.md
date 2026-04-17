@@ -75,7 +75,7 @@ tool           Git · GitHub Actions · Docker · Claude Code
 
 ---
 
-![Visitors](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=github.com%2FAndreaBonn&count_bg=%23E6861A&title_bg=%23161B22&icon=github.svg&icon_color=%23E6EDF3&title=visite&edge_flat=true)
+![Visitors](https://komarev.com/ghpvc/?username=AndreaBonn&color=E6861A&style=flat&label=visite)
 
 <details>
 <summary>come funziona questo profilo</summary>
