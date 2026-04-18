@@ -18,11 +18,11 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- citazione -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">Good, better, best. Never let it rest. Until</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">your good is better and your better is best.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">You have to expect things of yourself before</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">you can do them.</text>
 
 
   <!-- autore -->
-  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Tim Duncan</text>
-  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">17 Apr 2026</text>
+  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Michael Jordan</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">18 Apr 2026</text>
 </svg>
