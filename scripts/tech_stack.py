@@ -46,6 +46,10 @@ TECH_MAP = {
     "express": ("Express", "framework"),
     "tailwindcss": ("Tailwind CSS", "framework"),
     "vite": ("Vite", "framework"),
+    "zustand": ("Zustand", "framework"),
+    "@tanstack/react-query": ("TanStack Query", "framework"),
+    "react-query": ("TanStack Query", "framework"),
+    "zod": ("Zod", "framework"),
     # AI/ML
     "tensorflow": ("TensorFlow", "ai_ml"),
     "torch": ("PyTorch", "ai_ml"),
