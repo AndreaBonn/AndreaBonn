@@ -11,21 +11,17 @@ Usage:
 """
 
 import argparse
+import logging
 import os
 import random
 import sys
 from datetime import datetime, timedelta
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    import requests
-except ImportError:
-    requests = None  # type: ignore[assignment]
-
+import requests
 from common.config import USERNAME
 from PIL import Image, ImageDraw
+
+logger = logging.getLogger(__name__)
 
 CELL_SIZE = 13  # px per cella del contribution graph
 CELL_GAP = 3  # gap tra celle
@@ -60,7 +56,7 @@ SNAKE_BODY_COLOR = (200, 100, 0)  # arancio scuro
 # ---------------------------------------------------------------------------
 
 
-def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
+def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None:
     """Disegna un pallone da basket stilizzato nella cella."""
     # Corpo arancio
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(230, 90, 20))
@@ -78,7 +74,7 @@ def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
     draw.arc([cx - r + offset, cy - r, cx + r + offset, cy + r], start=140, end=220, fill=lc, width=lw)
 
 
-def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
+def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None:
     """Testa del serpente — pivot con numero 5."""
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=SNAKE_HEAD_COLOR)
     # Numero 5 sulla testa (pivot classico)
@@ -90,13 +86,13 @@ def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
 # ---------------------------------------------------------------------------
 
 
-def cell_xy(col: int, row: int):
+def cell_xy(col: int, row: int) -> tuple[int, int]:
     x = PAD_LEFT + col * (CELL_SIZE + CELL_GAP)
     y = PAD_TOP + row * (CELL_SIZE + CELL_GAP)
     return x, y
 
 
-def cell_center(col: int, row: int):
+def cell_center(col: int, row: int) -> tuple[int, int]:
     x, y = cell_xy(col, row)
     return x + CELL_SIZE // 2, y + CELL_SIZE // 2
 
@@ -157,15 +153,17 @@ def build_snake_path(contributions: list[list[int]]) -> list[tuple]:
 # ---------------------------------------------------------------------------
 
 
-def generate_gif(contributions: list[list[int]], month_labels: list[tuple], output_path: str = "snake_basket.gif"):
+def generate_gif(
+    contributions: list[list[int]], month_labels: list[tuple], output_path: str = "snake_basket.gif"
+) -> None:
 
     path = build_snake_path(contributions)
     if not path:
-        print("Nessuna cella vuota trovata — il tuo GitHub è già pieno di contributi!")
+        logger.warning("Nessuna cella vuota trovata — il tuo GitHub è già pieno di contributi!")
         return
 
-    print(f"Celle vuote da mangiare: {len(path)}")
-    print("Generazione frames...")
+    logger.info("Celle vuote da mangiare: %d", len(path))
+    logger.info("Generazione frames...")
 
     base_img = render_base(contributions, month_labels)
     frames = []
@@ -218,7 +216,7 @@ def generate_gif(contributions: list[list[int]], month_labels: list[tuple], outp
         frames.append(final)
 
     if not frames:
-        print("Nessun frame generato.")
+        logger.warning("Nessun frame generato.")
         return
 
     frames[0].save(
@@ -229,7 +227,7 @@ def generate_gif(contributions: list[list[int]], month_labels: list[tuple], outp
         duration=80,  # ms per frame
         optimize=True,
     )
-    print(f"GIF salvata: {output_path} ({len(frames)} frames)")
+    logger.info("GIF salvata: %s (%d frames)", output_path, len(frames))
 
 
 # ---------------------------------------------------------------------------
@@ -237,7 +235,7 @@ def generate_gif(contributions: list[list[int]], month_labels: list[tuple], outp
 # ---------------------------------------------------------------------------
 
 
-def generate_demo_data():
+def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
     """Simula un anno di contributi realistici per AndreaBonn."""
     random.seed(42)  # seed fisso = riproducibile
     contributions = []
@@ -300,11 +298,7 @@ query($login: String!) {
 """
 
 
-def fetch_github_data(token: str):
-    if requests is None:
-        print("Installa requests: pip install requests")
-        sys.exit(1)
-
+def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
     headers = {"Authorization": f"bearer {token}"}
     resp = requests.post(
         GITHUB_GRAPHQL, json={"query": QUERY, "variables": {"login": USERNAME}}, headers=headers, timeout=15
@@ -313,7 +307,7 @@ def fetch_github_data(token: str):
     data = resp.json()
 
     if "errors" in data:
-        print("Errore API GitHub:", data["errors"])
+        logger.error("Errore API GitHub: %s", data["errors"])
         sys.exit(1)
 
     weeks = data["data"]["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]
@@ -359,31 +353,32 @@ def fetch_github_data(token: str):
 # ---------------------------------------------------------------------------
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Snake Basket — GitHub contribution animator")
     parser.add_argument("--token", help="GitHub Personal Access Token (read:user)")
     parser.add_argument("--demo", action="store_true", help="Usa dati demo senza token")
     parser.add_argument("--output", default="snake_basket.gif", help="Nome file output")
     args = parser.parse_args()
 
-    print(f"Snake Basket — @{USERNAME}")
-    print("=" * 40)
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    logger.info("Snake Basket — @%s", USERNAME)
+    logger.info("=" * 40)
 
     token = args.token or os.environ.get("SNAKE_TOKEN", "")
     if args.demo or not token:
-        print("Modalita demo (dati simulati)")
+        logger.info("Modalita demo (dati simulati)")
         contributions, month_labels = generate_demo_data()
     else:
-        print(f"Fetching dati GitHub per @{USERNAME}...")
+        logger.info("Fetching dati GitHub per @%s...", USERNAME)
         contributions, month_labels = fetch_github_data(token)
 
     total_cells = sum(1 for c in contributions for level in c if level == 0)
-    print(f"Celle vuote trovate: {total_cells}")
+    logger.info("Celle vuote trovate: %d", total_cells)
 
     generate_gif(contributions, month_labels, args.output)
-    print("\nPer usarla nel README:\n")
-    print(f"![Snake Basket](./{args.output})")
-    print("\nOppure con GitHub Actions: vedi README per il workflow automatico.")
+    logger.info("\nPer usarla nel README:\n")
+    logger.info("![Snake Basket](./%s)", args.output)
+    logger.info("\nOppure con GitHub Actions: vedi README per il workflow automatico.")
 
 
 if __name__ == "__main__":

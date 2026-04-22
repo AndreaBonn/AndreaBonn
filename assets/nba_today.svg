@@ -14,8 +14,8 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- event text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 2010 LeBron James announces 'The</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Decision': leaving Cleveland for Miami.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 2010 LeBron James announces &#x27;The</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Decision&#x27;: leaving Cleveland for Miami.</text>
 
 
   <!-- footer -->

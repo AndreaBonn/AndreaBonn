@@ -1,10 +1,8 @@
+from common.parsers import parse_package_json, parse_pyproject_toml, parse_requirements_txt
 from tech_stack import (
     DEMO_DATA,
     generate_svg,
     measure_text,
-    parse_package_json,
-    parse_pyproject_toml,
-    parse_requirements_txt,
 )
 
 

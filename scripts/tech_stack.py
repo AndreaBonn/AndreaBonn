@@ -8,18 +8,15 @@ Usage: python tech_stack.py --token <GITHUB_TOKEN>
 """
 
 import argparse
-import json
+import logging
 import os
-import re
-import sys
-import urllib.error
-import urllib.request
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from common.config import ASSETS_DIR, GITHUB_API, USERNAME
+from common.config import ASSETS_DIR
+from common.github_api import check_file_exists, fetch_file, fetch_languages, fetch_repos
+from common.parsers import parse_package_json, parse_pyproject_toml, parse_requirements_txt
 from common.svg import escape_svg
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Mapping: package name → (display name, category)
@@ -178,121 +175,6 @@ CATEGORIES = {
 }
 
 # ---------------------------------------------------------------------------
-# Fetch from GitHub API (stdlib only)
-# ---------------------------------------------------------------------------
-
-
-def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") -> bytes | None:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Authorization": f"token {token}",
-            "Accept": accept,
-            "User-Agent": "tech-stack-generator",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            return resp.read()
-    except urllib.error.HTTPError:
-        return None
-
-
-def fetch_repos(token: str) -> list[dict]:
-    repos = []
-    page = 1
-    while True:
-        url = f"{GITHUB_API}/users/{USERNAME}/repos?per_page=100&page={page}&type=public"
-        data = _api_get(url, token)
-        if data is None:
-            break
-        batch = json.loads(data)
-        if not batch:
-            break
-        repos.extend(batch)
-        page += 1
-    return repos
-
-
-def fetch_languages(token: str, repo_name: str) -> dict[str, int]:
-    data = _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/languages", token)
-    if data:
-        return json.loads(data)
-    return {}
-
-
-def fetch_file(token: str, repo_name: str, path: str) -> str | None:
-    data = _api_get(
-        f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}",
-        token,
-        accept="application/vnd.github.raw+json",
-    )
-    if data:
-        return data.decode("utf-8")
-    return None
-
-
-def check_file_exists(token: str, repo_name: str, path: str) -> bool:
-    return _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}", token) is not None
-
-
-# ---------------------------------------------------------------------------
-# Parsing dipendenze
-# ---------------------------------------------------------------------------
-
-
-def parse_package_json(content: str) -> list[str]:
-    try:
-        data = json.loads(content)
-        deps = set()
-        for key in ("dependencies", "devDependencies"):
-            if key in data:
-                deps.update(data[key].keys())
-        return list(deps)
-    except (json.JSONDecodeError, AttributeError):
-        return []
-
-
-def parse_requirements_txt(content: str) -> list[str]:
-    pkgs = []
-    for line in content.splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or line.startswith("-"):
-            continue
-        # nome pacchetto prima di ==, >=, ~=, [, etc.
-        name = re.split(r"[>=<~!\[;@\s]", line)[0].strip().lower()
-        if name:
-            pkgs.append(name)
-    return pkgs
-
-
-def parse_pyproject_toml(content: str) -> list[str]:
-    pkgs = []
-    in_deps = False
-    for line in content.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("dependencies") and "=" in stripped:
-            in_deps = True
-            # inline list: dependencies = ["pkg1", "pkg2"]
-            inline = re.findall(r'"([^"]+)"', stripped)
-            for dep in inline:
-                name = re.split(r"[>=<~!\[;@\s]", dep)[0].strip().lower()
-                if name:
-                    pkgs.append(name)
-            continue
-        if in_deps:
-            if stripped.startswith("]"):
-                in_deps = False
-                continue
-            if stripped.startswith('"'):
-                dep = stripped.strip('",')
-                name = re.split(r"[>=<~!\[;@\s]", dep)[0].strip().lower()
-                if name:
-                    pkgs.append(name)
-    return pkgs
-
-
-# ---------------------------------------------------------------------------
 # Scan completo
 # ---------------------------------------------------------------------------
 
@@ -302,7 +184,7 @@ def scan_repos(token: str) -> dict[str, dict[str, int]]:
     result: dict[str, dict[str, int]] = {cat: {} for cat in CATEGORIES}
 
     repos = fetch_repos(token)
-    print(f"Found {len(repos)} public repos")
+    logger.info("Found %d public repos", len(repos))
 
     for repo in repos:
         name = repo["name"]
@@ -310,7 +192,7 @@ def scan_repos(token: str) -> dict[str, dict[str, int]]:
         if is_fork:
             continue
 
-        print(f"  Scanning {name}...")
+        logger.info("  Scanning %s...", name)
 
         # 1. Linguaggi da GitHub API
         languages = fetch_languages(token, name)
@@ -559,7 +441,8 @@ DEMO_DATA = {
 # ---------------------------------------------------------------------------
 
 
-def main():
+def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser()
     parser.add_argument("--token", help="GitHub token")
     parser.add_argument("--demo", action="store_true")
@@ -568,23 +451,22 @@ def main():
     token = args.token or os.environ.get("SNAKE_TOKEN", "")
 
     if args.demo or not token:
-        print("Demo mode")
+        logger.info("Demo mode")
         data = DEMO_DATA
     else:
         data = scan_repos(token)
 
-    # Stampa riepilogo
     for cat, items in data.items():
         if items:
-            print(f"\n{cat}:")
+            logger.info("\n%s:", cat)
             for name, count in sorted(items.items(), key=lambda x: -x[1]):
-                print(f"  {name}: {count}")
+                logger.info("  %s: %d", name, count)
 
     svg = generate_svg(data)
     ASSETS_DIR.mkdir(exist_ok=True)
     out = ASSETS_DIR / "tech_stack.svg"
     out.write_text(svg, encoding="utf-8")
-    print(f"\ntech_stack.svg generated ({len(svg)} bytes)")
+    logger.info("\ntech_stack.svg generated (%d bytes)", len(svg))
 
 
 if __name__ == "__main__":

@@ -8,12 +8,6 @@ dependencies = [
     "requests>=2.31,<3",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0",
-    "ruff>=0.4",
-]
-
 [tool.ruff]
 line-length = 120
 target-version = "py311"
@@ -24,3 +18,21 @@ ignore = ["E501", "SIM108"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["scripts"]
+
+[tool.coverage.run]
+source = ["scripts"]
+omit = ["scripts/common/__init__.py"]
+
+[tool.coverage.report]
+fail_under = 50
+show_missing = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=6.0",
+    "ruff>=0.4",
+    "bandit>=1.9.4",
+    "pip-audit>=2.10.0",
+]

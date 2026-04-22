@@ -12,7 +12,7 @@
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">🏀 @AndreaBonn</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">&#x1F3C0; @AndreaBonn</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>

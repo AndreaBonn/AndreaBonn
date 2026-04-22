@@ -10,74 +10,16 @@ Usage: python tamagotchi.py --token <TOKEN>
 """
 
 import argparse
-import json
 import logging
 import os
-import re
-import sys
 from datetime import UTC, datetime
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    import requests
-except ImportError:
-    requests = None  # type: ignore[assignment]
-
+import requests
 from common.config import ASSETS_DIR, GITHUB_API, USERNAME
 from common.svg import wrap_text
-
-KOMAREV_URL: str = "https://komarev.com/ghpvc/"
+from common.visitors import fetch_visitor_count
 
 logger = logging.getLogger(__name__)
-
-# ---------------------------------------------------------------------------
-# Fetch visitor count da komarev badge SVG (tracciato dal pixel nel README)
-# ---------------------------------------------------------------------------
-
-VISITORS_JSON = Path(__file__).parent.parent / "assets" / "visitors.json"
-
-
-def _read_visitors_data() -> dict:
-    try:
-        return json.loads(VISITORS_JSON.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {"total": 0, "last_komarev": 0}
-
-
-def _save_visitors_data(data: dict) -> None:
-    VISITORS_JSON.write_text(json.dumps(data), encoding="utf-8")
-
-
-def _fetch_komarev_count() -> int:
-    if requests is None:
-        return 0
-    try:
-        resp = requests.get(
-            KOMAREV_URL,
-            params={"username": USERNAME, "style": "flat", "label": "views"},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        numbers = re.findall(r">(\d[\d,.]*)<", resp.text)
-        if numbers:
-            return int(numbers[-1].replace(",", "").replace(".", ""))
-    except (requests.RequestException, ValueError) as exc:
-        logger.warning("komarev fetch failed: %s", exc)
-    return 0
-
-
-def fetch_visitor_count() -> tuple[int, int]:
-    """Returns (recent_komarev_count, cumulative_total)."""
-    current = _fetch_komarev_count()
-    data = _read_visitors_data()
-    last = data["last_komarev"]
-    delta = max(0, current - last) if last > 0 else 0
-    data["total"] += delta
-    data["last_komarev"] = current
-    _save_visitors_data(data)
-    return current, data["total"]
 
 
 # ---------------------------------------------------------------------------
@@ -86,8 +28,6 @@ def fetch_visitor_count() -> tuple[int, int]:
 
 
 def fetch_days_since_last_commit(token: str) -> int:
-    if requests is None:
-        return 0
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
     # Cerca negli eventi pubblici i PushEvent
     resp = requests.get(
@@ -325,7 +265,8 @@ def make_tamagotchi_svg(days: int) -> str:
 # ---------------------------------------------------------------------------
 
 
-def main():
+def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser()
     parser.add_argument("--token", help="GitHub token")
     parser.add_argument("--demo", action="store_true")
@@ -338,16 +279,16 @@ def main():
         days = args.days
         visitors = args.visitors if args.visitors is not None else 42
         total_visitors = visitors * 10
-        print(f"Demo mode — {days} days, {visitors} recent, {total_visitors} total")
+        logger.info("Demo mode — %d days, %d recent, %d total", days, visitors, total_visitors)
     else:
-        print(f"Fetching data for @{USERNAME}...")
+        logger.info("Fetching data for @%s...", USERNAME)
         days = fetch_days_since_last_commit(token)
         visitors, total_visitors = fetch_visitor_count()
 
-    print(f"Days since last commit: {days}")
-    print(f"Recent views: {visitors} | Total views: {total_visitors}")
+    logger.info("Days since last commit: %d", days)
+    logger.info("Recent views: %d | Total views: %d", visitors, total_visitors)
     state = get_state(days)
-    print(f"Tamagotchi status: {state['status']}")
+    logger.info("Tamagotchi status: %s", state["status"])
 
     ASSETS_DIR.mkdir(exist_ok=True)
 
@@ -357,8 +298,8 @@ def main():
         encoding="utf-8",
     )
 
-    print("tamagotchi.svg generato")
-    print("last_commit.svg generato")
+    logger.info("tamagotchi.svg generato")
+    logger.info("last_commit.svg generato")
 
 
 if __name__ == "__main__":
