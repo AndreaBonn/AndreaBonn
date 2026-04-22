@@ -10,6 +10,7 @@ Usage: python tamagotchi.py --token <TOKEN>
 """
 
 import argparse
+import json
 import os
 import sys
 from datetime import datetime, timezone
@@ -28,14 +29,28 @@ KOMAREV_URL = "https://komarev.com/ghpvc/"
 # Fetch visitor count da komarev badge SVG (tracciato dal pixel nel README)
 # ---------------------------------------------------------------------------
 
-def fetch_visitor_count() -> int:
+VISITORS_JSON = Path(__file__).parent.parent / "assets" / "visitors.json"
+
+
+def _read_visitors_data() -> dict:
+    try:
+        return json.loads(VISITORS_JSON.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"total": 0, "last_komarev": 0}
+
+
+def _save_visitors_data(data: dict) -> None:
+    VISITORS_JSON.write_text(json.dumps(data), encoding="utf-8")
+
+
+def _fetch_komarev_count() -> int:
     if requests is None:
         return 0
     try:
         import re
         resp = requests.get(
             KOMAREV_URL,
-            params={"username": USERNAME, "style": "flat", "label": "visite"},
+            params={"username": USERNAME, "style": "flat", "label": "views"},
             timeout=10,
         )
         resp.raise_for_status()
@@ -45,6 +60,18 @@ def fetch_visitor_count() -> int:
     except Exception:
         pass
     return 0
+
+
+def fetch_visitor_count() -> tuple[int, int]:
+    """Returns (recent_komarev_count, cumulative_total)."""
+    current = _fetch_komarev_count()
+    data = _read_visitors_data()
+    last = data["last_komarev"]
+    delta = max(0, current - last) if last > 0 else 0
+    data["total"] += delta
+    data["last_komarev"] = current
+    _save_visitors_data(data)
+    return current, data["total"]
 
 # ---------------------------------------------------------------------------
 # Fetch giorni dall'ultimo commit (eventi pubblici)
@@ -72,7 +99,7 @@ def fetch_days_since_last_commit(token: str) -> int:
 # SVG: giorni dall'ultimo commit
 # ---------------------------------------------------------------------------
 
-def make_last_commit_svg(days: int, visitors: int) -> str:
+def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
     if days == 0:
         color = "#3fb950"
         label = "fresh commit!"
@@ -96,6 +123,7 @@ def make_last_commit_svg(days: int, visitors: int) -> str:
 
     bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
     visitors_str = f"{visitors:,}".replace(",", ".")
+    total_str = f"{total_visitors:,}".replace(",", ".")
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 130" width="100%">
   <!-- sfondo tabellone -->
@@ -137,8 +165,8 @@ def make_last_commit_svg(days: int, visitors: int) -> str:
   <rect x="24" y="112" width="832" height="6" rx="3" fill="#21262d"/>
   <rect x="24" y="112" width="{bar_pct*8.32:.0f}" height="6" rx="3" fill="{color}"/>
 
-  <!-- label stato -->
-  <text x="440" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="{color}">{label}</text>
+  <!-- total visits -->
+  <text x="440" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#8b949e">Total views: {total_str}</text>
 </svg>'''
 
 # ---------------------------------------------------------------------------
@@ -305,22 +333,26 @@ def main():
     if args.demo or not token:
         days = args.days
         visitors = args.visitors if args.visitors is not None else 42
-        print(f"Demo mode — simulando {days} giorni, {visitors} visite")
+        total_visitors = visitors * 10
+        print(f"Demo mode — {days} days, {visitors} recent, {total_visitors} total")
     else:
-        print(f"Fetching dati per @{USERNAME}...")
+        print(f"Fetching data for @{USERNAME}...")
         days = fetch_days_since_last_commit(token)
-        visitors = fetch_visitor_count()
+        visitors, total_visitors = fetch_visitor_count()
 
-    print(f"Giorni dall'ultimo commit: {days}")
-    print(f"Visite profilo: {visitors}")
+    print(f"Days since last commit: {days}")
+    print(f"Recent views: {visitors} | Total views: {total_visitors}")
     state = get_state(days)
-    print(f"Stato tamagotchi: {state['status']}")
+    print(f"Tamagotchi status: {state['status']}")
 
     base = Path(__file__).parent.parent / "assets"
     base.mkdir(exist_ok=True)
 
     (base / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
-    (base / "last_commit.svg").write_text(make_last_commit_svg(days, visitors=visitors), encoding="utf-8")
+    (base / "last_commit.svg").write_text(
+        make_last_commit_svg(days, visitors=visitors, total_visitors=total_visitors),
+        encoding="utf-8",
+    )
 
     print("tamagotchi.svg generato")
     print("last_commit.svg generato")
