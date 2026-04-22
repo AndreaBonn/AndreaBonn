@@ -29,9 +29,7 @@ def test_wrap_text_exact_fit():
 
 def test_wrap_text_wraps_correctly():
     result = wrap_text("one two three four", max_chars=10)
-    assert len(result) >= 2
-    for line in result:
-        assert len(line) <= 10
+    assert result == ["one two", "three four"]
 
 
 def test_wrap_text_empty_string():

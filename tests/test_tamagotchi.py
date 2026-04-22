@@ -1,4 +1,40 @@
-from tamagotchi import get_state, make_last_commit_svg, make_tamagotchi_svg, wrap_msg
+from unittest.mock import MagicMock, patch
+
+import requests
+from tamagotchi import fetch_days_since_last_commit, get_state, make_last_commit_svg, make_tamagotchi_svg, wrap_msg
+
+
+@patch("tamagotchi.requests.get")
+def test_fetch_days_http_error_returns_99(mock_get):
+    mock_get.side_effect = requests.ConnectionError("timeout")
+    assert fetch_days_since_last_commit(token="tok") == 99
+
+
+@patch("tamagotchi.requests.get")
+def test_fetch_days_non_json_response_returns_99(mock_get):
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.side_effect = requests.exceptions.JSONDecodeError("err", "doc", 0)
+    mock_get.return_value = mock_resp
+    assert fetch_days_since_last_commit(token="tok") == 99
+
+
+@patch("tamagotchi.requests.get")
+def test_fetch_days_missing_commit_field_returns_99(mock_get):
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.return_value = {"items": [{"no_commit_key": {}}]}
+    mock_get.return_value = mock_resp
+    assert fetch_days_since_last_commit(token="tok") == 99
+
+
+@patch("tamagotchi.requests.get")
+def test_fetch_days_non_dict_payload_returns_99(mock_get):
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.return_value = ["not", "a", "dict"]
+    mock_get.return_value = mock_resp
+    assert fetch_days_since_last_commit(token="tok") == 99
 
 
 def test_get_state_happy_at_zero_days():
@@ -39,7 +75,7 @@ def test_wrap_msg_delegates_to_wrap_text():
 
 def test_wrap_msg_custom_max_chars():
     result = wrap_msg("one two three", max_chars=8)
-    assert len(result) >= 2
+    assert result == ["one two", "three"]
 
 
 def test_make_tamagotchi_svg_returns_valid_svg():
@@ -82,3 +118,31 @@ def test_make_last_commit_svg_visitor_formatting():
     svg = make_last_commit_svg(days=1, visitors=1234, total_visitors=56789)
     assert "1.234" in svg
     assert "56.789" in svg
+
+
+def test_make_last_commit_svg_q3_two_days():
+    svg = make_last_commit_svg(days=2, visitors=10, total_visitors=100)
+    assert "Q3" in svg
+    assert "#3fb950" in svg
+
+
+def test_make_last_commit_svg_q2_five_days():
+    svg = make_last_commit_svg(days=5, visitors=10, total_visitors=100)
+    assert "Q2" in svg
+    assert "#e6861a" in svg
+
+
+def test_make_last_commit_svg_q1_fourteen_days():
+    svg = make_last_commit_svg(days=14, visitors=10, total_visitors=100)
+    assert "Q1" in svg
+    assert "#f85149" in svg
+
+
+def test_make_tamagotchi_svg_good_state():
+    svg = make_tamagotchi_svg(days=4)
+    assert "ON BREAK" in svg
+
+
+def test_make_tamagotchi_svg_tired_state():
+    svg = make_tamagotchi_svg(days=10)
+    assert "TIRED" in svg

@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
 
+      - name: Run tests
+        run: uv run pytest -q
+
       - name: Snake Basket (Monday or manual)
         if: steps.day.outputs.dow == '1' || (github.event_name == 'workflow_dispatch' && inputs.force_snake == true)
         env:

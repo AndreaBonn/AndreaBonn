@@ -119,14 +119,24 @@ def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
 
     for c, week in enumerate(weeks[-52:]):
         week_data = []
-        first_day = week["contributionDays"][0]["date"]
-        month = datetime.strptime(first_day, "%Y-%m-%d").strftime("%b")
+        days_in_week = week.get("contributionDays", [])
+        if not days_in_week:
+            logger.warning("fetch_github_data: week %d has no contributionDays — skipping", c)
+            contributions.append([0] * ROWS)
+            continue
+        try:
+            first_day = days_in_week[0]["date"]
+            month = datetime.strptime(first_day, "%Y-%m-%d").strftime("%b")
+        except (KeyError, ValueError) as exc:
+            logger.warning("fetch_github_data: unexpected day format in week %d: %s — skipping", c, exc)
+            contributions.append([0] * ROWS)
+            continue
 
         if month != current_month:
             current_month = month
             month_labels.append((month, c))
 
-        for day in week["contributionDays"]:
+        for day in days_in_week:
             count = day["contributionCount"]
             if count == 0:
                 level = 0

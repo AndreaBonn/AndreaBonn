@@ -78,8 +78,9 @@ def fetch_visitor_count() -> tuple[int, int]:
     data = _read_visitors_data()
 
     if current is None:
-        logger.warning("Skipping komarev update — using last known value")
-        current = data["last_komarev"]
+        fallback = data.get("last_komarev", 0)
+        logger.warning("Skipping komarev update — using last known value: %d", fallback)
+        current = fallback
 
     last = data["last_komarev"]
     delta = max(0, current - last) if last > 0 else 0

@@ -111,8 +111,8 @@ SVG_W: int = 680
 
 
 def pick_daily_quote() -> dict[str, str]:
-    today = datetime.now(UTC)
-    random.seed(today.timetuple().tm_yday + today.year * 365)
+    today = datetime.now(UTC).date()
+    random.seed(today.toordinal())
     return random.choice(QUOTES)
 
 

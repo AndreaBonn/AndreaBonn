@@ -23,6 +23,10 @@ build/
 .DS_Store
 Thumbs.db
 
+# Coverage
+.coverage
+htmlcov/
+
 # Local
 TODO.md
 

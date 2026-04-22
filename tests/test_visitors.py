@@ -126,3 +126,89 @@ def test_read_visitors_data_corrupted_json(tmp_path, monkeypatch):
     data = _read_visitors_data()
     assert "history" in data
     assert data["last_komarev"] == 0
+
+
+# ---------------------------------------------------------------------------
+# _fetch_komarev_count — comportamento con mock
+# ---------------------------------------------------------------------------
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_happy_path(mock_get):
+    from unittest.mock import MagicMock
+
+    from common.visitors import _fetch_komarev_count
+
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.text = "<svg><text>views</text><text>1,234</text></svg>"
+    mock_get.return_value = mock_resp
+
+    result = _fetch_komarev_count()
+    assert result == 1234
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_network_error_returns_none(mock_get):
+    import requests
+    from common.visitors import _fetch_komarev_count
+
+    mock_get.side_effect = requests.ConnectionError("timeout")
+    assert _fetch_komarev_count() is None
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_no_numbers_returns_none(mock_get):
+    from unittest.mock import MagicMock
+
+    from common.visitors import _fetch_komarev_count
+
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.text = "<svg><text>no numbers here</text></svg>"
+    mock_get.return_value = mock_resp
+
+    assert _fetch_komarev_count() is None
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_capped_at_10_million(mock_get):
+    from unittest.mock import MagicMock
+
+    from common.visitors import _fetch_komarev_count
+
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.text = "<svg><text>99999999</text></svg>"
+    mock_get.return_value = mock_resp
+
+    result = _fetch_komarev_count()
+    assert result == 10_000_000
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_http_error_returns_none(mock_get):
+    from unittest.mock import MagicMock
+
+    import requests
+    from common.visitors import _fetch_komarev_count
+
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.side_effect = requests.HTTPError("500 Server Error")
+    mock_get.return_value = mock_resp
+
+    assert _fetch_komarev_count() is None
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_plain_number(mock_get):
+    from unittest.mock import MagicMock
+
+    from common.visitors import _fetch_komarev_count
+
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.text = "<svg><text>views</text><text>42</text></svg>"
+    mock_get.return_value = mock_resp
+
+    assert _fetch_komarev_count() == 42

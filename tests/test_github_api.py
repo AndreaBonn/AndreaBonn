@@ -108,3 +108,39 @@ def test_check_file_exists_false(mock_urlopen):
         url="https://api.github.com/test", code=404, msg="Not Found", hdrs={}, fp=None
     )
     assert check_file_exists(token="test-token", repo_name="repo", path="missing.txt") is False
+
+
+@patch("common.github_api.urllib.request.urlopen")
+def test_fetch_repos_invalid_json_returns_empty(mock_urlopen):
+    mock_resp = MagicMock()
+    mock_resp.read.return_value = b"<html>Service Unavailable</html>"
+    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
+    mock_resp.__exit__ = MagicMock(return_value=False)
+    mock_urlopen.return_value = mock_resp
+
+    repos = fetch_repos(token="test-token")
+    assert repos == []
+
+
+@patch("common.github_api.urllib.request.urlopen")
+def test_fetch_languages_invalid_json_returns_empty(mock_urlopen):
+    mock_resp = MagicMock()
+    mock_resp.read.return_value = b"not json"
+    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
+    mock_resp.__exit__ = MagicMock(return_value=False)
+    mock_urlopen.return_value = mock_resp
+
+    result = fetch_languages(token="test-token", repo_name="repo")
+    assert result == {}
+
+
+@patch("common.github_api.urllib.request.urlopen")
+def test_fetch_file_non_utf8_returns_none(mock_urlopen):
+    mock_resp = MagicMock()
+    mock_resp.read.return_value = b"\x80\x81\x82\xff"
+    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
+    mock_resp.__exit__ = MagicMock(return_value=False)
+    mock_urlopen.return_value = mock_resp
+
+    result = fetch_file(token="test-token", repo_name="repo", path="binary.dat")
+    assert result is None

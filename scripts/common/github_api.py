@@ -43,7 +43,11 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
             logger.error("GitHub API rate limit exceeded for %s", url)
             raise
         else:
-            logger.warning("GitHub API HTTP %d for %s: %s", exc.code, url, exc)
+            try:
+                body = exc.read().decode("utf-8", errors="replace")[:200]
+            except Exception:
+                body = "<unreadable>"
+            logger.warning("GitHub API HTTP %d for %s: %s — body: %s", exc.code, url, exc, body)
         return None
     except urllib.error.URLError as exc:
         logger.warning("Network error fetching %s: %s", url, exc)
@@ -58,7 +62,11 @@ def fetch_repos(token: str) -> list[dict]:
         data = _api_get(url, token)
         if data is None:
             break
-        batch = json.loads(data)
+        try:
+            batch = json.loads(data)
+        except json.JSONDecodeError as exc:
+            logger.error("fetch_repos: invalid JSON from GitHub (page %d): %s", page, exc)
+            break
         if not batch:
             break
         repos.extend(batch)
@@ -73,9 +81,13 @@ def fetch_repos(token: str) -> list[dict]:
 
 def fetch_languages(token: str, repo_name: str) -> dict[str, int]:
     data = _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/languages", token)
-    if data:
+    if data is None:
+        return {}
+    try:
         return json.loads(data)
-    return {}
+    except json.JSONDecodeError as exc:
+        logger.error("fetch_languages(%s): invalid JSON: %s", repo_name, exc)
+        return {}
 
 
 def fetch_file(token: str, repo_name: str, path: str) -> str | None:
@@ -84,9 +96,13 @@ def fetch_file(token: str, repo_name: str, path: str) -> str | None:
         token,
         accept="application/vnd.github.raw+json",
     )
-    if data:
+    if data is None:
+        return None
+    try:
         return data.decode("utf-8")
-    return None
+    except UnicodeDecodeError as exc:
+        logger.error("fetch_file(%s/%s): UTF-8 decode failed: %s", repo_name, path, exc)
+        return None
 
 
 def check_file_exists(token: str, repo_name: str, path: str) -> bool:

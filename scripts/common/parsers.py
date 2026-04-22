@@ -10,7 +10,7 @@ def parse_package_json(content: str) -> list[str]:
     try:
         data = json.loads(content)
     except json.JSONDecodeError as exc:
-        logger.debug("package.json parse failed: %s", exc)
+        logger.warning("package.json parse failed — file may be malformed: %s", exc)
         return []
 
     deps: set[str] = set()
@@ -45,7 +45,7 @@ def parse_pyproject_toml(content: str) -> list[str]:
     try:
         data = tomllib.loads(content)
     except tomllib.TOMLDecodeError as exc:
-        logger.debug("pyproject.toml parse failed: %s", exc)
+        logger.warning("pyproject.toml parse failed — file may be malformed: %s", exc)
         return []
 
     pkgs: list[str] = []

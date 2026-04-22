@@ -151,12 +151,18 @@ def generate_gif(
         logger.warning("Nessun frame generato.")
         return
 
-    frames[0].save(
-        output_path,
-        save_all=True,
-        append_images=frames[1:],
-        loop=0,
-        duration=80,
-        optimize=True,
-    )
+    try:
+        frames[0].save(
+            output_path,
+            save_all=True,
+            append_images=frames[1:],
+            loop=0,
+            duration=80,
+            optimize=True,
+        )
+    except OSError as exc:
+        logger.error(
+            "generate_gif: failed to write GIF to '%s': %s — check disk space and permissions", output_path, exc
+        )
+        raise
     logger.info("GIF salvata: %s (%d frames)", output_path, len(frames))

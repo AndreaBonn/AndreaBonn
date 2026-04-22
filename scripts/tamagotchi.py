@@ -32,25 +32,41 @@ def fetch_days_since_last_commit(token: str) -> int:
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github+json",
     }
-    resp = requests.get(
-        f"{GITHUB_API}/search/commits",
-        headers=headers,
-        params={"q": f"author:{USERNAME}", "sort": "author-date", "order": "desc", "per_page": 1},
-        timeout=15,
-    )
-    resp.raise_for_status()
-    items = resp.json().get("items", [])
-    if items:
+    try:
+        resp = requests.get(
+            f"{GITHUB_API}/search/commits",
+            headers=headers,
+            params={"q": f"author:{USERNAME}", "sort": "author-date", "order": "desc", "per_page": 1},
+            timeout=15,
+        )
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        logger.error("fetch_days_since_last_commit: HTTP error: %s — defaulting to 99", exc)
+        return 99
+
+    try:
+        payload = resp.json()
+    except requests.exceptions.JSONDecodeError as exc:
+        logger.error("fetch_days_since_last_commit: non-JSON response: %s — defaulting to 99", exc)
+        return 99
+
+    items = payload.get("items", []) if isinstance(payload, dict) else []
+    if not items:
+        logger.warning(
+            "GitHub Search Commits API returned no items for author:%s — "
+            "defaulting to 99 days. Possible cause: new account, private commits only, or API delay.",
+            USERNAME,
+        )
+        return 99
+
+    try:
         date_str = items[0]["commit"]["author"]["date"]
         dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
         delta = datetime.now(UTC) - dt
         return delta.days
-    logger.warning(
-        "GitHub Search Commits API returned no items for author:%s — "
-        "defaulting to 99 days. Possible cause: new account, private commits only, or API delay.",
-        USERNAME,
-    )
-    return 99
+    except (KeyError, ValueError) as exc:
+        logger.error("fetch_days_since_last_commit: unexpected response structure: %s — defaulting to 99", exc)
+        return 99
 
 
 # ---------------------------------------------------------------------------
