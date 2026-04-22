@@ -11,56 +11,54 @@ Usage:
 """
 
 import argparse
-import math
 import os
 import random
 import sys
 from datetime import datetime, timedelta
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 try:
     import requests
 except ImportError:
-    requests = None
+    requests = None  # type: ignore[assignment]
 
+from common.config import USERNAME
 from PIL import Image, ImageDraw
 
-# ---------------------------------------------------------------------------
-# Configurazione visiva
-# ---------------------------------------------------------------------------
-
-USERNAME = "AndreaBonn"
-
-CELL_SIZE   = 13   # px per cella del contribution graph
-CELL_GAP    = 3    # gap tra celle
-COLS        = 52   # settimane
-ROWS        = 7    # giorni (lun-dom)
-PAD_LEFT    = 36   # spazio per etichette giorni
-PAD_TOP     = 28   # spazio per etichette mesi
-PAD_RIGHT   = 16
-PAD_BOTTOM  = 16
+CELL_SIZE = 13  # px per cella del contribution graph
+CELL_GAP = 3  # gap tra celle
+COLS = 52  # settimane
+ROWS = 7  # giorni (lun-dom)
+PAD_LEFT = 36  # spazio per etichette giorni
+PAD_TOP = 28  # spazio per etichette mesi
+PAD_RIGHT = 16
+PAD_BOTTOM = 16
 
 CANVAS_W = PAD_LEFT + COLS * (CELL_SIZE + CELL_GAP) - CELL_GAP + PAD_RIGHT
-CANVAS_H = PAD_TOP  + ROWS * (CELL_SIZE + CELL_GAP) - CELL_GAP + PAD_BOTTOM
+CANVAS_H = PAD_TOP + ROWS * (CELL_SIZE + CELL_GAP) - CELL_GAP + PAD_BOTTOM
 
 # Palette colori contribution graph (tema basket: arancio + verde campo)
-BG_COLOR        = (22, 27, 34)       # sfondo scuro GitHub-style
-EMPTY_COLOR     = (30, 40, 50)       # cella vuota
-CONTRIB_COLORS  = [
-    (14, 68, 41),    # livello 1 — verde scuro
-    (0, 109, 50),    # livello 2
-    (38, 166, 78),   # livello 3
-    (57, 211, 83),   # livello 4 — verde brillante
+BG_COLOR = (22, 27, 34)  # sfondo scuro GitHub-style
+EMPTY_COLOR = (30, 40, 50)  # cella vuota
+CONTRIB_COLORS = [
+    (14, 68, 41),  # livello 1 — verde scuro
+    (0, 109, 50),  # livello 2
+    (38, 166, 78),  # livello 3
+    (57, 211, 83),  # livello 4 — verde brillante
 ]
-TEXT_COLOR      = (139, 148, 158)    # grigio GitHub
+TEXT_COLOR = (139, 148, 158)  # grigio GitHub
 GRID_LINE_COLOR = (48, 54, 61)
 
 # Colori basket
-SNAKE_HEAD_COLOR = (255, 140, 0)     # arancio NBA
-SNAKE_BODY_COLOR = (200, 100, 0)     # arancio scuro
+SNAKE_HEAD_COLOR = (255, 140, 0)  # arancio NBA
+SNAKE_BODY_COLOR = (200, 100, 0)  # arancio scuro
 
 # ---------------------------------------------------------------------------
 # Disegno pallone da basket (SVG-style con Pillow)
 # ---------------------------------------------------------------------------
+
 
 def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
     """Disegna un pallone da basket stilizzato nella cella."""
@@ -76,10 +74,9 @@ def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
     draw.line([cx - r, cy, cx + r, cy], fill=lc, width=lw)
     # Curve laterali
     offset = int(r * 0.55)
-    draw.arc([cx - r - offset, cy - r, cx + r - offset, cy + r],
-             start=320, end=40, fill=lc, width=lw)
-    draw.arc([cx - r + offset, cy - r, cx + r + offset, cy + r],
-             start=140, end=220, fill=lc, width=lw)
+    draw.arc([cx - r - offset, cy - r, cx + r - offset, cy + r], start=320, end=40, fill=lc, width=lw)
+    draw.arc([cx - r + offset, cy - r, cx + r + offset, cy + r], start=140, end=220, fill=lc, width=lw)
+
 
 def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
     """Testa del serpente — pivot con numero 5."""
@@ -87,22 +84,27 @@ def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int):
     # Numero 5 sulla testa (pivot classico)
     draw.text((cx, cy), "5", fill=(255, 255, 255), anchor="mm")
 
+
 # ---------------------------------------------------------------------------
 # Posizione pixel di una cella
 # ---------------------------------------------------------------------------
 
+
 def cell_xy(col: int, row: int):
     x = PAD_LEFT + col * (CELL_SIZE + CELL_GAP)
-    y = PAD_TOP  + row * (CELL_SIZE + CELL_GAP)
+    y = PAD_TOP + row * (CELL_SIZE + CELL_GAP)
     return x, y
+
 
 def cell_center(col: int, row: int):
     x, y = cell_xy(col, row)
     return x + CELL_SIZE // 2, y + CELL_SIZE // 2
 
+
 # ---------------------------------------------------------------------------
 # Rendering base del contribution graph
 # ---------------------------------------------------------------------------
+
 
 def render_base(contributions: list[list[int]], month_labels: list[tuple]) -> Image.Image:
     """Renderizza il contribution graph di base senza animazione."""
@@ -114,8 +116,7 @@ def render_base(contributions: list[list[int]], month_labels: list[tuple]) -> Im
     for r, name in enumerate(day_names):
         if name:
             cx, cy = cell_center(0, r)
-            draw.text((PAD_LEFT - 6, cy), name, fill=TEXT_COLOR, anchor="rm",
-                      font_size=9)
+            draw.text((PAD_LEFT - 6, cy), name, fill=TEXT_COLOR, anchor="rm", font_size=9)
 
     # Etichette mesi
     for label, col in month_labels:
@@ -128,13 +129,14 @@ def render_base(contributions: list[list[int]], month_labels: list[tuple]) -> Im
             level = contributions[c][r]
             color = EMPTY_COLOR if level == 0 else CONTRIB_COLORS[level - 1]
             x, y = cell_xy(c, r)
-            draw.rounded_rectangle([x, y, x + CELL_SIZE, y + CELL_SIZE],
-                                   radius=2, fill=color)
+            draw.rounded_rectangle([x, y, x + CELL_SIZE, y + CELL_SIZE], radius=2, fill=color)
     return img
+
 
 # ---------------------------------------------------------------------------
 # Percorso serpente a serpentina
 # ---------------------------------------------------------------------------
+
 
 def build_snake_path(contributions: list[list[int]]) -> list[tuple]:
     """
@@ -149,13 +151,13 @@ def build_snake_path(contributions: list[list[int]]) -> list[tuple]:
                 path.append((c, r))
     return path
 
+
 # ---------------------------------------------------------------------------
 # Generazione GIF
 # ---------------------------------------------------------------------------
 
-def generate_gif(contributions: list[list[int]],
-                 month_labels: list[tuple],
-                 output_path: str = "snake_basket.gif"):
+
+def generate_gif(contributions: list[list[int]], month_labels: list[tuple], output_path: str = "snake_basket.gif"):
 
     path = build_snake_path(contributions)
     if not path:
@@ -163,13 +165,13 @@ def generate_gif(contributions: list[list[int]],
         return
 
     print(f"Celle vuote da mangiare: {len(path)}")
-    print(f"Generazione frames...")
+    print("Generazione frames...")
 
     base_img = render_base(contributions, month_labels)
-    frames   = []
-    eaten    = set()   # celle già mangiate (diventano palloni)
+    frames = []
+    eaten = set()  # celle già mangiate (diventano palloni)
 
-    snake_length = 5   # lunghezza iniziale del serpente (pivot = fisico)
+    snake_length = 5  # lunghezza iniziale del serpente (pivot = fisico)
     r_ball = CELL_SIZE // 2 - 1
 
     # Quanti step per frame (velocità animazione)
@@ -184,20 +186,19 @@ def generate_gif(contributions: list[list[int]],
 
         # Clona base
         frame = base_img.copy()
-        draw  = ImageDraw.Draw(frame)
+        draw = ImageDraw.Draw(frame)
 
         # Disegna i palloni sulle celle già mangiate
-        for (ec, er) in eaten:
+        for ec, er in eaten:
             cx, cy = cell_center(ec, er)
             draw_basketball(draw, cx, cy, r_ball)
 
         # Corpo del serpente (ultime N posizioni nel path)
-        snake_positions = path[max(0, i - snake_length + 1): i + 1]
-        for j, (sc, sr) in enumerate(snake_positions[:-1]):
+        snake_positions = path[max(0, i - snake_length + 1) : i + 1]
+        for _j, (sc, sr) in enumerate(snake_positions[:-1]):
             cx, cy = cell_center(sc, sr)
             body_r = max(2, r_ball - 1)
-            draw.ellipse([cx - body_r, cy - body_r, cx + body_r, cy + body_r],
-                         fill=SNAKE_BODY_COLOR)
+            draw.ellipse([cx - body_r, cy - body_r, cx + body_r, cy + body_r], fill=SNAKE_BODY_COLOR)
 
         # Testa
         hcx, hcy = cell_center(col, row)
@@ -207,8 +208,8 @@ def generate_gif(contributions: list[list[int]],
 
     # Frame finale: tutti i palloni, niente serpente
     final = base_img.copy()
-    draw  = ImageDraw.Draw(final)
-    for (ec, er) in [(p[0], p[1]) for p in path]:
+    draw = ImageDraw.Draw(final)
+    for ec, er in [(p[0], p[1]) for p in path]:
         cx, cy = cell_center(ec, er)
         draw_basketball(draw, cx, cy, r_ball)
 
@@ -225,20 +226,22 @@ def generate_gif(contributions: list[list[int]],
         save_all=True,
         append_images=frames[1:],
         loop=0,
-        duration=80,   # ms per frame
+        duration=80,  # ms per frame
         optimize=True,
     )
     print(f"GIF salvata: {output_path} ({len(frames)} frames)")
+
 
 # ---------------------------------------------------------------------------
 # Dati demo (quando non si ha il token)
 # ---------------------------------------------------------------------------
 
+
 def generate_demo_data():
     """Simula un anno di contributi realistici per AndreaBonn."""
-    random.seed(42)   # seed fisso = riproducibile
+    random.seed(42)  # seed fisso = riproducibile
     contributions = []
-    month_labels  = []
+    month_labels = []
 
     today = datetime.today()
     start = today - timedelta(weeks=52)
@@ -272,6 +275,7 @@ def generate_demo_data():
 
     return contributions, month_labels
 
+
 # ---------------------------------------------------------------------------
 # Fetch dati reali da GitHub GraphQL API
 # ---------------------------------------------------------------------------
@@ -295,15 +299,16 @@ query($login: String!) {
 }
 """
 
+
 def fetch_github_data(token: str):
     if requests is None:
         print("Installa requests: pip install requests")
         sys.exit(1)
 
     headers = {"Authorization": f"bearer {token}"}
-    resp = requests.post(GITHUB_GRAPHQL,
-                         json={"query": QUERY, "variables": {"login": USERNAME}},
-                         headers=headers, timeout=15)
+    resp = requests.post(
+        GITHUB_GRAPHQL, json={"query": QUERY, "variables": {"login": USERNAME}}, headers=headers, timeout=15
+    )
     resp.raise_for_status()
     data = resp.json()
 
@@ -313,9 +318,9 @@ def fetch_github_data(token: str):
 
     weeks = data["data"]["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]
 
-    contributions  = []
-    month_labels   = []
-    current_month  = None
+    contributions = []
+    month_labels = []
+    current_month = None
 
     for c, week in enumerate(weeks[-52:]):  # ultime 52 settimane
         week_data = []
@@ -348,14 +353,16 @@ def fetch_github_data(token: str):
 
     return contributions, month_labels
 
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main():
     parser = argparse.ArgumentParser(description="Snake Basket — GitHub contribution animator")
     parser.add_argument("--token", help="GitHub Personal Access Token (read:user)")
-    parser.add_argument("--demo",  action="store_true", help="Usa dati demo senza token")
+    parser.add_argument("--demo", action="store_true", help="Usa dati demo senza token")
     parser.add_argument("--output", default="snake_basket.gif", help="Nome file output")
     args = parser.parse_args()
 
@@ -374,9 +381,10 @@ def main():
     print(f"Celle vuote trovate: {total_cells}")
 
     generate_gif(contributions, month_labels, args.output)
-    print(f"\nPer usarla nel README:\n")
+    print("\nPer usarla nel README:\n")
     print(f"![Snake Basket](./{args.output})")
-    print(f"\nOppure con GitHub Actions: vedi README per il workflow automatico.")
+    print("\nOppure con GitHub Actions: vedi README per il workflow automatico.")
+
 
 if __name__ == "__main__":
     main()

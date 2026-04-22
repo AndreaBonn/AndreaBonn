@@ -10,51 +10,56 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: update-profile
+  cancel-in-progress: true
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Get day of week
         id: day
         run: echo "dow=$(date +%u)" >> "$GITHUB_OUTPUT"
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5.3.0
         with:
-          python-version: "3.12"
+          enable-cache: true
 
       - name: Install dependencies
-        run: pip install Pillow requests
+        run: uv sync --frozen
 
       - name: Snake Basket (Monday or manual)
         if: steps.day.outputs.dow == '1' || (github.event_name == 'workflow_dispatch' && inputs.force_snake == true)
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
-        run: python scripts/snake_basket.py --token "$SNAKE_TOKEN" --output assets/snake_basket.gif
+        run: uv run python scripts/snake_basket.py --output assets/snake_basket.gif
         continue-on-error: true
 
       - name: Quote of the day
-        run: python scripts/quote_basket.py
+        run: uv run python scripts/quote_basket.py
 
       - name: Today in NBA history
-        run: python scripts/nba_today.py
+        run: uv run python scripts/nba_today.py
 
       - name: Tamagotchi and last commit
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
-        run: python scripts/tamagotchi.py --token "$SNAKE_TOKEN"
+        run: uv run python scripts/tamagotchi.py
         continue-on-error: true
 
       - name: Commit updated assets
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/
           git diff --cached --quiet || git commit -m "chore: update profile $(date +'%Y-%m-%d')"
           git push

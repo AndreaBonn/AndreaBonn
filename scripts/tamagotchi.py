@@ -11,19 +11,26 @@ Usage: python tamagotchi.py --token <TOKEN>
 
 import argparse
 import json
+import logging
 import os
+import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 try:
     import requests
 except ImportError:
-    requests = None
+    requests = None  # type: ignore[assignment]
 
-USERNAME = "AndreaBonn"
-GITHUB_API = "https://api.github.com"
-KOMAREV_URL = "https://komarev.com/ghpvc/"
+from common.config import ASSETS_DIR, GITHUB_API, USERNAME
+from common.svg import wrap_text
+
+KOMAREV_URL: str = "https://komarev.com/ghpvc/"
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Fetch visitor count da komarev badge SVG (tracciato dal pixel nel README)
@@ -47,7 +54,6 @@ def _fetch_komarev_count() -> int:
     if requests is None:
         return 0
     try:
-        import re
         resp = requests.get(
             KOMAREV_URL,
             params={"username": USERNAME, "style": "flat", "label": "views"},
@@ -57,8 +63,8 @@ def _fetch_komarev_count() -> int:
         numbers = re.findall(r">(\d[\d,.]*)<", resp.text)
         if numbers:
             return int(numbers[-1].replace(",", "").replace(".", ""))
-    except Exception:
-        pass
+    except (requests.RequestException, ValueError) as exc:
+        logger.warning("komarev fetch failed: %s", exc)
     return 0
 
 
@@ -73,17 +79,20 @@ def fetch_visitor_count() -> tuple[int, int]:
     _save_visitors_data(data)
     return current, data["total"]
 
+
 # ---------------------------------------------------------------------------
 # Fetch giorni dall'ultimo commit (eventi pubblici)
 # ---------------------------------------------------------------------------
+
 
 def fetch_days_since_last_commit(token: str) -> int:
     if requests is None:
         return 0
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
     # Cerca negli eventi pubblici i PushEvent
-    resp = requests.get(f"{GITHUB_API}/users/{USERNAME}/events/public",
-                        headers=headers, params={"per_page": 100}, timeout=15)
+    resp = requests.get(
+        f"{GITHUB_API}/users/{USERNAME}/events/public", headers=headers, params={"per_page": 100}, timeout=15
+    )
     resp.raise_for_status()
     events = resp.json()
     for event in events:
@@ -91,34 +100,31 @@ def fetch_days_since_last_commit(token: str) -> int:
             created = event.get("created_at", "")
             if created:
                 dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
-                delta = datetime.now(timezone.utc) - dt
+                delta = datetime.now(UTC) - dt
                 return delta.days
     return 99  # nessun push trovato recentemente
+
 
 # ---------------------------------------------------------------------------
 # SVG: giorni dall'ultimo commit
 # ---------------------------------------------------------------------------
 
+
 def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
     if days == 0:
         color = "#3fb950"
-        label = "fresh commit!"
         quarter = "Q4"
     elif days <= 2:
         color = "#3fb950"
-        label = f"{days}{'d' if days == 1 else 'd'} ago — great pace"
         quarter = "Q3"
     elif days <= 5:
         color = "#e6861a"
-        label = f"{days}d ago — warming up?"
         quarter = "Q2"
     elif days <= 14:
         color = "#f85149"
-        label = f"{days}d ago — get back on the court!"
         quarter = "Q1"
     else:
         color = "#8b949e"
-        label = f"{days}d ago — the coach is looking for you"
         quarter = "OT"
 
     bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
@@ -163,11 +169,12 @@ def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
 
   <!-- barra progressione commit -->
   <rect x="24" y="112" width="832" height="6" rx="3" fill="#21262d"/>
-  <rect x="24" y="112" width="{bar_pct*8.32:.0f}" height="6" rx="3" fill="{color}"/>
+  <rect x="24" y="112" width="{bar_pct * 8.32:.0f}" height="6" rx="3" fill="{color}"/>
 
   <!-- total visits -->
   <text x="440" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#8b949e">Total views: {total_str}</text>
 </svg>'''
+
 
 # ---------------------------------------------------------------------------
 # SVG: Tamagotchi
@@ -179,7 +186,7 @@ STATES = {
         "color": "#3fb950",
         "border": "#3fb950",
         "msg": "i'm happy! keep committing!",
-        "face": '''
+        "face": """
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#3fb950" stroke-width="2"/>
           <circle cx="183" cy="110" r="6" fill="#3fb950"/>
           <circle cx="217" cy="110" r="6" fill="#3fb950"/>
@@ -189,15 +196,15 @@ STATES = {
           <!-- stelle felici -->
           <text x="140" y="80" font-size="16">✨</text>
           <text x="248" y="80" font-size="16">✨</text>
-        ''',
-        "status": "ON FIRE"
+        """,
+        "status": "ON FIRE",
     },
     "good": {
         "days": (3, 5),
         "color": "#e6861a",
         "border": "#e6861a",
         "msg": "c'mon, one commit won't hurt...",
-        "face": '''
+        "face": """
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#e6861a" stroke-width="2"/>
           <circle cx="183" cy="110" r="6" fill="#e6861a"/>
           <circle cx="217" cy="110" r="6" fill="#e6861a"/>
@@ -206,15 +213,15 @@ STATES = {
           <circle cx="217" cy="108" r="2" fill="#161b22"/>
           <!-- punto interrogativo -->
           <text x="248" y="85" font-size="20">🤔</text>
-        ''',
-        "status": "ON BREAK"
+        """,
+        "status": "ON BREAK",
     },
     "tired": {
         "days": (6, 13),
         "color": "#f85149",
         "border": "#f85149",
         "msg": "i'm not okay... where did you go?",
-        "face": '''
+        "face": """
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#f85149" stroke-width="2"/>
           <!-- occhi a X -->
           <line x1="177" y1="104" x2="189" y2="116" stroke="#f85149" stroke-width="3"/>
@@ -226,15 +233,15 @@ STATES = {
           <ellipse cx="183" cy="124" rx="3" ry="5" fill="#388bfd" opacity="0.7"/>
           <ellipse cx="217" cy="124" rx="3" ry="5" fill="#388bfd" opacity="0.7"/>
           <text x="140" y="85" font-size="16">💔</text>
-        ''',
-        "status": "TIRED"
+        """,
+        "status": "TIRED",
     },
     "dead": {
         "days": (14, 9999),
         "color": "#484f58",
         "border": "#484f58",
         "msg": "i'm dead. the coach called. nobody answered.",
-        "face": '''
+        "face": """
           <circle cx="200" cy="120" r="60" fill="#0d1117" stroke="#484f58" stroke-width="2"/>
           <!-- occhi a X grandi -->
           <line x1="174" y1="101" x2="192" y2="119" stroke="#484f58" stroke-width="4"/>
@@ -246,10 +253,11 @@ STATES = {
           <text x="160" y="85" font-size="22">🪦</text>
           <!-- spiritello -->
           <text x="248" y="78" font-size="20">👻</text>
-        ''',
-        "status": "RIP"
+        """,
+        "status": "RIP",
     },
 }
+
 
 def get_state(days: int) -> dict:
     for state in STATES.values():
@@ -258,23 +266,17 @@ def get_state(days: int) -> dict:
             return state
     return STATES["dead"]
 
-def wrap_msg(text, max_chars=52):
-    words = text.split()
-    lines, line = [], ""
-    for w in words:
-        if len(line) + len(w) + 1 <= max_chars:
-            line += ("" if not line else " ") + w
-        else:
-            lines.append(line); line = w
-    if line: lines.append(line)
-    return lines
+
+def wrap_msg(text: str, max_chars: int = 52) -> list[str]:
+    return wrap_text(text, max_chars=max_chars)
+
 
 def make_tamagotchi_svg(days: int) -> str:
     state = get_state(days)
     msg_lines = wrap_msg(state["msg"])
     msg_svg = ""
-    for i, l in enumerate(msg_lines):
-        msg_svg += f'<text x="340" y="{230 + i*22}" font-family="monospace" font-size="13" fill="{state["color"]}" text-anchor="middle" font-style="italic">{l}</text>\n'
+    for i, line in enumerate(msg_lines):
+        msg_svg += f'<text x="340" y="{230 + i * 22}" font-family="monospace" font-size="13" fill="{state["color"]}" text-anchor="middle" font-style="italic">{line}</text>\n'
 
     return f'''<svg width="680" height="300" xmlns="http://www.w3.org/2000/svg">
   <rect width="680" height="300" rx="12" fill="#161b22"/>
@@ -317,9 +319,11 @@ def make_tamagotchi_svg(days: int) -> str:
   <text x="656" y="291" font-family="monospace" font-size="10" fill="#484f58" text-anchor="end">commit to keep me alive</text>
 </svg>'''
 
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -345,17 +349,17 @@ def main():
     state = get_state(days)
     print(f"Tamagotchi status: {state['status']}")
 
-    base = Path(__file__).parent.parent / "assets"
-    base.mkdir(exist_ok=True)
+    ASSETS_DIR.mkdir(exist_ok=True)
 
-    (base / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
-    (base / "last_commit.svg").write_text(
+    (ASSETS_DIR / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
+    (ASSETS_DIR / "last_commit.svg").write_text(
         make_last_commit_svg(days, visitors=visitors, total_visitors=total_visitors),
         encoding="utf-8",
     )
 
     print("tamagotchi.svg generato")
     print("last_commit.svg generato")
+
 
 if __name__ == "__main__":
     main()

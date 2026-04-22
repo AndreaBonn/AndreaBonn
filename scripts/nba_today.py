@@ -5,10 +5,16 @@ Output: assets/nba_today.svg
 """
 
 import random
-from datetime import datetime, timezone
+import sys
+from datetime import UTC, datetime
 from pathlib import Path
 
-NBA_HISTORY = {
+sys.path.insert(0, str(Path(__file__).parent))
+
+from common.config import ASSETS_DIR
+from common.svg import escape_svg, wrap_text
+
+NBA_HISTORY: dict[tuple[int, int], list[dict[str, str]]] = {
     (1, 1):  [{"text": "In 1970 the NBA All-Star Game reaches its 20th edition.", "icon": "🌟"}],
     (1, 7):  [{"text": "In 1972 the Lakers win their 33rd consecutive game, an NBA record that still stands.", "icon": "🔥"}],
     (1, 13): [{"text": "In 1990 Michael Jordan scores 61 points against Cleveland.", "icon": "💥"}],
@@ -43,8 +49,11 @@ NBA_HISTORY = {
     (12, 25):[{"text": "Every year on Christmas Day the NBA showcases the most anticipated games of the season.", "icon": "🎄"}],
 }
 
-def get_today_event():
-    today = datetime.now(timezone.utc)
+LINE_H: int = 28
+SVG_W: int = 680
+
+
+def get_today_event(today: datetime) -> dict[str, str]:
     key = (today.month, today.day)
     if key in NBA_HISTORY:
         return random.choice(NBA_HISTORY[key])
@@ -52,43 +61,35 @@ def get_today_event():
     all_events = [e for events in NBA_HISTORY.values() for e in events]
     return random.choice(all_events)
 
-def wrap_text(text, max_chars=45):
-    words = text.split()
-    lines, line = [], ""
-    for word in words:
-        if len(line) + len(word) + 1 <= max_chars:
-            line += ("" if not line else " ") + word
-        else:
-            lines.append(line)
-            line = word
-    if line:
-        lines.append(line)
-    return lines
 
-today = datetime.now(timezone.utc)
-event = get_today_event()
-lines = wrap_text(event["text"])
-LINE_H = 28
-SVG_H = max(140, len(lines) * LINE_H + 130)
-SVG_W = 680
-
-def svg_lines(lines, start_y):
+def svg_lines(lines: list[str], start_y: int) -> str:
     out = ""
-    for i, l in enumerate(lines):
-        out += f'<text x="340" y="{start_y + i*LINE_H}" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">{l}</text>\n'
+    for i, line in enumerate(lines):
+        out += (
+            f'<text x="340" y="{start_y + i * LINE_H}" font-family="monospace" '
+            f'font-size="18" fill="#e6edf3" text-anchor="middle">'
+            f'{escape_svg(line)}</text>\n'
+        )
     return out
 
-svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="{SVG_W}" height="{SVG_H}" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="{SVG_W-2}" height="{SVG_H-2}" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
+
+def generate_svg(event: dict[str, str], today: datetime) -> str:
+    lines = wrap_text(event["text"])
+    svg_h = max(140, len(lines) * LINE_H + 130)
+    icon = event["icon"]
+    date_label = today.strftime("%B %d").upper()
+
+    return f'''<svg width="{SVG_W}" height="{svg_h}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="{SVG_W}" height="{svg_h}" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="{SVG_W-2}" height="{svg_h-2}" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
 
   <!-- event icon -->
   <rect x="16" y="16" width="52" height="52" rx="10" fill="#1c2128"/>
-  <text x="42" y="50" font-size="26" text-anchor="middle">{event["icon"]}</text>
+  <text x="42" y="50" font-size="26" text-anchor="middle">{icon}</text>
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">TODAY IN NBA HISTORY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">{today.strftime("%B %d").upper()}</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">{date_label}</text>
 
   <!-- separator -->
   <line x1="24" y1="74" x2="{SVG_W-24}" y2="74" stroke="#30363d" stroke-width="1"/>
@@ -97,10 +98,21 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   {svg_lines(lines, 100)}
 
   <!-- footer -->
-  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">@AndreaBonn • NBA history</text>
+  <text x="{SVG_W-24}" y="{svg_h-12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">@AndreaBonn • NBA history</text>
 </svg>'''
 
-out = Path(__file__).parent.parent / "assets" / "nba_today.svg"
-out.parent.mkdir(exist_ok=True)
-out.write_text(svg, encoding="utf-8")
-print(f"nba_today.svg generated — {event['icon']} {event['text'][:40]}...")
+
+def main() -> None:
+    today = datetime.now(UTC)
+    event = get_today_event(today)
+
+    svg = generate_svg(event, today)
+
+    out = ASSETS_DIR / "nba_today.svg"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(svg, encoding="utf-8")
+    print(f"nba_today.svg generated — {event['icon']} {event['text'][:40]}...")
+
+
+if __name__ == "__main__":
+    main()

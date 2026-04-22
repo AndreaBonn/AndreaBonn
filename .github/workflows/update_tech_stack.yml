@@ -9,30 +9,38 @@ on:
     - cron: "0 2 * * 0"  # Sunday 02:00 UTC
   workflow_dispatch:
 
+concurrency:
+  group: update-tech-stack
+  cancel-in-progress: true
+
 jobs:
   update-tech-stack:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5.3.0
         with:
-          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen
 
       - name: Generate Tech Stack SVG
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
-        run: python scripts/tech_stack.py --token "$SNAKE_TOKEN"
+        run: uv run python scripts/tech_stack.py
 
       - name: Commit if changed
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/tech_stack.svg
           git diff --cached --quiet || git commit -m "chore: update tech stack $(date +'%Y-%m-%d')"
           git push

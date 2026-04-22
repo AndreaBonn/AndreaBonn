@@ -5,10 +5,16 @@ Output: assets/quote.svg
 """
 
 import random
-from datetime import datetime, timezone
+import sys
+from datetime import UTC, datetime
 from pathlib import Path
 
-QUOTES = [
+sys.path.insert(0, str(Path(__file__).parent))
+
+from common.config import ASSETS_DIR
+from common.svg import escape_svg, wrap_text
+
+QUOTES: list[dict[str, str]] = [
     {"text": "I've missed more than 9,000 shots in my career. I've lost almost 300 games. I've failed over and over again. And that is why I succeed.", "author": "Michael Jordan"},
     {"text": "The most important thing is to try and inspire people so that they can be great in whatever they want to do.", "author": "Kobe Bryant"},
     {"text": "You can't win without talent, but you can't win on talent alone.", "author": "Larry Bird"},
@@ -47,38 +53,38 @@ QUOTES = [
     {"text": "The game is won at practice.", "author": "Coach John Wooden"},
 ]
 
-TODAY = datetime.now(timezone.utc)
-random.seed(TODAY.timetuple().tm_yday + TODAY.year * 365)
-q = random.choice(QUOTES)
+LINE_H: int = 28
+SVG_W: int = 680
 
-def wrap_text(text, max_chars=45):
-    words = text.split()
-    lines, line = [], ""
-    for word in words:
-        if len(line) + len(word) + 1 <= max_chars:
-            line += ("" if not line else " ") + word
-        else:
-            lines.append(line)
-            line = word
-    if line:
-        lines.append(line)
-    return lines
 
-lines = wrap_text(q["text"])
-LINE_H = 28
-TEXT_H = len(lines) * LINE_H
-SVG_H = TEXT_H + 130
-SVG_W = 680
+def pick_daily_quote() -> dict[str, str]:
+    today = datetime.now(UTC)
+    random.seed(today.timetuple().tm_yday + today.year * 365)
+    return random.choice(QUOTES)
 
-def svg_lines(lines, start_y):
+
+def svg_lines(lines: list[str], start_y: int) -> str:
     out = ""
-    for i, l in enumerate(lines):
-        out += f'<text x="340" y="{start_y + i * LINE_H}" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">{l}</text>\n'
+    for i, line in enumerate(lines):
+        out += (
+            f'<text x="340" y="{start_y + i * LINE_H}" font-family="monospace" '
+            f'font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">'
+            f'{escape_svg(line)}</text>\n'
+        )
     return out
 
-svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="{SVG_W}" height="{SVG_H}" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="{SVG_W-2}" height="{SVG_H-2}" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+
+def generate_svg(quote: dict[str, str], today: datetime) -> str:
+    lines = wrap_text(quote["text"])
+    text_h = len(lines) * LINE_H
+    svg_h = text_h + 130
+
+    author = escape_svg(quote["author"])
+    date_str = today.strftime("%d %b %Y")
+
+    return f'''<svg width="{SVG_W}" height="{svg_h}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="{SVG_W}" height="{svg_h}" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="{SVG_W-2}" height="{svg_h-2}" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
 
   <!-- pallone decorativo -->
   <circle cx="44" cy="44" r="26" fill="#e6861a"/>
@@ -90,7 +96,7 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">🏀 @AndreaBonn</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">&#x1F3C0; @AndreaBonn</text>
 
   <!-- separatore -->
   <line x1="24" y1="74" x2="{SVG_W-24}" y2="74" stroke="#30363d" stroke-width="1"/>
@@ -99,11 +105,22 @@ svg = f'''<svg width="{SVG_W}" height="{SVG_H}" xmlns="http://www.w3.org/2000/sv
   {svg_lines(lines, 100)}
 
   <!-- autore -->
-  <text x="{SVG_W-24}" y="{SVG_H-32}" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— {q["author"]}</text>
-  <text x="{SVG_W-24}" y="{SVG_H-12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">{TODAY.strftime("%d %b %Y")}</text>
+  <text x="{SVG_W-24}" y="{svg_h-32}" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— {author}</text>
+  <text x="{SVG_W-24}" y="{svg_h-12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">{date_str}</text>
 </svg>'''
 
-out = Path(__file__).parent.parent / "assets" / "quote.svg"
-out.parent.mkdir(exist_ok=True)
-out.write_text(svg, encoding="utf-8")
-print(f"quote.svg generato — {q['author']}")
+
+def main() -> None:
+    today = datetime.now(UTC)
+    quote = pick_daily_quote()
+
+    svg = generate_svg(quote, today)
+
+    out = ASSETS_DIR / "quote.svg"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(svg, encoding="utf-8")
+    print(f"quote.svg generato — {quote['author']}")
+
+
+if __name__ == "__main__":
+    main()

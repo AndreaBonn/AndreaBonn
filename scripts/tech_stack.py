@@ -9,16 +9,17 @@ Usage: python tech_stack.py --token <GITHUB_TOKEN>
 
 import argparse
 import json
-import math
 import os
 import re
 import sys
-import urllib.request
 import urllib.error
+import urllib.request
 from pathlib import Path
 
-USERNAME = "AndreaBonn"
-GITHUB_API = "https://api.github.com"
+sys.path.insert(0, str(Path(__file__).parent))
+
+from common.config import ASSETS_DIR, GITHUB_API, USERNAME
+from common.svg import escape_svg
 
 # ---------------------------------------------------------------------------
 # Mapping: package name → (display name, category)
@@ -180,12 +181,16 @@ CATEGORIES = {
 # Fetch from GitHub API (stdlib only)
 # ---------------------------------------------------------------------------
 
+
 def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") -> bytes | None:
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"token {token}",
-        "Accept": accept,
-        "User-Agent": "tech-stack-generator",
-    })
+    req = urllib.request.Request(
+        url,
+        headers={
+            "Authorization": f"token {token}",
+            "Accept": accept,
+            "User-Agent": "tech-stack-generator",
+        },
+    )
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             return resp.read()
@@ -234,6 +239,7 @@ def check_file_exists(token: str, repo_name: str, path: str) -> bool:
 # ---------------------------------------------------------------------------
 # Parsing dipendenze
 # ---------------------------------------------------------------------------
+
 
 def parse_package_json(content: str) -> list[str]:
     try:
@@ -289,6 +295,7 @@ def parse_pyproject_toml(content: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Scan completo
 # ---------------------------------------------------------------------------
+
 
 def scan_repos(token: str) -> dict[str, dict[str, int]]:
     """Returns {category: {display_name: count}}."""
@@ -361,6 +368,7 @@ def scan_repos(token: str) -> dict[str, dict[str, int]]:
 # SVG generation — word cloud a pill
 # ---------------------------------------------------------------------------
 
+
 def measure_text(text: str, font_size: int) -> int:
     """Stima larghezza testo monospace."""
     return int(len(text) * font_size * 0.62) + 16
@@ -424,12 +432,14 @@ def generate_svg(data: dict[str, dict[str, int]]) -> str:
         y_cursor += len(rows) * (PILL_H + PILL_GAP)
         y_cursor += SECTION_GAP
 
-        sections.append({
-            "cat": cat_key,
-            "info": cat_info,
-            "rows": rows,
-            "y": section_y,
-        })
+        sections.append(
+            {
+                "cat": cat_key,
+                "info": cat_info,
+                "rows": rows,
+                "y": section_y,
+            }
+        )
 
     SVG_H = y_cursor + 10
 
@@ -437,14 +447,14 @@ def generate_svg(data: dict[str, dict[str, int]]) -> str:
     svg_parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {SVG_W} {SVG_H}" width="100%">',
         f'  <rect width="{SVG_W}" height="{SVG_H}" rx="10" fill="#0d1117"/>',
-        f'  <rect x="1" y="1" width="{SVG_W-2}" height="{SVG_H-2}" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>',
+        f'  <rect x="1" y="1" width="{SVG_W - 2}" height="{SVG_H - 2}" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>',
         # Top bar
-        f'  <rect x="1" y="1" width="{SVG_W-2}" height="26" rx="9" fill="#1c2128"/>',
-        f'  <rect x="1" y="18" width="{SVG_W-2}" height="9" fill="#1c2128"/>',
-        f'  <line x1="1" y1="27" x2="{SVG_W-1}" y2="27" stroke="#30363d" stroke-width="1"/>',
-        f'  <circle cx="16" cy="14" r="3" fill="#e6861a" opacity="0.8"/>',
-        f'  <circle cx="{SVG_W-16}" cy="14" r="3" fill="#e6861a" opacity="0.8"/>',
-        f'  <text x="{SVG_W//2}" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>',
+        f'  <rect x="1" y="1" width="{SVG_W - 2}" height="26" rx="9" fill="#1c2128"/>',
+        f'  <rect x="1" y="18" width="{SVG_W - 2}" height="9" fill="#1c2128"/>',
+        f'  <line x1="1" y1="27" x2="{SVG_W - 1}" y2="27" stroke="#30363d" stroke-width="1"/>',
+        '  <circle cx="16" cy="14" r="3" fill="#e6861a" opacity="0.8"/>',
+        f'  <circle cx="{SVG_W - 16}" cy="14" r="3" fill="#e6861a" opacity="0.8"/>',
+        f'  <text x="{SVG_W // 2}" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>',
     ]
 
     for section in sections:
@@ -471,7 +481,7 @@ def generate_svg(data: dict[str, dict[str, int]]) -> str:
             total_row_w = sum(pw for _, _, _, pw in row) + PILL_GAP * (len(row) - 1)
             x = (SVG_W - total_row_w) // 2
 
-            for name, count, font_size, pill_w in row:
+            for name, _count, font_size, pill_w in row:
                 # Pill background
                 svg_parts.append(
                     f'  <rect x="{x}" y="{pill_y}" width="{pill_w}" '
@@ -485,7 +495,7 @@ def generate_svg(data: dict[str, dict[str, int]]) -> str:
                     f'text-anchor="middle" font-family="monospace" '
                     f'font-size="{font_size}" fill="{info["color"]}" '
                     f'font-weight="{"bold" if font_size >= 14 else "normal"}">'
-                    f'{name}</text>'
+                    f"{escape_svg(name)}</text>"
                 )
                 x += pill_w + PILL_GAP
 
@@ -501,23 +511,45 @@ def generate_svg(data: dict[str, dict[str, int]]) -> str:
 
 DEMO_DATA = {
     "linguaggio": {
-        "Python": 500000, "JavaScript": 200000, "TypeScript": 150000,
-        "Shell": 30000, "SQL": 20000, "HTML": 80000, "CSS": 60000,
+        "Python": 500000,
+        "JavaScript": 200000,
+        "TypeScript": 150000,
+        "Shell": 30000,
+        "SQL": 20000,
+        "HTML": 80000,
+        "CSS": 60000,
     },
     "framework": {
-        "React": 5, "FastAPI": 3, "Firebase": 3, "Pydantic": 2,
-        "Telegram Bot API": 2, "Tailwind CSS": 1, "Vite": 1,
+        "React": 5,
+        "FastAPI": 3,
+        "Firebase": 3,
+        "Pydantic": 2,
+        "Telegram Bot API": 2,
+        "Tailwind CSS": 1,
+        "Vite": 1,
     },
     "ai_ml": {
-        "YOLO": 2, "Scikit-learn": 3, "Pandas": 4, "Polars": 2,
-        "OpenCV": 2, "NumPy": 3, "Matplotlib": 2, "Pillow": 1,
+        "YOLO": 2,
+        "Scikit-learn": 3,
+        "Pandas": 4,
+        "Polars": 2,
+        "OpenCV": 2,
+        "NumPy": 3,
+        "Matplotlib": 2,
+        "Pillow": 1,
     },
     "database": {
-        "Firebase": 2, "SQLite": 1,
+        "Firebase": 2,
+        "SQLite": 1,
     },
     "tool": {
-        "Git": 15, "GitHub Actions": 8, "Docker": 4, "Pytest": 3,
-        "Ruff": 2, "Playwright": 1, "BeautifulSoup": 1,
+        "Git": 15,
+        "GitHub Actions": 8,
+        "Docker": 4,
+        "Pytest": 3,
+        "Ruff": 2,
+        "Playwright": 1,
+        "BeautifulSoup": 1,
     },
 }
 
@@ -525,6 +557,7 @@ DEMO_DATA = {
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -548,8 +581,8 @@ def main():
                 print(f"  {name}: {count}")
 
     svg = generate_svg(data)
-    out = Path(__file__).parent.parent / "assets" / "tech_stack.svg"
-    out.parent.mkdir(exist_ok=True)
+    ASSETS_DIR.mkdir(exist_ok=True)
+    out = ASSETS_DIR / "tech_stack.svg"
     out.write_text(svg, encoding="utf-8")
     print(f"\ntech_stack.svg generated ({len(svg)} bytes)")
 
