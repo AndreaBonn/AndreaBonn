@@ -28,9 +28,9 @@
   <path d="M440 70 Q433 84 440 98" fill="none" stroke="#e6861a" stroke-width="1"/>
 
   <!-- pannello destro (visite) -->
-  <text x="700" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">VISITE PROFILO (14GG)</text>
+  <text x="700" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">VISITE AL PROFILO</text>
   <rect x="638" y="62" width="124" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-  <text x="700" y="92" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">0</text>
+  <text x="700" y="92" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">6</text>
 
   <!-- barra progressione commit -->
   <rect x="24" y="112" width="832" height="6" rx="3" fill="#21262d"/>
