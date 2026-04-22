@@ -1,49 +1,50 @@
 <svg width="680" height="300" xmlns="http://www.w3.org/2000/svg">
   <rect width="680" height="300" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="298" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+  <rect x="1" y="1" width="678" height="298" rx="11" fill="none" stroke="#3fb950" stroke-width="1.5"/>
 
   <!-- header -->
   <text x="24" y="32" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">GITHUB TAMAGOTCHI</text>
-  <text x="24" y="52" font-family="monospace" font-size="11" fill="#e6861a">@AndreaBonn — ON BREAK</text>
+  <text x="24" y="52" font-family="monospace" font-size="11" fill="#3fb950">@AndreaBonn — ON FIRE</text>
 
   <!-- separatore -->
   <line x1="24" y1="64" x2="656" y2="64" stroke="#30363d" stroke-width="1"/>
 
   <!-- schermo tamagotchi -->
-  <rect x="120" y="74" width="160" height="160" rx="16" fill="#0d1117" stroke="#e6861a" stroke-width="1.5"/>
+  <rect x="120" y="74" width="160" height="160" rx="16" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
 
   <!-- personaggio -->
   <g transform="translate(-80, 0)">
     
-          <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#e6861a" stroke-width="2"/>
-          <circle cx="183" cy="110" r="6" fill="#e6861a"/>
-          <circle cx="217" cy="110" r="6" fill="#e6861a"/>
-          <line x1="183" y1="135" x2="217" y2="135" stroke="#e6861a" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#3fb950" stroke-width="2"/>
+          <circle cx="183" cy="110" r="6" fill="#3fb950"/>
+          <circle cx="217" cy="110" r="6" fill="#3fb950"/>
+          <path d="M183 130 Q200 148 217 130" fill="none" stroke="#3fb950" stroke-width="3" stroke-linecap="round"/>
           <circle cx="183" cy="108" r="2" fill="#161b22"/>
           <circle cx="217" cy="108" r="2" fill="#161b22"/>
-          <!-- punto interrogativo -->
-          <text x="248" y="85" font-size="20">🤔</text>
+          <!-- stelle felici -->
+          <text x="140" y="80" font-size="16">✨</text>
+          <text x="248" y="80" font-size="16">✨</text>
         
   </g>
 
   <!-- giorni badge -->
-  <rect x="300" y="80" width="120" height="40" rx="8" fill="#1c2128" stroke="#e6861a" stroke-width="1"/>
+  <rect x="300" y="80" width="120" height="40" rx="8" fill="#1c2128" stroke="#3fb950" stroke-width="1"/>
   <text x="360" y="97" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">days without commit</text>
-  <text x="360" y="114" font-family="monospace" font-size="22" fill="#e6861a" text-anchor="middle" font-weight="bold">3</text>
+  <text x="360" y="114" font-family="monospace" font-size="22" fill="#3fb950" text-anchor="middle" font-weight="bold">0</text>
 
   <!-- barra vitale -->
   <text x="300" y="144" font-family="monospace" font-size="10" fill="#8b949e">health</text>
   <rect x="300" y="150" width="340" height="8" rx="4" fill="#21262d"/>
-  <rect x="300" y="150" width="274" height="8" rx="4" fill="#e6861a"/>
+  <rect x="300" y="150" width="340" height="8" rx="4" fill="#3fb950"/>
 
   <!-- messaggio -->
-  <text x="340" y="230" font-family="monospace" font-size="13" fill="#e6861a" text-anchor="middle" font-style="italic">c'mon, one commit won't hurt...</text>
+  <text x="340" y="230" font-family="monospace" font-size="13" fill="#3fb950" text-anchor="middle" font-style="italic">i'm happy! keep committing!</text>
 
 
   <!-- pulsanti stile tamagotchi -->
-  <circle cx="300" cy="278" r="8" fill="#21262d" stroke="#e6861a" stroke-width="1"/>
-  <circle cx="340" cy="278" r="8" fill="#21262d" stroke="#e6861a" stroke-width="1"/>
-  <circle cx="380" cy="278" r="8" fill="#21262d" stroke="#e6861a" stroke-width="1"/>
+  <circle cx="300" cy="278" r="8" fill="#21262d" stroke="#3fb950" stroke-width="1"/>
+  <circle cx="340" cy="278" r="8" fill="#21262d" stroke="#3fb950" stroke-width="1"/>
+  <circle cx="380" cy="278" r="8" fill="#21262d" stroke="#3fb950" stroke-width="1"/>
 
   <!-- footer -->
   <text x="656" y="291" font-family="monospace" font-size="10" fill="#484f58" text-anchor="end">commit to keep me alive</text>
