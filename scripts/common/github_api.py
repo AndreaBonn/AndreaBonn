@@ -1,5 +1,7 @@
 import json
 import logging
+import re
+import ssl
 import urllib.error
 import urllib.request
 from urllib.parse import urlparse
@@ -10,6 +12,13 @@ logger = logging.getLogger(__name__)
 
 _ALLOWED_HOSTS = {"api.github.com"}
 _ALLOWED_SCHEMES = {"https"}
+_SAFE_PATH_RE = re.compile(r"^[a-zA-Z0-9_./-]+$")
+
+
+def _sanitize_path_component(value: str, label: str) -> str:
+    if not _SAFE_PATH_RE.match(value) or ".." in value:
+        raise ValueError(f"Invalid {label}: {value!r}")
+    return value
 
 
 def _validate_url(url: str) -> None:
@@ -22,7 +31,7 @@ def _validate_url(url: str) -> None:
 
 def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") -> bytes | None:
     _validate_url(url)
-    req = urllib.request.Request(
+    req = urllib.request.Request(  # noqa: S310  # nosec B310
         url,
         headers={
             "Authorization": f"token {token}",
@@ -31,7 +40,7 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:  # nosec B310
+        with urllib.request.urlopen(req, timeout=15) as resp:  # noqa: S310  # nosec B310
             return resp.read()
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
@@ -51,7 +60,10 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
             logger.warning("GitHub API HTTP %d for %s: %s — body: %s", exc.code, url, exc, body)
         return None
     except urllib.error.URLError as exc:
-        logger.warning("Network error fetching %s: %s", url, exc)
+        if isinstance(exc.reason, ssl.SSLError):
+            logger.error("SSL error fetching %s: %s — check certificates", url, exc)
+        else:
+            logger.warning("Network error fetching %s: %s", url, exc)
         return None
 
 
@@ -62,6 +74,12 @@ def fetch_repos(token: str) -> list[dict]:
         url = f"{GITHUB_API}/users/{USERNAME}/repos?per_page=100&page={page}&type=public"
         data = _api_get(url, token)
         if data is None:
+            if repos:
+                logger.warning(
+                    "fetch_repos: failed at page %d — returning partial data (%d repos so far)",
+                    page,
+                    len(repos),
+                )
             break
         try:
             batch = json.loads(data)
@@ -81,6 +99,7 @@ def fetch_repos(token: str) -> list[dict]:
 
 
 def fetch_languages(token: str, repo_name: str) -> dict[str, int]:
+    _sanitize_path_component(repo_name, "repo_name")
     data = _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/languages", token)
     if data is None:
         return {}
@@ -92,6 +111,8 @@ def fetch_languages(token: str, repo_name: str) -> dict[str, int]:
 
 
 def fetch_file(token: str, repo_name: str, path: str) -> str | None:
+    _sanitize_path_component(repo_name, "repo_name")
+    _sanitize_path_component(path, "path")
     data = _api_get(
         f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}",
         token,
@@ -107,4 +128,6 @@ def fetch_file(token: str, repo_name: str, path: str) -> str | None:
 
 
 def check_file_exists(token: str, repo_name: str, path: str) -> bool:
+    _sanitize_path_component(repo_name, "repo_name")
+    _sanitize_path_component(path, "path")
     return _api_get(f"{GITHUB_API}/repos/{USERNAME}/{repo_name}/contents/{path}", token) is not None

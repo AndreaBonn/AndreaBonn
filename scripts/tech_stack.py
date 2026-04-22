@@ -177,7 +177,11 @@ def main() -> None:
     svg = generate_svg(data)
     ASSETS_DIR.mkdir(exist_ok=True)
     out = ASSETS_DIR / "tech_stack.svg"
-    out.write_text(svg, encoding="utf-8")
+    try:
+        out.write_text(svg, encoding="utf-8")
+    except OSError as exc:
+        logger.error("Failed to write tech_stack.svg to %s: %s", out, exc)
+        raise SystemExit(1) from exc
     logger.info("\ntech_stack.svg generated (%d bytes)", len(svg))
 
 

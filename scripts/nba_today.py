@@ -105,11 +105,11 @@ SVG_W: int = 680
 
 def get_today_event(today: datetime) -> dict[str, str]:
     key = (today.month, today.day)
-    rng = random.Random(today.toordinal())  # nosec B311 — aesthetic selection, not crypto
+    rng = random.Random(today.toordinal())  # noqa: S311  # nosec B311
     if key in NBA_HISTORY:
-        return rng.choice(NBA_HISTORY[key])  # nosec B311
+        return rng.choice(NBA_HISTORY[key])  # noqa: S311  # nosec B311
     all_events = [e for events in NBA_HISTORY.values() for e in events]
-    return rng.choice(all_events)  # nosec B311
+    return rng.choice(all_events)  # noqa: S311  # nosec B311
 
 
 def generate_svg(event: dict[str, str], today: datetime) -> str:

@@ -112,8 +112,8 @@ SVG_W: int = 680
 
 def pick_daily_quote() -> dict[str, str]:
     today = datetime.now(UTC).date()
-    rng = random.Random(today.toordinal())  # nosec B311 — aesthetic selection, not crypto
-    return rng.choice(QUOTES)  # nosec B311
+    rng = random.Random(today.toordinal())  # noqa: S311  # nosec B311
+    return rng.choice(QUOTES)  # noqa: S311  # nosec B311
 
 
 def generate_svg(quote: dict[str, str], today: datetime) -> str:

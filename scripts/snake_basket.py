@@ -17,7 +17,7 @@ import random
 from datetime import UTC, datetime, timedelta
 
 import requests
-from common.config import USERNAME
+from common.config import GITHUB_GRAPHQL, USERNAME
 from snake_rendering import COLS, ROWS, generate_gif
 
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
     """Simulate a year of realistic contributions for AndreaBonn."""
-    random.seed(42)  # nosec B311 — fixed seed for reproducible demo data
+    random.seed(42)  # noqa: S311  # nosec B311
     contributions = []
     month_labels = []
 
@@ -54,8 +54,8 @@ def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
                 continue
             is_weekday = r < 5
             prob = 0.55 if is_weekday else 0.15
-            if random.random() < prob:  # nosec B311
-                level = random.choices([1, 2, 3, 4], weights=[30, 35, 25, 10])[0]  # nosec B311
+            if random.random() < prob:  # noqa: S311  # nosec B311
+                level = random.choices([1, 2, 3, 4], weights=[30, 35, 25, 10])[0]  # noqa: S311  # nosec B311
             else:
                 level = 0
             week_data.append(level)
@@ -68,8 +68,6 @@ def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
 # ---------------------------------------------------------------------------
 # Fetch real data from GitHub GraphQL API
 # ---------------------------------------------------------------------------
-
-GITHUB_GRAPHQL = "https://api.github.com/graphql"
 
 QUERY = """
 query($login: String!) {
@@ -98,7 +96,10 @@ def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
         resp.raise_for_status()
     except requests.RequestException as exc:
         raise RuntimeError(f"GitHub GraphQL network error: {exc}") from exc
-    data = resp.json()
+    try:
+        data = resp.json()
+    except requests.exceptions.JSONDecodeError as exc:
+        raise RuntimeError(f"GitHub GraphQL returned non-JSON response: {exc}") from exc
 
     if "errors" in data:
         raise RuntimeError(f"GitHub GraphQL API error: {data['errors']}")

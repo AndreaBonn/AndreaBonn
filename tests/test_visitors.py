@@ -1,8 +1,9 @@
 import json
 from datetime import UTC, datetime, timedelta
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
-from common.visitors import _migrate_legacy, _read_visitors_data, fetch_visitor_count
+import requests
+from common.visitors import _fetch_komarev_count, _migrate_legacy, _read_visitors_data, fetch_visitor_count
 
 
 def test_migrate_legacy_empty():
@@ -149,9 +150,6 @@ def test_read_visitors_data_corrupted_json_backup_fails(tmp_path, monkeypatch):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_happy_path(mock_get):
-    from unittest.mock import MagicMock
-
-    from common.visitors import _fetch_komarev_count
 
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
@@ -164,8 +162,6 @@ def test_fetch_komarev_count_happy_path(mock_get):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_network_error_returns_none(mock_get):
-    import requests
-    from common.visitors import _fetch_komarev_count
 
     mock_get.side_effect = requests.ConnectionError("timeout")
     assert _fetch_komarev_count() is None
@@ -173,9 +169,6 @@ def test_fetch_komarev_count_network_error_returns_none(mock_get):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_no_numbers_returns_none(mock_get):
-    from unittest.mock import MagicMock
-
-    from common.visitors import _fetch_komarev_count
 
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
@@ -187,9 +180,6 @@ def test_fetch_komarev_count_no_numbers_returns_none(mock_get):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_capped_at_10_million(mock_get):
-    from unittest.mock import MagicMock
-
-    from common.visitors import _fetch_komarev_count
 
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
@@ -202,10 +192,8 @@ def test_fetch_komarev_count_capped_at_10_million(mock_get):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_http_error_returns_none(mock_get):
-    from unittest.mock import MagicMock
 
     import requests
-    from common.visitors import _fetch_komarev_count
 
     mock_resp = MagicMock()
     mock_resp.raise_for_status.side_effect = requests.HTTPError("500 Server Error")
@@ -216,9 +204,6 @@ def test_fetch_komarev_count_http_error_returns_none(mock_get):
 
 @patch("common.visitors.requests.get")
 def test_fetch_komarev_count_plain_number(mock_get):
-    from unittest.mock import MagicMock
-
-    from common.visitors import _fetch_komarev_count
 
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
@@ -226,3 +211,39 @@ def test_fetch_komarev_count_plain_number(mock_get):
     mock_get.return_value = mock_resp
 
     assert _fetch_komarev_count() == 42
+
+
+@patch("common.visitors.requests.get")
+def test_fetch_komarev_count_invalid_url_raises(mock_get):
+    """InvalidURL is a config error — should propagate, not return None."""
+    mock_get.side_effect = requests.exceptions.InvalidURL("bad url")
+    with __import__("pytest").raises(requests.exceptions.InvalidURL):
+        _fetch_komarev_count()
+
+
+@patch("common.visitors._fetch_komarev_count", return_value=None)
+@patch("common.visitors._read_visitors_data")
+def test_fetch_visitor_count_fallback_malformed_history(mock_read, _mock_komarev):
+    """Fallback path handles malformed history entries without crashing."""
+    mock_read.return_value = {
+        "last_komarev": 10,
+        "total": 50,
+        "history": [
+            {"date": "2026-04-20", "views": 5},
+            "not-a-dict",
+            {"wrong_key": "missing views and date"},
+        ],
+    }
+    views_14d, total = fetch_visitor_count()
+    assert views_14d == 5
+    assert total == 50
+
+
+@patch("common.visitors._fetch_komarev_count", return_value=None)
+@patch("common.visitors._read_visitors_data")
+def test_fetch_visitor_count_fallback_missing_history_key(mock_read, _mock_komarev):
+    """Fallback path handles missing 'history' key gracefully."""
+    mock_read.return_value = {"last_komarev": 0, "total": 10}
+    views_14d, total = fetch_visitor_count()
+    assert views_14d == 0
+    assert total == 10

@@ -69,6 +69,9 @@ def _fetch_komarev_count() -> int | None:
             timeout=10,
         )
         resp.raise_for_status()
+    except (requests.exceptions.InvalidURL, requests.exceptions.MissingSchema) as exc:
+        logger.error("KOMAREV_URL is malformed — configuration error: %s", exc)
+        raise
     except requests.RequestException as exc:
         logger.warning("komarev network request failed: %s", exc)
         return None
@@ -92,10 +95,12 @@ def fetch_visitor_count() -> tuple[int, int]:
 
     if current is None:
         logger.warning("Skipping komarev update — returning cached history only")
-        history: list[dict] = data["history"]
+        history: list[dict] = data.get("history", [])
         cutoff = (datetime.now(UTC) - timedelta(days=14)).strftime("%Y-%m-%d")
-        views_14d = sum(entry["views"] for entry in history if entry["date"] >= cutoff)
-        return views_14d, data["total"]
+        views_14d = sum(
+            entry.get("views", 0) for entry in history if isinstance(entry, dict) and entry.get("date", "") >= cutoff
+        )
+        return views_14d, data.get("total", 0)
 
     last = data["last_komarev"]
     delta = max(0, current - last) if last > 0 else 0

@@ -73,7 +73,7 @@ def fetch_days_since_last_commit(token: str) -> int | None:
 
     try:
         date_str = items[0]["commit"]["author"]["date"]
-        dt = datetime.fromisoformat(date_str)
+        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
         delta = datetime.now(UTC) - dt
         return delta.days
     except (KeyError, ValueError) as exc:
@@ -85,7 +85,7 @@ def fetch_days_since_last_commit(token: str) -> int | None:
 # SVG: Tamagotchi
 # ---------------------------------------------------------------------------
 
-STATES = {
+STATES: dict[str, StateInfo] = {
     "happy": {
         "days": (0, 2),
         "color": "#3fb950",

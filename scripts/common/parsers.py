@@ -49,7 +49,10 @@ def parse_pyproject_toml(content: str) -> list[str]:
         return []
 
     pkgs: list[str] = []
-    deps = data.get("project", {}).get("dependencies", [])
+    project = data.get("project")
+    if not isinstance(project, dict):
+        return pkgs
+    deps = project.get("dependencies", [])
     if not isinstance(deps, list):
         return pkgs
     for dep in deps:

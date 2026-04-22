@@ -47,7 +47,11 @@ def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None
 def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None:
     """Snake head — pivot with number 5."""
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=SNAKE_HEAD_COLOR)
-    draw.text((cx, cy), "5", fill=(255, 255, 255), anchor="mm")
+    try:
+        draw.text((cx, cy), "5", fill=(255, 255, 255), anchor="mm")
+    except (ValueError, OSError) as exc:
+        logger.warning("Font anchor 'mm' not supported — falling back to default positioning: %s", exc)
+        draw.text((cx - 3, cy - 5), "5", fill=(255, 255, 255))
 
 
 def cell_xy(col: int, row: int) -> tuple[int, int]:

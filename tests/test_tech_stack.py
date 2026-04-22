@@ -91,6 +91,11 @@ def test_parse_pyproject_toml_no_project_section():
     assert parse_pyproject_toml(content) == []
 
 
+def test_parse_pyproject_toml_project_not_dict():
+    """When [project] value is not a dict, return empty list."""
+    assert parse_pyproject_toml('project = "not-a-dict"\n') == []
+
+
 def test_parse_pyproject_toml_invalid():
     assert parse_pyproject_toml("not valid toml {{{") == []
 
@@ -361,3 +366,23 @@ def test_main_no_token_exits(monkeypatch):
 
     with pytest.raises(SystemExit):
         main()
+
+
+def test_main_write_failure_exits(monkeypatch, tmp_path):
+    """OSError on write_text → SystemExit(1)."""
+    monkeypatch.setattr("sys.argv", ["tech_stack"])
+    monkeypatch.setenv("SNAKE_TOKEN", "test-token")
+
+    import tech_stack
+
+    monkeypatch.setattr(tech_stack, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr(tech_stack, "scan_repos", lambda _t: DEMO_DATA)
+
+    read_only = tmp_path / "tech_stack.svg"
+    read_only.write_text("x")
+    read_only.chmod(0o000)
+
+    with pytest.raises(SystemExit):
+        tech_stack.main()
+
+    read_only.chmod(0o644)

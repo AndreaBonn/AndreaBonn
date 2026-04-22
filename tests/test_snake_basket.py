@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 from snake_basket import fetch_github_data, generate_demo_data
 from snake_rendering import (
     CELL_GAP,
@@ -258,6 +259,18 @@ def test_main_demo_runs(tmp_path, monkeypatch):
 
     main()
     assert (tmp_path / "test.gif").exists()
+
+
+@patch("snake_basket.requests.post")
+def test_fetch_github_data_json_decode_error(mock_post):
+    """Non-JSON response from GitHub → RuntimeError mentioning non-JSON."""
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.side_effect = requests.exceptions.JSONDecodeError("msg", "doc", 0)
+    mock_post.return_value = mock_resp
+
+    with pytest.raises(RuntimeError, match="non-JSON"):
+        fetch_github_data(token="tok")
 
 
 def test_main_no_token_exits(monkeypatch):
