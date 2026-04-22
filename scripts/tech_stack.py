@@ -35,7 +35,10 @@ def scan_repos(token: str) -> dict[str, dict[str, int]]:
     logger.info("Found %d public repos", len(repos))
 
     for repo in repos:
-        name = repo["name"]
+        name = repo.get("name")
+        if not name:
+            logger.warning("scan_repos: repo entry missing 'name' field — skipping: %s", repo)
+            continue
         is_fork = repo.get("fork", False)
         if is_fork:
             continue

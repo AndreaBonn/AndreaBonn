@@ -219,9 +219,51 @@ def test_fetch_github_data_level_boundaries(mock_post):
 
 
 @patch("snake_basket.requests.post")
+def test_fetch_github_data_missing_contribution_count_defaults_zero(mock_post):
+    """contributionCount mancante in un giorno → default 0."""
+    week_missing = {
+        "contributionDays": [
+            {"date": "2025-01-01"},
+            {"contributionCount": 5, "date": "2025-01-02"},
+        ]
+    }
+    weeks = [week_missing] + [_make_week([0] * 7) for _ in range(51)]
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.return_value = _make_graphql_response(weeks)
+    mock_post.return_value = mock_resp
+
+    contributions, _ = fetch_github_data(token="tok")
+    assert contributions[0][0] == 0  # missing → default 0
+    assert contributions[0][1] == 2  # count 5 → level 2
+
+
+@patch("snake_basket.requests.post")
 def test_fetch_github_data_network_error_raises(mock_post):
     import requests as req
 
     mock_post.side_effect = req.ConnectionError("network down")
     with pytest.raises(RuntimeError, match="network error"):
         fetch_github_data(token="tok")
+
+
+# ---------------------------------------------------------------------------
+# main() — integration tests
+# ---------------------------------------------------------------------------
+
+
+def test_main_demo_runs(tmp_path, monkeypatch):
+    monkeypatch.setattr("sys.argv", ["snake_basket", "--demo", "--output", str(tmp_path / "test.gif")])
+    from snake_basket import main
+
+    main()
+    assert (tmp_path / "test.gif").exists()
+
+
+def test_main_no_token_exits(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["snake_basket"])
+    monkeypatch.delenv("SNAKE_TOKEN", raising=False)
+    from snake_basket import main
+
+    with pytest.raises(SystemExit):
+        main()

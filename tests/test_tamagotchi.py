@@ -147,3 +147,33 @@ def test_make_tamagotchi_svg_good_state():
 def test_make_tamagotchi_svg_tired_state():
     svg = make_tamagotchi_svg(days=10)
     assert "TIRED" in svg
+
+
+# ---------------------------------------------------------------------------
+# main() — integration tests
+# ---------------------------------------------------------------------------
+
+
+def test_main_demo_writes_svgs(tmp_path, monkeypatch):
+
+    monkeypatch.setattr("tamagotchi.ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["tamagotchi", "--demo", "--days", "3", "--visitors", "42"])
+    from tamagotchi import main
+
+    main()
+    assert (tmp_path / "tamagotchi.svg").exists()
+    assert (tmp_path / "last_commit.svg").exists()
+    content = (tmp_path / "tamagotchi.svg").read_text(encoding="utf-8")
+    assert "GITHUB TAMAGOTCHI" in content
+    assert "ON BREAK" in content
+
+
+def test_main_no_token_exits(monkeypatch):
+    import pytest
+
+    monkeypatch.setattr("sys.argv", ["tamagotchi"])
+    monkeypatch.delenv("SNAKE_TOKEN", raising=False)
+    from tamagotchi import main
+
+    with pytest.raises(SystemExit):
+        main()

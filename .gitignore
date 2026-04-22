@@ -30,5 +30,11 @@ htmlcov/
 # Local
 TODO.md
 
+# Secrets
+*.pem
+*.key
+*.p12
+.env.*
+
 # Claude Code
 .claude/

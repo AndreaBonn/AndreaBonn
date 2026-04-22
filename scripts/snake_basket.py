@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
     """Simulate a year of realistic contributions for AndreaBonn."""
-    random.seed(42)  # fixed seed = reproducible
+    random.seed(42)  # nosec B311 — fixed seed for reproducible demo data
     contributions = []
     month_labels = []
 
@@ -54,8 +54,8 @@ def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
                 continue
             is_weekday = r < 5
             prob = 0.55 if is_weekday else 0.15
-            if random.random() < prob:
-                level = random.choices([1, 2, 3, 4], weights=[30, 35, 25, 10])[0]
+            if random.random() < prob:  # nosec B311
+                level = random.choices([1, 2, 3, 4], weights=[30, 35, 25, 10])[0]  # nosec B311
             else:
                 level = 0
             week_data.append(level)
@@ -140,7 +140,13 @@ def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
             month_labels.append((month, c))
 
         for day in days_in_week:
-            count = day["contributionCount"]
+            count = day.get("contributionCount")
+            if count is None:
+                logger.warning(
+                    "fetch_github_data: missing contributionCount in day %s — defaulting to 0",
+                    day.get("date", "?"),
+                )
+                count = 0
             if count == 0:
                 level = 0
             elif count <= 3:

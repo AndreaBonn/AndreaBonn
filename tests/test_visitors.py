@@ -119,10 +119,24 @@ def test_fetch_visitor_count_komarev_failure_uses_last_known(tmp_path, monkeypat
     assert views_14d == 0
 
 
-def test_read_visitors_data_corrupted_json(tmp_path, monkeypatch):
+def test_read_visitors_data_corrupted_json_creates_backup(tmp_path, monkeypatch):
     corrupted = tmp_path / "visitors.json"
     corrupted.write_text("{invalid json")
     monkeypatch.setattr("common.visitors.VISITORS_JSON", corrupted)
+    data = _read_visitors_data()
+    assert "history" in data
+    assert data["last_komarev"] == 0
+    backup = tmp_path / "visitors.bak"
+    assert backup.exists()
+    assert backup.read_text() == "{invalid json"
+
+
+def test_read_visitors_data_corrupted_json_backup_fails(tmp_path, monkeypatch):
+    corrupted = tmp_path / "visitors.json"
+    corrupted.write_text("{bad}")
+    monkeypatch.setattr("common.visitors.VISITORS_JSON", corrupted)
+    # Make rename fail by patching Path.rename
+    monkeypatch.setattr("pathlib.Path.rename", lambda *a, **kw: (_ for _ in ()).throw(OSError("no perms")))
     data = _read_visitors_data()
     assert "history" in data
     assert data["last_komarev"] == 0

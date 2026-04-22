@@ -21,6 +21,7 @@ def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
         color = "#8b949e"
         quarter = "OT"
 
+    # Progress bar: ~100% at 0 days, decreases ~6.7%/day, floor at 3%
     bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
     visitors_str = f"{visitors:,}".replace(",", ".")
     total_str = f"{total_visitors:,}".replace(",", ".")

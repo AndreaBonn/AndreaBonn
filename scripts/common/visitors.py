@@ -21,7 +21,20 @@ def _read_visitors_data() -> dict:
         logger.info("visitors.json not found, starting fresh")
         data = {}
     except json.JSONDecodeError as exc:
-        logger.error("visitors.json is corrupted (%s), resetting — historical data may be lost", exc)
+        backup = VISITORS_JSON.with_suffix(".bak")
+        try:
+            VISITORS_JSON.rename(backup)
+            logger.error(
+                "visitors.json is corrupted (%s) — backed up to %s, resetting. Historical data lost.",
+                exc,
+                backup,
+            )
+        except OSError as bak_exc:
+            logger.error(
+                "visitors.json is corrupted (%s) AND backup failed (%s) — resetting. Historical data lost.",
+                exc,
+                bak_exc,
+            )
         data = {}
     if "history" not in data:
         data = _migrate_legacy(data)

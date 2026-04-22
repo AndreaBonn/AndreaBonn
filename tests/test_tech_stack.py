@@ -50,6 +50,18 @@ def test_parse_package_json_invalid():
     assert parse_package_json("not json") == []
 
 
+def test_parse_package_json_non_dict_dependencies_skipped():
+    content = '{"dependencies": ["react", "express"]}'
+    result = parse_package_json(content)
+    assert result == []
+
+
+def test_parse_package_json_non_dict_dev_dependencies_skipped():
+    content = '{"dependencies": {"react": "^18"}, "devDependencies": "invalid"}'
+    result = parse_package_json(content)
+    assert result == ["react"]
+
+
 def test_parse_pyproject_toml_inline():
     content = '[project]\ndependencies = ["requests>=2.31", "flask>=2.0"]\n'
     result = parse_pyproject_toml(content)
@@ -300,8 +312,52 @@ def test_scan_repos_git_always_present(mock_repos, mock_langs, mock_file, mock_e
     assert result["tool"]["Git"] >= 2
 
 
+@patch("tech_stack.check_file_exists")
+@patch("tech_stack.fetch_file")
+@patch("tech_stack.fetch_languages")
+@patch("tech_stack.fetch_repos")
+def test_scan_repos_missing_name_skipped(mock_repos, mock_langs, mock_file, mock_exists):
+    mock_repos.return_value = [
+        {"fork": False, "topics": []},
+        {"name": "good-repo", "fork": False, "topics": []},
+    ]
+    mock_langs.return_value = {"Python": 1000}
+    mock_file.return_value = None
+    mock_exists.return_value = False
+
+    result = scan_repos(token="tok")
+    assert "Python" in result["linguaggio"]
+    assert mock_langs.call_count == 1
+
+
 @patch("tech_stack.fetch_repos")
 def test_scan_repos_empty_repos_raises(mock_repos):
     mock_repos.return_value = []
     with pytest.raises(RuntimeError, match="No public repos found"):
         scan_repos(token="tok")
+
+
+# ---------------------------------------------------------------------------
+# main() — integration tests
+# ---------------------------------------------------------------------------
+
+
+def test_main_demo_writes_svg(tmp_path, monkeypatch):
+    monkeypatch.setattr("tech_stack.ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["tech_stack", "--demo"])
+    from tech_stack import main
+
+    main()
+    out = tmp_path / "tech_stack.svg"
+    assert out.exists()
+    content = out.read_text(encoding="utf-8")
+    assert content.startswith("<svg")
+
+
+def test_main_no_token_exits(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["tech_stack"])
+    monkeypatch.delenv("SNAKE_TOKEN", raising=False)
+    from tech_stack import main
+
+    with pytest.raises(SystemExit):
+        main()

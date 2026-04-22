@@ -35,7 +35,7 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
             return resp.read()
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
-            logger.debug("Resource not found: %s", url)
+            logger.warning("Resource not found (404): %s", url)
         elif exc.code in (401, 403):
             logger.error("GitHub API auth/permission error %d for %s — check token", exc.code, url)
             raise

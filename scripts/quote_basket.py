@@ -112,8 +112,8 @@ SVG_W: int = 680
 
 def pick_daily_quote() -> dict[str, str]:
     today = datetime.now(UTC).date()
-    rng = random.Random(today.toordinal())
-    return rng.choice(QUOTES)
+    rng = random.Random(today.toordinal())  # nosec B311 — aesthetic selection, not crypto
+    return rng.choice(QUOTES)  # nosec B311
 
 
 def generate_svg(quote: dict[str, str], today: datetime) -> str:
@@ -161,7 +161,11 @@ def main() -> None:
 
     out = ASSETS_DIR / "quote.svg"
     out.parent.mkdir(exist_ok=True)
-    out.write_text(svg, encoding="utf-8")
+    try:
+        out.write_text(svg, encoding="utf-8")
+    except OSError as exc:
+        logger.error("Failed to write quote.svg: %s", exc)
+        raise SystemExit(1) from exc
     logger.info("quote.svg generated — %s", quote["author"])
 
 

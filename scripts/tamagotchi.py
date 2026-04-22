@@ -13,12 +13,23 @@ import argparse
 import logging
 import os
 from datetime import UTC, datetime
+from typing import TypedDict
 
 import requests
 from common.config import ASSETS_DIR, GITHUB_API, USERNAME
-from common.svg import wrap_text
+from common.svg import escape_svg, wrap_text
 from common.visitors import fetch_visitor_count
 from scoreboard import make_last_commit_svg
+
+
+class StateInfo(TypedDict):
+    days: tuple[int, int]
+    color: str
+    border: str
+    msg: str
+    face: str
+    status: str
+
 
 logger = logging.getLogger(__name__)
 
@@ -153,7 +164,7 @@ STATES = {
 }
 
 
-def get_state(days: int) -> dict:
+def get_state(days: int) -> StateInfo:
     for state in STATES.values():
         lo, hi = state["days"]
         if lo <= days <= hi:
@@ -170,7 +181,7 @@ def make_tamagotchi_svg(days: int) -> str:
     msg_lines = wrap_msg(state["msg"])
     msg_svg = ""
     for i, line in enumerate(msg_lines):
-        msg_svg += f'<text x="340" y="{230 + i * 22}" font-family="monospace" font-size="13" fill="{state["color"]}" text-anchor="middle" font-style="italic">{line}</text>\n'
+        msg_svg += f'<text x="340" y="{230 + i * 22}" font-family="monospace" font-size="13" fill="{state["color"]}" text-anchor="middle" font-style="italic">{escape_svg(line)}</text>\n'
 
     return f'''<svg width="680" height="300" xmlns="http://www.w3.org/2000/svg">
   <rect width="680" height="300" rx="12" fill="#161b22"/>
@@ -252,11 +263,15 @@ def main() -> None:
 
     ASSETS_DIR.mkdir(exist_ok=True)
 
-    (ASSETS_DIR / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
-    (ASSETS_DIR / "last_commit.svg").write_text(
-        make_last_commit_svg(days, visitors=visitors, total_visitors=total_visitors),
-        encoding="utf-8",
-    )
+    try:
+        (ASSETS_DIR / "tamagotchi.svg").write_text(make_tamagotchi_svg(days), encoding="utf-8")
+        (ASSETS_DIR / "last_commit.svg").write_text(
+            make_last_commit_svg(days, visitors=visitors, total_visitors=total_visitors),
+            encoding="utf-8",
+        )
+    except OSError as exc:
+        logger.error("Failed to write SVG files to %s: %s", ASSETS_DIR, exc)
+        raise SystemExit(1) from exc
 
     logger.info("tamagotchi.svg generated")
     logger.info("last_commit.svg generated")

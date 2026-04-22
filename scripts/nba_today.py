@@ -105,11 +105,11 @@ SVG_W: int = 680
 
 def get_today_event(today: datetime) -> dict[str, str]:
     key = (today.month, today.day)
-    rng = random.Random(today.timetuple().tm_yday + today.year)
+    rng = random.Random(today.toordinal())  # nosec B311 — aesthetic selection, not crypto
     if key in NBA_HISTORY:
-        return rng.choice(NBA_HISTORY[key])
+        return rng.choice(NBA_HISTORY[key])  # nosec B311
     all_events = [e for events in NBA_HISTORY.values() for e in events]
-    return rng.choice(all_events)
+    return rng.choice(all_events)  # nosec B311
 
 
 def generate_svg(event: dict[str, str], today: datetime) -> str:
@@ -150,7 +150,11 @@ def main() -> None:
 
     out = ASSETS_DIR / "nba_today.svg"
     out.parent.mkdir(exist_ok=True)
-    out.write_text(svg, encoding="utf-8")
+    try:
+        out.write_text(svg, encoding="utf-8")
+    except OSError as exc:
+        logger.error("Failed to write nba_today.svg: %s", exc)
+        raise SystemExit(1) from exc
     logger.info("nba_today.svg generated — %s %s...", event["icon"], event["text"][:40])
 
 
