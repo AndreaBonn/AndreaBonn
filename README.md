@@ -1,5 +1,9 @@
 # Andrea Bonacci
 
+[![CI](https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml/badge.svg)](https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml)
+
+Software Engineer · AI & Computer Vision · Open Source
+
 > Life is all about *one-shot learning*: one example for the prompt, one shot for the basket.
 
 ---

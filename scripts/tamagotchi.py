@@ -4,8 +4,8 @@ Generates two SVGs:
   - assets/tamagotchi.svg  → character that changes state based on commits
   - assets/last_commit.svg → days since last commit
 
-Requires: GITHUB_TOKEN with read:user and public_repo permissions
-Usage: python tamagotchi.py --token <TOKEN>
+Requires: SNAKE_TOKEN env var with read:user and public_repo permissions
+Usage: SNAKE_TOKEN=<TOKEN> python tamagotchi.py
        python tamagotchi.py --demo --days <N>
 """
 
@@ -178,6 +178,7 @@ def wrap_msg(text: str, max_chars: int = 52) -> list[str]:
 
 def make_tamagotchi_svg(days: int) -> str:
     state = get_state(days)
+    status = escape_svg(state["status"])
     msg_lines = wrap_msg(state["msg"])
     msg_svg = ""
     for i, line in enumerate(msg_lines):
@@ -189,7 +190,7 @@ def make_tamagotchi_svg(days: int) -> str:
 
   <!-- header -->
   <text x="24" y="32" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="2">GITHUB TAMAGOTCHI</text>
-  <text x="24" y="52" font-family="monospace" font-size="11" fill="{state["color"]}">@AndreaBonn — {state["status"]}</text>
+  <text x="24" y="52" font-family="monospace" font-size="11" fill="{state["color"]}">@AndreaBonn — {status}</text>
 
   <!-- separator -->
   <line x1="24" y1="64" x2="656" y2="64" stroke="#30363d" stroke-width="1"/>
@@ -233,20 +234,19 @@ def make_tamagotchi_svg(days: int) -> str:
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--token", help="GitHub token")
     parser.add_argument("--demo", action="store_true")
     parser.add_argument("--days", type=int, default=3, help="Days to simulate in demo mode")
     parser.add_argument("--visitors", type=int, default=None, help="Visitors to simulate in demo mode")
     args = parser.parse_args()
 
-    token = args.token or os.environ.get("SNAKE_TOKEN", "")
+    token = os.environ.get("SNAKE_TOKEN", "")
     if args.demo:
         days = args.days
         visitors = args.visitors if args.visitors is not None else 42
         total_visitors = visitors * 10
         logger.info("Demo mode — %d days, %d recent, %d total", days, visitors, total_visitors)
     elif not token:
-        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var or use --token. Use --demo for test data.")
+        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var. Use --demo for test data.")
         raise SystemExit(1)
     else:
         logger.info("Fetching data for @%s...", USERNAME)

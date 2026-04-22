@@ -9,7 +9,7 @@ import random
 from datetime import UTC, datetime
 
 from common.config import ASSETS_DIR
-from common.svg import svg_lines, wrap_text
+from common.svg import escape_svg, svg_lines, wrap_text
 
 logger = logging.getLogger(__name__)
 
@@ -115,8 +115,8 @@ def get_today_event(today: datetime) -> dict[str, str]:
 def generate_svg(event: dict[str, str], today: datetime) -> str:
     lines = wrap_text(event["text"])
     svg_h = max(140, len(lines) * LINE_H + 130)
-    icon = event["icon"]
-    date_label = today.strftime("%B %d").upper()
+    icon = escape_svg(event["icon"])
+    date_label = escape_svg(today.strftime("%B %d").upper())
 
     return f'''<svg width="{SVG_W}" height="{svg_h}" xmlns="http://www.w3.org/2000/svg">
   <rect width="{SVG_W}" height="{svg_h}" rx="12" fill="#161b22"/>

@@ -3,7 +3,7 @@ Tech Stack Word Cloud Generator
 Fetches languages and dependencies from all public GitHub repos,
 auto-categorizes and generates an SVG with colored pills.
 
-Usage: python tech_stack.py --token <GITHUB_TOKEN>
+Usage: SNAKE_TOKEN=<GITHUB_TOKEN> python tech_stack.py
        python tech_stack.py --demo
 """
 
@@ -154,17 +154,16 @@ DEMO_DATA = {
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--token", help="GitHub token")
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
-    token = args.token or os.environ.get("SNAKE_TOKEN", "")
+    token = os.environ.get("SNAKE_TOKEN", "")
 
     if args.demo:
         logger.info("Demo mode (explicit --demo flag)")
         data = DEMO_DATA
     elif not token:
-        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var or use --token. Use --demo for test data.")
+        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var. Use --demo for test data.")
         raise SystemExit(1)
     else:
         data = scan_repos(token)

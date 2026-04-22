@@ -6,7 +6,7 @@ Generates an animated GIF where a "pivot" snake traverses your
 contribution graph leaving basketballs on empty cells.
 
 Usage:
-    python snake_basket.py --token YOUR_GITHUB_TOKEN
+    SNAKE_TOKEN=<TOKEN> python snake_basket.py
     python snake_basket.py --demo   (uses demo data, no token required)
 """
 
@@ -174,7 +174,6 @@ def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Snake Basket — GitHub contribution animator")
-    parser.add_argument("--token", help="GitHub Personal Access Token (read:user)")
     parser.add_argument("--demo", action="store_true", help="Use demo data without token")
     parser.add_argument("--output", default="snake_basket.gif", help="Nome file output")
     args = parser.parse_args()
@@ -183,12 +182,12 @@ def main() -> None:
     logger.info("Snake Basket — @%s", USERNAME)
     logger.info("=" * 40)
 
-    token = args.token or os.environ.get("SNAKE_TOKEN", "")
+    token = os.environ.get("SNAKE_TOKEN", "")
     if args.demo:
         logger.info("Demo mode (explicit --demo flag)")
         contributions, month_labels = generate_demo_data()
     elif not token:
-        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var or use --token. Use --demo for test data.")
+        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var. Use --demo for test data.")
         raise SystemExit(1)
     else:
         logger.info("Fetching GitHub data for @%s...", USERNAME)

@@ -3,6 +3,8 @@ Scoreboard SVG — days since last commit + visitor stats.
 Extracted from tamagotchi.py to keep files under 300 LOC.
 """
 
+from common.svg import escape_svg
+
 
 def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
     if days == 0:
@@ -20,6 +22,8 @@ def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
     else:
         color = "#8b949e"
         quarter = "OT"
+
+    quarter = escape_svg(quarter)
 
     # Progress bar: ~100% at 0 days, decreases ~6.7%/day, floor at 3%
     bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
