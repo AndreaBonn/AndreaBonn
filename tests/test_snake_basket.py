@@ -1,4 +1,5 @@
-from snake_basket import (
+from snake_basket import generate_demo_data
+from snake_rendering import (
     CELL_GAP,
     CELL_SIZE,
     COLS,
@@ -8,7 +9,6 @@ from snake_basket import (
     build_snake_path,
     cell_center,
     cell_xy,
-    generate_demo_data,
 )
 
 

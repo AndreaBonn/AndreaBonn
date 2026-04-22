@@ -17,7 +17,11 @@ logger = logging.getLogger(__name__)
 def _read_visitors_data() -> dict:
     try:
         data = json.loads(VISITORS_JSON.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError:
+        logger.info("visitors.json not found, starting fresh")
+        data = {}
+    except json.JSONDecodeError as exc:
+        logger.error("visitors.json is corrupted (%s), resetting — historical data may be lost", exc)
         data = {}
     if "history" not in data:
         data = _migrate_legacy(data)
@@ -35,11 +39,16 @@ def _migrate_legacy(old: dict) -> dict:
 
 def _save_visitors_data(data: dict) -> None:
     tmp = VISITORS_JSON.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    tmp.replace(VISITORS_JSON)
+    try:
+        tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        tmp.replace(VISITORS_JSON)
+    except OSError as exc:
+        logger.error("Failed to persist visitors.json: %s — update will be lost", exc)
+        raise
 
 
-def _fetch_komarev_count() -> int:
+def _fetch_komarev_count() -> int | None:
+    """Returns the raw count, or None on any failure."""
     try:
         resp = requests.get(
             KOMAREV_URL,
@@ -47,19 +56,30 @@ def _fetch_komarev_count() -> int:
             timeout=10,
         )
         resp.raise_for_status()
+    except requests.RequestException as exc:
+        logger.warning("komarev network request failed: %s", exc)
+        return None
+
+    try:
         numbers = re.findall(r">(\d[\d,.]*)<", resp.text)
-        if numbers:
-            count = int(numbers[-1].replace(",", "").replace(".", ""))
-            return min(count, 10_000_000)
-    except (requests.RequestException, ValueError) as exc:
-        logger.warning("komarev fetch failed: %s", exc)
-    return 0
+        if not numbers:
+            logger.warning("komarev response contained no numeric values (HTML changed?)")
+            return None
+        count = int(numbers[-1].replace(",", "").replace(".", ""))
+        return min(count, 10_000_000)
+    except ValueError as exc:
+        logger.error("komarev count parsing failed — possible HTML format change: %s", exc)
+        return None
 
 
 def fetch_visitor_count() -> tuple[int, int]:
     """Returns (views_last_14_days, cumulative_total)."""
     current = _fetch_komarev_count()
     data = _read_visitors_data()
+
+    if current is None:
+        logger.warning("Skipping komarev update — using last known value")
+        current = data["last_komarev"]
 
     last = data["last_komarev"]
     delta = max(0, current - last) if last > 0 else 0

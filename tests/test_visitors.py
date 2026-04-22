@@ -99,3 +99,30 @@ def test_fetch_visitor_count_same_day_accumulates(tmp_path, monkeypatch):
         views_14d, total = fetch_visitor_count()
     assert views_14d == 15  # 5 existing + 10 new delta
     assert total == 310  # 300 + delta 10
+
+
+def test_fetch_visitor_count_komarev_failure_uses_last_known(tmp_path, monkeypatch):
+    visitors_file = tmp_path / "visitors.json"
+    visitors_file.write_text(
+        json.dumps(
+            {
+                "last_komarev": 50,
+                "total": 200,
+                "history": [],
+            }
+        )
+    )
+    monkeypatch.setattr("common.visitors.VISITORS_JSON", visitors_file)
+    with patch("common.visitors._fetch_komarev_count", return_value=None):
+        views_14d, total = fetch_visitor_count()
+    assert total == 200  # no delta when komarev fails
+    assert views_14d == 0
+
+
+def test_read_visitors_data_corrupted_json(tmp_path, monkeypatch):
+    corrupted = tmp_path / "visitors.json"
+    corrupted.write_text("{invalid json")
+    monkeypatch.setattr("common.visitors.VISITORS_JSON", corrupted)
+    data = _read_visitors_data()
+    assert "history" in data
+    assert data["last_komarev"] == 0

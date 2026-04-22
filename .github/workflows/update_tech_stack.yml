@@ -3,8 +3,13 @@ name: Update Tech Stack
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "assets/tech_stack.svg"
+    paths:
+      - "scripts/tech_stack.py"
+      - "scripts/tech_mappings.py"
+      - "scripts/tech_svg.py"
+      - "scripts/common/**"
+      - "pyproject.toml"
+      - "uv.lock"
   schedule:
     - cron: "0 2 * * 0"  # Sunday 02:00 UTC
   workflow_dispatch:

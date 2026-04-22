@@ -9,7 +9,7 @@ import random
 from datetime import UTC, datetime
 
 from common.config import ASSETS_DIR
-from common.svg import escape_svg, wrap_text
+from common.svg import svg_lines, wrap_text
 
 logger = logging.getLogger(__name__)
 
@@ -112,17 +112,6 @@ def get_today_event(today: datetime) -> dict[str, str]:
     return random.choice(all_events)
 
 
-def svg_lines(lines: list[str], start_y: int) -> str:
-    out = ""
-    for i, line in enumerate(lines):
-        out += (
-            f'<text x="340" y="{start_y + i * LINE_H}" font-family="monospace" '
-            f'font-size="18" fill="#e6edf3" text-anchor="middle">'
-            f"{escape_svg(line)}</text>\n"
-        )
-    return out
-
-
 def generate_svg(event: dict[str, str], today: datetime) -> str:
     lines = wrap_text(event["text"])
     svg_h = max(140, len(lines) * LINE_H + 130)
@@ -145,7 +134,7 @@ def generate_svg(event: dict[str, str], today: datetime) -> str:
   <line x1="24" y1="74" x2="{SVG_W - 24}" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- event text -->
-  {svg_lines(lines, 100)}
+  {svg_lines(lines, 100, line_height=LINE_H, svg_width=SVG_W)}
 
   <!-- footer -->
   <text x="{SVG_W - 24}" y="{svg_h - 12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">@AndreaBonn • NBA history</text>

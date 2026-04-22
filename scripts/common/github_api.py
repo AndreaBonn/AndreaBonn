@@ -9,10 +9,13 @@ from common.config import GITHUB_API, USERNAME
 logger = logging.getLogger(__name__)
 
 _ALLOWED_HOSTS = {"api.github.com"}
+_ALLOWED_SCHEMES = {"https"}
 
 
 def _validate_url(url: str) -> None:
     parsed = urlparse(url)
+    if parsed.scheme not in _ALLOWED_SCHEMES:
+        raise ValueError(f"URL scheme not allowed: {parsed.scheme}")
     if parsed.hostname not in _ALLOWED_HOSTS:
         raise ValueError(f"URL host not allowed: {parsed.hostname}")
 
@@ -30,8 +33,20 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             return resp.read()
-    except (urllib.error.HTTPError, urllib.error.URLError) as exc:
-        logger.warning("API request failed for %s: %s", url, exc)
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            logger.debug("Resource not found: %s", url)
+        elif exc.code in (401, 403):
+            logger.error("GitHub API auth/permission error %d for %s — check token", exc.code, url)
+            raise
+        elif exc.code == 429:
+            logger.error("GitHub API rate limit exceeded for %s", url)
+            raise
+        else:
+            logger.warning("GitHub API HTTP %d for %s: %s", exc.code, url, exc)
+        return None
+    except urllib.error.URLError as exc:
+        logger.warning("Network error fetching %s: %s", url, exc)
         return None
 
 
@@ -48,6 +63,11 @@ def fetch_repos(token: str) -> list[dict]:
             break
         repos.extend(batch)
         page += 1
+    if not repos:
+        logger.warning(
+            "fetch_repos returned empty list — possible auth failure or network error. "
+            "Check SNAKE_TOKEN and GitHub API availability."
+        )
     return repos
 
 

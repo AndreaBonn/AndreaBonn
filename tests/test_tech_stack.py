@@ -1,9 +1,6 @@
 from common.parsers import parse_package_json, parse_pyproject_toml, parse_requirements_txt
-from tech_stack import (
-    DEMO_DATA,
-    generate_svg,
-    measure_text,
-)
+from tech_stack import DEMO_DATA
+from tech_svg import generate_svg, measure_text
 
 
 def test_parse_requirements_txt_basic():
@@ -51,7 +48,7 @@ def test_parse_package_json_invalid():
 
 
 def test_parse_pyproject_toml_inline():
-    content = 'dependencies = ["requests>=2.31", "flask>=2.0"]\n'
+    content = '[project]\ndependencies = ["requests>=2.31", "flask>=2.0"]\n'
     result = parse_pyproject_toml(content)
     assert "requests" in result
     assert "flask" in result
@@ -59,6 +56,7 @@ def test_parse_pyproject_toml_inline():
 
 def test_parse_pyproject_toml_multiline():
     content = """
+[project]
 dependencies = [
     "requests>=2.31",
     "flask>=2.0",
@@ -71,6 +69,15 @@ dependencies = [
 
 def test_parse_pyproject_toml_empty():
     assert parse_pyproject_toml("") == []
+
+
+def test_parse_pyproject_toml_no_project_section():
+    content = "[tool.ruff]\nline-length = 120\n"
+    assert parse_pyproject_toml(content) == []
+
+
+def test_parse_pyproject_toml_invalid():
+    assert parse_pyproject_toml("not valid toml {{{") == []
 
 
 def test_measure_text_positive():

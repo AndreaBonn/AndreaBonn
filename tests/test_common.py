@@ -49,3 +49,34 @@ def test_username_is_andreabonn():
 
 def test_assets_dir_ends_with_assets():
     assert ASSETS_DIR.name == "assets"
+
+
+def test_svg_lines_renders_text():
+    from common.svg import svg_lines
+
+    result = svg_lines(["Hello", "World"], start_y=100)
+    assert "Hello" in result
+    assert "World" in result
+    assert "<text" in result
+
+
+def test_svg_lines_italic():
+    from common.svg import svg_lines
+
+    result = svg_lines(["Test"], start_y=100, italic=True)
+    assert 'font-style="italic"' in result
+
+
+def test_svg_lines_no_italic_by_default():
+    from common.svg import svg_lines
+
+    result = svg_lines(["Test"], start_y=100)
+    assert "italic" not in result
+
+
+def test_svg_lines_escapes_special_chars():
+    from common.svg import svg_lines
+
+    result = svg_lines(["A < B & C"], start_y=100)
+    assert "&lt;" in result
+    assert "&amp;" in result

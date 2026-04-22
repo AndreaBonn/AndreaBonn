@@ -45,6 +45,11 @@ def fetch_days_since_last_commit(token: str) -> int:
         dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
         delta = datetime.now(UTC) - dt
         return delta.days
+    logger.warning(
+        "GitHub Search Commits API returned no items for author:%s — "
+        "defaulting to 99 days. Possible cause: new account, private commits only, or API delay.",
+        USERNAME,
+    )
     return 99
 
 
@@ -278,11 +283,14 @@ def main() -> None:
     args = parser.parse_args()
 
     token = args.token or os.environ.get("SNAKE_TOKEN", "")
-    if args.demo or not token:
+    if args.demo:
         days = args.days
         visitors = args.visitors if args.visitors is not None else 42
         total_visitors = visitors * 10
         logger.info("Demo mode — %d days, %d recent, %d total", days, visitors, total_visitors)
+    elif not token:
+        logger.error("No GitHub token provided. Set SNAKE_TOKEN env var or use --token. Use --demo for test data.")
+        raise SystemExit(1)
     else:
         logger.info("Fetching data for @%s...", USERNAME)
         days = fetch_days_since_last_commit(token)

@@ -25,7 +25,7 @@ source = ["scripts"]
 omit = ["scripts/common/__init__.py"]
 
 [tool.coverage.report]
-fail_under = 50
+fail_under = 58
 show_missing = true
 
 [dependency-groups]

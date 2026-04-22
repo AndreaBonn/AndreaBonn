@@ -1,17 +1,32 @@
 import json
+import logging
 import re
+import tomllib
+
+logger = logging.getLogger(__name__)
 
 
 def parse_package_json(content: str) -> list[str]:
     try:
         data = json.loads(content)
-        deps: set[str] = set()
-        for key in ("dependencies", "devDependencies"):
-            if key in data:
-                deps.update(data[key].keys())
-        return list(deps)
-    except (json.JSONDecodeError, AttributeError):
+    except json.JSONDecodeError as exc:
+        logger.debug("package.json parse failed: %s", exc)
         return []
+
+    deps: set[str] = set()
+    for key in ("dependencies", "devDependencies"):
+        section = data.get(key)
+        if section is None:
+            continue
+        if not isinstance(section, dict):
+            logger.warning(
+                "package.json '%s' is not a dict (got %s) — skipping",
+                key,
+                type(section).__name__,
+            )
+            continue
+        deps.update(section.keys())
+    return list(deps)
 
 
 def parse_requirements_txt(content: str) -> list[str]:
@@ -27,25 +42,18 @@ def parse_requirements_txt(content: str) -> list[str]:
 
 
 def parse_pyproject_toml(content: str) -> list[str]:
+    try:
+        data = tomllib.loads(content)
+    except tomllib.TOMLDecodeError as exc:
+        logger.debug("pyproject.toml parse failed: %s", exc)
+        return []
+
     pkgs: list[str] = []
-    in_deps = False
-    for line in content.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("dependencies") and "=" in stripped:
-            in_deps = True
-            inline = re.findall(r'"([^"]+)"', stripped)
-            for dep in inline:
-                name = re.split(r"[>=<~!\[;@\s]", dep)[0].strip().lower()
-                if name:
-                    pkgs.append(name)
-            continue
-        if in_deps:
-            if stripped.startswith("]"):
-                in_deps = False
-                continue
-            if stripped.startswith('"'):
-                dep = stripped.strip('",')
-                name = re.split(r"[>=<~!\[;@\s]", dep)[0].strip().lower()
-                if name:
-                    pkgs.append(name)
+    deps = data.get("project", {}).get("dependencies", [])
+    if not isinstance(deps, list):
+        return pkgs
+    for dep in deps:
+        name = re.split(r"[>=<~!\[;@\s]", dep)[0].strip().lower()
+        if name:
+            pkgs.append(name)
     return pkgs
