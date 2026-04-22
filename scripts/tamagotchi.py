@@ -10,7 +10,6 @@ Usage: python tamagotchi.py --token <TOKEN>
 """
 
 import argparse
-import json
 import os
 import sys
 from datetime import datetime, timezone
@@ -22,29 +21,30 @@ except ImportError:
     requests = None
 
 USERNAME = "AndreaBonn"
-PROFILE_REPO = f"{USERNAME}/{USERNAME}"
 GITHUB_API = "https://api.github.com"
+KOMAREV_URL = "https://komarev.com/ghpvc/"
 
 # ---------------------------------------------------------------------------
-# Fetch visitor count da GitHub Traffic API (visite reali al profilo)
+# Fetch visitor count da komarev badge SVG (tracciato dal pixel nel README)
 # ---------------------------------------------------------------------------
 
-def fetch_visitor_count(token: str) -> int:
-    """Usa l'API Traffic di GitHub sul repo profilo per ottenere visite reali (ultimi 14gg)."""
-    if requests is None or not token:
+def fetch_visitor_count() -> int:
+    if requests is None:
         return 0
     try:
-        headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
+        import re
         resp = requests.get(
-            f"{GITHUB_API}/repos/{PROFILE_REPO}/traffic/views",
-            headers=headers,
+            KOMAREV_URL,
+            params={"username": USERNAME, "style": "flat", "label": "visite"},
             timeout=10,
         )
         resp.raise_for_status()
-        data = resp.json()
-        return data.get("uniques", data.get("count", 0))
+        numbers = re.findall(r">(\d[\d,.]*)<", resp.text)
+        if numbers:
+            return int(numbers[-1].replace(",", "").replace(".", ""))
     except Exception:
-        return 0
+        pass
+    return 0
 
 # ---------------------------------------------------------------------------
 # Fetch giorni dall'ultimo commit (eventi pubblici)
@@ -127,7 +127,7 @@ def make_last_commit_svg(days: int, visitors: int) -> str:
   <path d="M440 70 Q433 84 440 98" fill="none" stroke="#e6861a" stroke-width="1"/>
 
   <!-- pannello destro (visite) -->
-  <text x="700" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">VISITE PROFILO (14GG)</text>
+  <text x="700" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">VISITE AL PROFILO</text>
   <rect x="638" y="62" width="124" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
   <text x="700" y="92" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">{visitors_str}</text>
 
@@ -307,7 +307,7 @@ def main():
     else:
         print(f"Fetching dati per @{USERNAME}...")
         days = fetch_days_since_last_commit(token)
-        visitors = fetch_visitor_count(token=token)
+        visitors = fetch_visitor_count()
 
     print(f"Giorni dall'ultimo commit: {days}")
     print(f"Visite profilo: {visitors}")
