@@ -23,26 +23,29 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Fetch giorni dall'ultimo commit (eventi pubblici)
+# Fetch giorni dall'ultimo commit (Search Commits API)
 # ---------------------------------------------------------------------------
 
 
 def fetch_days_since_last_commit(token: str) -> int:
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
-    # Cerca negli eventi pubblici i PushEvent
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github+json",
+    }
     resp = requests.get(
-        f"{GITHUB_API}/users/{USERNAME}/events/public", headers=headers, params={"per_page": 100}, timeout=15
+        f"{GITHUB_API}/search/commits",
+        headers=headers,
+        params={"q": f"author:{USERNAME}", "sort": "author-date", "order": "desc", "per_page": 1},
+        timeout=15,
     )
     resp.raise_for_status()
-    events = resp.json()
-    for event in events:
-        if event.get("type") == "PushEvent":
-            created = event.get("created_at", "")
-            if created:
-                dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
-                delta = datetime.now(UTC) - dt
-                return delta.days
-    return 99  # nessun push trovato recentemente
+    items = resp.json().get("items", [])
+    if items:
+        date_str = items[0]["commit"]["author"]["date"]
+        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+        delta = datetime.now(UTC) - dt
+        return delta.days
+    return 99
 
 
 # ---------------------------------------------------------------------------
