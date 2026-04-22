@@ -1,40 +1,41 @@
 from unittest.mock import MagicMock, patch
 
 import requests
-from tamagotchi import fetch_days_since_last_commit, get_state, make_last_commit_svg, make_tamagotchi_svg, wrap_msg
+from scoreboard import make_last_commit_svg
+from tamagotchi import fetch_days_since_last_commit, get_state, make_tamagotchi_svg, wrap_msg
 
 
 @patch("tamagotchi.requests.get")
-def test_fetch_days_http_error_returns_99(mock_get):
+def test_fetch_days_http_error_returns_none(mock_get):
     mock_get.side_effect = requests.ConnectionError("timeout")
-    assert fetch_days_since_last_commit(token="tok") == 99
+    assert fetch_days_since_last_commit(token="tok") is None
 
 
 @patch("tamagotchi.requests.get")
-def test_fetch_days_non_json_response_returns_99(mock_get):
+def test_fetch_days_non_json_response_returns_none(mock_get):
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
     mock_resp.json.side_effect = requests.exceptions.JSONDecodeError("err", "doc", 0)
     mock_get.return_value = mock_resp
-    assert fetch_days_since_last_commit(token="tok") == 99
+    assert fetch_days_since_last_commit(token="tok") is None
 
 
 @patch("tamagotchi.requests.get")
-def test_fetch_days_missing_commit_field_returns_99(mock_get):
+def test_fetch_days_missing_commit_field_returns_none(mock_get):
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
     mock_resp.json.return_value = {"items": [{"no_commit_key": {}}]}
     mock_get.return_value = mock_resp
-    assert fetch_days_since_last_commit(token="tok") == 99
+    assert fetch_days_since_last_commit(token="tok") is None
 
 
 @patch("tamagotchi.requests.get")
-def test_fetch_days_non_dict_payload_returns_99(mock_get):
+def test_fetch_days_non_dict_payload_returns_none(mock_get):
     mock_resp = MagicMock()
     mock_resp.raise_for_status.return_value = None
     mock_resp.json.return_value = ["not", "a", "dict"]
     mock_get.return_value = mock_resp
-    assert fetch_days_since_last_commit(token="tok") == 99
+    assert fetch_days_since_last_commit(token="tok") is None
 
 
 def test_get_state_happy_at_zero_days():

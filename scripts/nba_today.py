@@ -105,11 +105,11 @@ SVG_W: int = 680
 
 def get_today_event(today: datetime) -> dict[str, str]:
     key = (today.month, today.day)
+    rng = random.Random(today.timetuple().tm_yday + today.year)
     if key in NBA_HISTORY:
-        return random.choice(NBA_HISTORY[key])
-    random.seed(today.timetuple().tm_yday + today.year)
+        return rng.choice(NBA_HISTORY[key])
     all_events = [e for events in NBA_HISTORY.values() for e in events]
-    return random.choice(all_events)
+    return rng.choice(all_events)
 
 
 def generate_svg(event: dict[str, str], today: datetime) -> str:

@@ -29,6 +29,9 @@ def scan_repos(token: str) -> dict[str, dict[str, int]]:
     result: dict[str, dict[str, int]] = {cat: {} for cat in CATEGORIES}
 
     repos = fetch_repos(token)
+    if not repos:
+        logger.error("No public repos found for user — cannot generate tech stack")
+        raise RuntimeError("No public repos found")
     logger.info("Found %d public repos", len(repos))
 
     for repo in repos:

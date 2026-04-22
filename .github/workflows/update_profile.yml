@@ -45,7 +45,6 @@ jobs:
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: uv run python scripts/snake_basket.py --output assets/snake_basket.gif
-        continue-on-error: true
 
       - name: Quote of the day
         run: uv run python scripts/quote_basket.py
@@ -57,7 +56,6 @@ jobs:
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: uv run python scripts/tamagotchi.py
-        continue-on-error: true
 
       - name: Commit updated assets
         run: |

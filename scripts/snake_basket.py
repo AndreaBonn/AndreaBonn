@@ -1,20 +1,20 @@
 """
 Snake Basket — GitHub Contribution Graph Animator
-Per: AndreaBonn | Ruolo: Center/Pivot | Scia: Palloni da basket
+For: AndreaBonn | Role: Center/Pivot | Trail: Basketballs
 
-Genera una GIF animata dove un serpente "pivot" percorre il tuo
-contribution graph lasciando palloni da basket sulle celle vuote.
+Generates an animated GIF where a "pivot" snake traverses your
+contribution graph leaving basketballs on empty cells.
 
 Usage:
     python snake_basket.py --token YOUR_GITHUB_TOKEN
-    python snake_basket.py --demo   (usa dati fittizi, no token richiesto)
+    python snake_basket.py --demo   (uses demo data, no token required)
 """
 
 import argparse
 import logging
 import os
 import random
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import requests
 from common.config import USERNAME
@@ -24,17 +24,17 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Dati demo (quando non si ha il token)
+# Demo data (when no token is available)
 # ---------------------------------------------------------------------------
 
 
 def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
-    """Simula un anno di contributi realistici per AndreaBonn."""
-    random.seed(42)  # seed fisso = riproducibile
+    """Simulate a year of realistic contributions for AndreaBonn."""
+    random.seed(42)  # fixed seed = reproducible
     contributions = []
     month_labels = []
 
-    today = datetime.today()
+    today = datetime.now(UTC)
     start = today - timedelta(weeks=52)
 
     current_month = None
@@ -66,7 +66,7 @@ def generate_demo_data() -> tuple[list[list[int]], list[tuple]]:
 
 
 # ---------------------------------------------------------------------------
-# Fetch dati reali da GitHub GraphQL API
+# Fetch real data from GitHub GraphQL API
 # ---------------------------------------------------------------------------
 
 GITHUB_GRAPHQL = "https://api.github.com/graphql"
@@ -91,10 +91,13 @@ query($login: String!) {
 
 def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
     headers = {"Authorization": f"bearer {token}"}
-    resp = requests.post(
-        GITHUB_GRAPHQL, json={"query": QUERY, "variables": {"login": USERNAME}}, headers=headers, timeout=15
-    )
-    resp.raise_for_status()
+    try:
+        resp = requests.post(
+            GITHUB_GRAPHQL, json={"query": QUERY, "variables": {"login": USERNAME}}, headers=headers, timeout=15
+        )
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        raise RuntimeError(f"GitHub GraphQL network error: {exc}") from exc
     data = resp.json()
 
     if "errors" in data:
@@ -166,7 +169,7 @@ def fetch_github_data(token: str) -> tuple[list[list[int]], list[tuple]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Snake Basket — GitHub contribution animator")
     parser.add_argument("--token", help="GitHub Personal Access Token (read:user)")
-    parser.add_argument("--demo", action="store_true", help="Usa dati demo senza token")
+    parser.add_argument("--demo", action="store_true", help="Use demo data without token")
     parser.add_argument("--output", default="snake_basket.gif", help="Nome file output")
     args = parser.parse_args()
 
@@ -182,16 +185,16 @@ def main() -> None:
         logger.error("No GitHub token provided. Set SNAKE_TOKEN env var or use --token. Use --demo for test data.")
         raise SystemExit(1)
     else:
-        logger.info("Fetching dati GitHub per @%s...", USERNAME)
+        logger.info("Fetching GitHub data for @%s...", USERNAME)
         contributions, month_labels = fetch_github_data(token)
 
     total_cells = sum(1 for c in contributions for level in c if level == 0)
-    logger.info("Celle vuote trovate: %d", total_cells)
+    logger.info("Empty cells found: %d", total_cells)
 
     generate_gif(contributions, month_labels, args.output)
-    logger.info("\nPer usarla nel README:\n")
+    logger.info("\nTo use in your README:\n")
     logger.info("![Snake Basket](./%s)", args.output)
-    logger.info("\nOppure con GitHub Actions: vedi README per il workflow automatico.")
+    logger.info("\nOr with GitHub Actions: see README for the automated workflow.")
 
 
 if __name__ == "__main__":

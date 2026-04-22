@@ -32,7 +32,7 @@ SNAKE_BODY_COLOR = (200, 100, 0)
 
 
 def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None:
-    """Disegna un pallone da basket stilizzato nella cella."""
+    """Draw a stylized basketball in the cell."""
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(230, 90, 20))
     lc = (180, 50, 0)
     lw = max(1, r // 5)
@@ -45,7 +45,7 @@ def draw_basketball(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None
 
 
 def draw_snake_head(draw: ImageDraw.ImageDraw, cx: int, cy: int, r: int) -> None:
-    """Testa del serpente — pivot con numero 5."""
+    """Snake head — pivot with number 5."""
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=SNAKE_HEAD_COLOR)
     draw.text((cx, cy), "5", fill=(255, 255, 255), anchor="mm")
 
@@ -62,7 +62,7 @@ def cell_center(col: int, row: int) -> tuple[int, int]:
 
 
 def render_base(contributions: list[list[int]], month_labels: list[tuple]) -> Image.Image:
-    """Renderizza il contribution graph di base senza animazione."""
+    """Render the base contribution graph without animation."""
     img = Image.new("RGB", (CANVAS_W, CANVAS_H), BG_COLOR)
     draw = ImageDraw.Draw(img)
 
@@ -86,7 +86,7 @@ def render_base(contributions: list[list[int]], month_labels: list[tuple]) -> Im
 
 
 def build_snake_path(contributions: list[list[int]]) -> list[tuple]:
-    """Percorso a serpentina: colonna per colonna, alternando su e giù."""
+    """Snake path: column by column, alternating top-down and bottom-up."""
     path = []
     for c in range(COLS):
         rows = range(ROWS) if c % 2 == 0 else range(ROWS - 1, -1, -1)
@@ -101,11 +101,11 @@ def generate_gif(
 ) -> None:
     path = build_snake_path(contributions)
     if not path:
-        logger.warning("Nessuna cella vuota trovata — il tuo GitHub è già pieno di contributi!")
+        logger.warning("No empty cells found — your GitHub is already full of contributions!")
         return
 
-    logger.info("Celle vuote da mangiare: %d", len(path))
-    logger.info("Generazione frames...")
+    logger.info("Empty cells to eat: %d", len(path))
+    logger.info("Generating frames...")
 
     base_img = render_base(contributions, month_labels)
     frames = []
@@ -148,7 +148,7 @@ def generate_gif(
         frames.append(final)
 
     if not frames:
-        logger.warning("Nessun frame generato.")
+        logger.warning("No frames generated.")
         return
 
     try:
@@ -165,4 +165,4 @@ def generate_gif(
             "generate_gif: failed to write GIF to '%s': %s — check disk space and permissions", output_path, exc
         )
         raise
-    logger.info("GIF salvata: %s (%d frames)", output_path, len(frames))
+    logger.info("GIF saved: %s (%d frames)", output_path, len(frames))

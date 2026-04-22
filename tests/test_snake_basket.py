@@ -216,3 +216,12 @@ def test_fetch_github_data_level_boundaries(mock_post):
     contributions, _ = fetch_github_data(token="tok")
     assert contributions[0] == [0, 1, 1, 2, 2, 3, 3]
     assert contributions[1][0] == 4  # count 10 → level 4
+
+
+@patch("snake_basket.requests.post")
+def test_fetch_github_data_network_error_raises(mock_post):
+    import requests as req
+
+    mock_post.side_effect = req.ConnectionError("network down")
+    with pytest.raises(RuntimeError, match="network error"):
+        fetch_github_data(token="tok")

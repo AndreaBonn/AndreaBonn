@@ -37,3 +37,9 @@ jobs:
 
       - name: Tests
         run: uv run pytest --cov --cov-report=term-missing -q
+
+      - name: Security scan
+        run: uv run bandit -r scripts/ -q --skip B311
+
+      - name: Dependency audit
+        run: uv run pip-audit

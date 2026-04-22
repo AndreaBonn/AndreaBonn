@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import pytest
 from common.parsers import parse_package_json, parse_pyproject_toml, parse_requirements_txt
 from tech_stack import DEMO_DATA, scan_repos
 from tech_svg import generate_svg, measure_text
@@ -299,13 +300,8 @@ def test_scan_repos_git_always_present(mock_repos, mock_langs, mock_file, mock_e
     assert result["tool"]["Git"] >= 2
 
 
-@patch("tech_stack.check_file_exists")
-@patch("tech_stack.fetch_file")
-@patch("tech_stack.fetch_languages")
 @patch("tech_stack.fetch_repos")
-def test_scan_repos_empty_repos(mock_repos, mock_langs, mock_file, mock_exists):
+def test_scan_repos_empty_repos_raises(mock_repos):
     mock_repos.return_value = []
-    result = scan_repos(token="tok")
-    # Tutte le categorie vuote tranne Git = 0
-    assert result["tool"]["Git"] == 0
-    assert result["linguaggio"] == {}
+    with pytest.raises(RuntimeError, match="No public repos found"):
+        scan_repos(token="tok")

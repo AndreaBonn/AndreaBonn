@@ -1,0 +1,61 @@
+"""
+Scoreboard SVG — days since last commit + visitor stats.
+Extracted from tamagotchi.py to keep files under 300 LOC.
+"""
+
+
+def make_last_commit_svg(days: int, visitors: int, total_visitors: int) -> str:
+    if days == 0:
+        color = "#3fb950"
+        quarter = "Q4"
+    elif days <= 2:
+        color = "#3fb950"
+        quarter = "Q3"
+    elif days <= 5:
+        color = "#e6861a"
+        quarter = "Q2"
+    elif days <= 14:
+        color = "#f85149"
+        quarter = "Q1"
+    else:
+        color = "#8b949e"
+        quarter = "OT"
+
+    bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
+    visitors_str = f"{visitors:,}".replace(",", ".")
+    total_str = f"{total_visitors:,}".replace(",", ".")
+
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 130" width="100%">
+  <rect width="880" height="130" rx="10" fill="#0d1117"/>
+  <rect x="1" y="1" width="878" height="128" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
+
+  <rect x="1" y="1" width="878" height="26" rx="9" fill="#1c2128"/>
+  <rect x="1" y="18" width="878" height="9" fill="#1c2128"/>
+  <line x1="1" y1="27" x2="879" y2="27" stroke="#30363d" stroke-width="1"/>
+  <circle cx="16" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
+  <circle cx="864" cy="14" r="3" fill="#e6861a" opacity="0.8"/>
+  <text x="440" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">SCOREBOARD</text>
+
+  <rect x="418" y="38" width="44" height="22" rx="4" fill="#1c2128" stroke="#30363d" stroke-width="1"/>
+  <text x="440" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#e6861a" font-weight="bold">{quarter}</text>
+
+  <text x="180" y="44" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">DAYS SINCE</text>
+  <text x="180" y="57" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">LAST COMMIT</text>
+  <rect x="120" y="64" width="120" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="180" y="94" text-anchor="middle" font-family="monospace" font-size="30" fill="{color}" font-weight="bold">{days}</text>
+
+  <circle cx="440" cy="84" r="14" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+  <line x1="426" y1="84" x2="454" y2="84" stroke="#e6861a" stroke-width="1"/>
+  <path d="M440 70 Q447 84 440 98" fill="none" stroke="#e6861a" stroke-width="1"/>
+  <path d="M440 70 Q433 84 440 98" fill="none" stroke="#e6861a" stroke-width="1"/>
+
+  <text x="700" y="44" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">PROFILE VIEWS</text>
+  <text x="700" y="57" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">LAST 14 DAYS</text>
+  <rect x="638" y="64" width="124" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="700" y="94" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">{visitors_str}</text>
+
+  <rect x="24" y="112" width="832" height="6" rx="3" fill="#21262d"/>
+  <rect x="24" y="112" width="{bar_pct * 8.32:.0f}" height="6" rx="3" fill="{color}"/>
+
+  <text x="440" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#8b949e">Total views: {total_str}</text>
+</svg>'''

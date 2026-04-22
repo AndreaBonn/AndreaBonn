@@ -1,6 +1,6 @@
 """
-Quote del giorno — Basket
-Genera un SVG con una citazione NBA diversa ogni giorno.
+Quote of the Day — Basketball
+Generates an SVG with a different NBA quote each day.
 Output: assets/quote.svg
 """
 
@@ -112,8 +112,8 @@ SVG_W: int = 680
 
 def pick_daily_quote() -> dict[str, str]:
     today = datetime.now(UTC).date()
-    random.seed(today.toordinal())
-    return random.choice(QUOTES)
+    rng = random.Random(today.toordinal())
+    return rng.choice(QUOTES)
 
 
 def generate_svg(quote: dict[str, str], today: datetime) -> str:
@@ -128,7 +128,7 @@ def generate_svg(quote: dict[str, str], today: datetime) -> str:
   <rect width="{SVG_W}" height="{svg_h}" rx="12" fill="#161b22"/>
   <rect x="1" y="1" width="{SVG_W - 2}" height="{svg_h - 2}" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
 
-  <!-- pallone decorativo -->
+  <!-- decorative basketball -->
   <circle cx="44" cy="44" r="26" fill="#e6861a"/>
   <line x1="44" y1="18" x2="44" y2="70" stroke="#c0580a" stroke-width="2"/>
   <line x1="18" y1="44" x2="70" y2="44" stroke="#c0580a" stroke-width="2"/>
@@ -140,13 +140,13 @@ def generate_svg(quote: dict[str, str], today: datetime) -> str:
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
   <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">&#x1F3C0; @AndreaBonn</text>
 
-  <!-- separatore -->
+  <!-- separator -->
   <line x1="24" y1="74" x2="{SVG_W - 24}" y2="74" stroke="#30363d" stroke-width="1"/>
 
-  <!-- citazione -->
+  <!-- quote text -->
   {svg_lines(lines, 100, line_height=LINE_H, svg_width=SVG_W, italic=True)}
 
-  <!-- autore -->
+  <!-- author -->
   <text x="{SVG_W - 24}" y="{svg_h - 32}" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— {author}</text>
   <text x="{SVG_W - 24}" y="{svg_h - 12}" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">{date_str}</text>
 </svg>'''
@@ -162,7 +162,7 @@ def main() -> None:
     out = ASSETS_DIR / "quote.svg"
     out.parent.mkdir(exist_ok=True)
     out.write_text(svg, encoding="utf-8")
-    logger.info("quote.svg generato — %s", quote["author"])
+    logger.info("quote.svg generated — %s", quote["author"])
 
 
 if __name__ == "__main__":

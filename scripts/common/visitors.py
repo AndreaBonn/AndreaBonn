@@ -29,7 +29,7 @@ def _read_visitors_data() -> dict:
 
 
 def _migrate_legacy(old: dict) -> dict:
-    """Migra dal vecchio formato {total, last_komarev} al nuovo con history."""
+    """Migrate from old format {total, last_komarev} to new format with history."""
     return {
         "last_komarev": old.get("last_komarev", 0),
         "total": old.get("total", 0),
@@ -78,9 +78,11 @@ def fetch_visitor_count() -> tuple[int, int]:
     data = _read_visitors_data()
 
     if current is None:
-        fallback = data.get("last_komarev", 0)
-        logger.warning("Skipping komarev update — using last known value: %d", fallback)
-        current = fallback
+        logger.warning("Skipping komarev update — returning cached history only")
+        history: list[dict] = data["history"]
+        cutoff = (datetime.now(UTC) - timedelta(days=14)).strftime("%Y-%m-%d")
+        views_14d = sum(entry["views"] for entry in history if entry["date"] >= cutoff)
+        return views_14d, data["total"]
 
     last = data["last_komarev"]
     delta = max(0, current - last) if last > 0 else 0

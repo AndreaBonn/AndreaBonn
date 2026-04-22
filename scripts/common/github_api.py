@@ -31,7 +31,7 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:  # nosec B310
             return resp.read()
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
@@ -45,7 +45,8 @@ def _api_get(url: str, token: str, accept: str = "application/vnd.github+json") 
         else:
             try:
                 body = exc.read().decode("utf-8", errors="replace")[:200]
-            except Exception:
+            except OSError as body_exc:
+                logger.debug("Could not read error body: %s", body_exc)
                 body = "<unreadable>"
             logger.warning("GitHub API HTTP %d for %s: %s — body: %s", exc.code, url, exc, body)
         return None
