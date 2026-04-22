@@ -75,23 +75,23 @@ def fetch_days_since_last_commit(token: str) -> int:
 def make_last_commit_svg(days: int, visitors: int) -> str:
     if days == 0:
         color = "#3fb950"
-        label = "fresco di commit!"
+        label = "fresh commit!"
         quarter = "Q4"
     elif days <= 2:
         color = "#3fb950"
-        label = f"{days}{'g' if days == 1 else 'gg'} fa — ottimo ritmo"
+        label = f"{days}{'d' if days == 1 else 'd'} ago — great pace"
         quarter = "Q3"
     elif days <= 5:
         color = "#e6861a"
-        label = f"{days}gg fa — stai scaldando?"
+        label = f"{days}d ago — warming up?"
         quarter = "Q2"
     elif days <= 14:
         color = "#f85149"
-        label = f"{days}gg fa — torna in campo!"
+        label = f"{days}d ago — get back on the court!"
         quarter = "Q1"
     else:
         color = "#8b949e"
-        label = f"{days}gg fa — il coach ti cerca"
+        label = f"{days}d ago — the coach is looking for you"
         quarter = "OT"
 
     bar_pct = min(100, max(3, int(max(20, 600 - days * 40) / 6)))
@@ -116,9 +116,10 @@ def make_last_commit_svg(days: int, visitors: int) -> str:
   <text x="440" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#e6861a" font-weight="bold">{quarter}</text>
 
   <!-- pannello sinistro (commit) -->
-  <text x="180" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">GIORNI DALL&#39;ULTIMO COMMIT</text>
-  <rect x="120" y="62" width="120" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-  <text x="180" y="92" text-anchor="middle" font-family="monospace" font-size="30" fill="{color}" font-weight="bold">{days}</text>
+  <text x="180" y="44" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">DAYS SINCE</text>
+  <text x="180" y="57" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">LAST COMMIT</text>
+  <rect x="120" y="64" width="120" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="180" y="94" text-anchor="middle" font-family="monospace" font-size="30" fill="{color}" font-weight="bold">{days}</text>
 
   <!-- pallone al centro (SVG basketball) -->
   <circle cx="440" cy="84" r="14" fill="none" stroke="#e6861a" stroke-width="1.5"/>
@@ -127,9 +128,10 @@ def make_last_commit_svg(days: int, visitors: int) -> str:
   <path d="M440 70 Q433 84 440 98" fill="none" stroke="#e6861a" stroke-width="1"/>
 
   <!-- pannello destro (visite) -->
-  <text x="700" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">VISITE AL PROFILO</text>
-  <rect x="638" y="62" width="124" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-  <text x="700" y="92" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">{visitors_str}</text>
+  <text x="700" y="44" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">PROFILE VIEWS</text>
+  <text x="700" y="57" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="1">LAST 14 DAYS</text>
+  <rect x="638" y="64" width="124" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="700" y="94" text-anchor="middle" font-family="monospace" font-size="30" fill="#e6861a" font-weight="bold">{visitors_str}</text>
 
   <!-- barra progressione commit -->
   <rect x="24" y="112" width="832" height="6" rx="3" fill="#21262d"/>
@@ -148,7 +150,7 @@ STATES = {
         "days": (0, 2),
         "color": "#3fb950",
         "border": "#3fb950",
-        "msg": "sono felice! continua a committare!",
+        "msg": "i'm happy! keep committing!",
         "face": '''
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#3fb950" stroke-width="2"/>
           <circle cx="183" cy="110" r="6" fill="#3fb950"/>
@@ -160,13 +162,13 @@ STATES = {
           <text x="140" y="80" font-size="16">✨</text>
           <text x="248" y="80" font-size="16">✨</text>
         ''',
-        "status": "IN FORMA"
+        "status": "ON FIRE"
     },
     "good": {
         "days": (3, 5),
         "color": "#e6861a",
         "border": "#e6861a",
-        "msg": "dai, un commit non fa male...",
+        "msg": "c'mon, one commit won't hurt...",
         "face": '''
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#e6861a" stroke-width="2"/>
           <circle cx="183" cy="110" r="6" fill="#e6861a"/>
@@ -177,13 +179,13 @@ STATES = {
           <!-- punto interrogativo -->
           <text x="248" y="85" font-size="20">🤔</text>
         ''',
-        "status": "IN PAUSA"
+        "status": "ON BREAK"
     },
     "tired": {
         "days": (6, 13),
         "color": "#f85149",
         "border": "#f85149",
-        "msg": "sto male... dove sei andato?",
+        "msg": "i'm not okay... where did you go?",
         "face": '''
           <circle cx="200" cy="120" r="60" fill="#1c2128" stroke="#f85149" stroke-width="2"/>
           <!-- occhi a X -->
@@ -197,13 +199,13 @@ STATES = {
           <ellipse cx="217" cy="124" rx="3" ry="5" fill="#388bfd" opacity="0.7"/>
           <text x="140" y="85" font-size="16">💔</text>
         ''',
-        "status": "STANCO"
+        "status": "TIRED"
     },
     "dead": {
         "days": (14, 9999),
         "color": "#484f58",
         "border": "#484f58",
-        "msg": "sono morto. il coach ha chiamato. non ha risposto nessuno.",
+        "msg": "i'm dead. the coach called. nobody answered.",
         "face": '''
           <circle cx="200" cy="120" r="60" fill="#0d1117" stroke="#484f58" stroke-width="2"/>
           <!-- occhi a X grandi -->
@@ -267,11 +269,11 @@ def make_tamagotchi_svg(days: int) -> str:
 
   <!-- giorni badge -->
   <rect x="300" y="80" width="120" height="40" rx="8" fill="#1c2128" stroke="{state["border"]}" stroke-width="1"/>
-  <text x="360" y="97" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">giorni senza commit</text>
+  <text x="360" y="97" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">days without commit</text>
   <text x="360" y="114" font-family="monospace" font-size="22" fill="{state["color"]}" text-anchor="middle" font-weight="bold">{days}</text>
 
   <!-- barra vitale -->
-  <text x="300" y="144" font-family="monospace" font-size="10" fill="#8b949e">vita</text>
+  <text x="300" y="144" font-family="monospace" font-size="10" fill="#8b949e">health</text>
   <rect x="300" y="150" width="340" height="8" rx="4" fill="#21262d"/>
   <rect x="300" y="150" width="{max(4, 340 - days * 22):.0f}" height="8" rx="4" fill="{state["color"]}"/>
 
