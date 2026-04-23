@@ -1,8 +1,8 @@
-<svg width="680" height="214" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="214" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="212" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+<svg width="680" height="186" xmlns="http://www.w3.org/2000/svg">
+  <rect width="680" height="186" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="678" height="184" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
 
-  <!-- pallone decorativo -->
+  <!-- decorative basketball -->
   <circle cx="44" cy="44" r="26" fill="#e6861a"/>
   <line x1="44" y1="18" x2="44" y2="70" stroke="#c0580a" stroke-width="2"/>
   <line x1="18" y1="44" x2="70" y2="44" stroke="#c0580a" stroke-width="2"/>
@@ -14,16 +14,15 @@
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">QUOTE OF THE DAY</text>
   <text x="80" y="58" font-family="monospace" font-size="15" fill="#e6861a">&#x1F3C0; @AndreaBonn</text>
 
-  <!-- separatore -->
+  <!-- separator -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
-  <!-- citazione -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The most important thing is to try and</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">inspire people so that they can be great in</text>
-<text x="340" y="156" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">whatever they want to do.</text>
+  <!-- quote text -->
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The best teams have chemistry, but chemistry</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">is not enough. You also need talent.</text>
 
 
-  <!-- autore -->
-  <text x="656" y="182" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Kobe Bryant</text>
-  <text x="656" y="202" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">22 Apr 2026</text>
+  <!-- author -->
+  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Pat Riley</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">23 Apr 2026</text>
 </svg>
