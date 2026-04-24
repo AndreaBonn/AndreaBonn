@@ -18,11 +18,11 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- quote text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The best teams have chemistry, but chemistry</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">is not enough. You also need talent.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The game has its ups and downs, but you can</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">never lose focus of your individual goals.</text>
 
 
   <!-- author -->
-  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Pat Riley</text>
-  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">23 Apr 2026</text>
+  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Michael Jordan</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">24 Apr 2026</text>
 </svg>

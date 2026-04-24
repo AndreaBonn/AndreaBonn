@@ -1,6 +1,6 @@
 {
-  "last_komarev": 53,
-  "total": 53,
+  "last_komarev": 71,
+  "total": 71,
   "history": [
     {
       "date": "2026-04-22",
@@ -9,6 +9,10 @@
     {
       "date": "2026-04-23",
       "views": 21
+    },
+    {
+      "date": "2026-04-24",
+      "views": 18
     }
   ]
 }
