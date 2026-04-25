@@ -42,4 +42,4 @@ jobs:
         run: uv run bandit -r scripts/ -q
 
       - name: Dependency audit
-        run: uv run pip-audit
+        run: uv run pip-audit --ignore-vuln CVE-2026-3219  # pip 26.0.1 — no fix available yet
