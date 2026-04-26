@@ -1,24 +1,23 @@
-<svg width="680" height="214" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="214" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="212" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
+<svg width="680" height="186" xmlns="http://www.w3.org/2000/svg">
+  <rect width="680" height="186" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="678" height="184" rx="11" fill="none" stroke="#388bfd" stroke-width="1.5"/>
 
   <!-- event icon -->
   <rect x="16" y="16" width="52" height="52" rx="10" fill="#1c2128"/>
-  <text x="42" y="50" font-size="26" text-anchor="middle">🎯</text>
+  <text x="42" y="50" font-size="26" text-anchor="middle">🏆</text>
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">TODAY IN NBA HISTORY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">APRIL 25</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">APRIL 26</text>
 
   <!-- separator -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- event text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 2019 Dirk Nowitzki announces his</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">retirement after 21 seasons with the Dallas</text>
-<text x="340" y="156" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Mavericks.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 1996 the Chicago Bulls finish the regular</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">season with 72 wins, a historic record.</text>
 
 
   <!-- footer -->
-  <text x="656" y="202" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">@AndreaBonn • NBA history</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">@AndreaBonn • NBA history</text>
 </svg>
