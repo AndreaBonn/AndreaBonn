@@ -4,18 +4,18 @@
 
   <!-- event icon -->
   <rect x="16" y="16" width="52" height="52" rx="10" fill="#1c2128"/>
-  <text x="42" y="50" font-size="26" text-anchor="middle">😢</text>
+  <text x="42" y="50" font-size="26" text-anchor="middle">📺</text>
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">TODAY IN NBA HISTORY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">APRIL 28</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">APRIL 29</text>
 
   <!-- separator -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- event text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 1995 Michael Jordan plays his last game</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">before his first retirement.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">In 2010 LeBron James announces &#x27;The</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle">Decision&#x27;: leaving Cleveland for Miami.</text>
 
 
   <!-- footer -->
