@@ -8,7 +8,7 @@
 
   <!-- header -->
   <text x="80" y="36" font-family="monospace" font-size="16" fill="#8b949e" letter-spacing="2">TODAY IN NBA HISTORY</text>
-  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">MAY 03</text>
+  <text x="80" y="58" font-family="monospace" font-size="15" fill="#388bfd">MAY 04</text>
 
   <!-- separator -->
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>

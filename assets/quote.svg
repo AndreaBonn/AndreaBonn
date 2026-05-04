@@ -1,6 +1,6 @@
-<svg width="680" height="158" xmlns="http://www.w3.org/2000/svg">
-  <rect width="680" height="158" rx="12" fill="#161b22"/>
-  <rect x="1" y="1" width="678" height="156" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
+<svg width="680" height="214" xmlns="http://www.w3.org/2000/svg">
+  <rect width="680" height="214" rx="12" fill="#161b22"/>
+  <rect x="1" y="1" width="678" height="212" rx="11" fill="none" stroke="#e6861a" stroke-width="1.5"/>
 
   <!-- decorative basketball -->
   <circle cx="44" cy="44" r="26" fill="#e6861a"/>
@@ -18,10 +18,12 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- quote text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The game is won at practice.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">The most important thing is to try and</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">inspire people so that they can be great in</text>
+<text x="340" y="156" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">whatever they want to do.</text>
 
 
   <!-- author -->
-  <text x="656" y="126" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Coach John Wooden</text>
-  <text x="656" y="146" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">03 May 2026</text>
+  <text x="656" y="182" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Kobe Bryant</text>
+  <text x="656" y="202" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">04 May 2026</text>
 </svg>
