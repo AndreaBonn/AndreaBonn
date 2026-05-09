@@ -229,7 +229,7 @@ def test_fetch_visitor_count_fallback_malformed_history(mock_read, _mock_komarev
         "last_komarev": 10,
         "total": 50,
         "history": [
-            {"date": "2026-04-20", "views": 5},
+            {"date": "2026-05-05", "views": 5},
             "not-a-dict",
             {"wrong_key": "missing views and date"},
         ],
