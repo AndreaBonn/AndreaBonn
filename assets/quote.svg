@@ -18,11 +18,11 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- quote text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">Ask not what your teammates can do for you.</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">Ask what you can do for your teammates.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">Push yourself again and again. Don&#x27;t give an</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">inch until the final buzzer sounds.</text>
 
 
   <!-- author -->
-  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Magic Johnson</text>
-  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">15 May 2026</text>
+  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Larry Bird</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">16 May 2026</text>
 </svg>
