@@ -225,11 +225,12 @@ def test_fetch_komarev_count_invalid_url_raises(mock_get):
 @patch("common.visitors._read_visitors_data")
 def test_fetch_visitor_count_fallback_malformed_history(mock_read, _mock_komarev):
     """Fallback path handles malformed history entries without crashing."""
+    recent_date = (datetime.now(UTC) - timedelta(days=3)).strftime("%Y-%m-%d")
     mock_read.return_value = {
         "last_komarev": 10,
         "total": 50,
         "history": [
-            {"date": "2026-05-05", "views": 5},
+            {"date": recent_date, "views": 5},
             "not-a-dict",
             {"wrong_key": "missing views and date"},
         ],
