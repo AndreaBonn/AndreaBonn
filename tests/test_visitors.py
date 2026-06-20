@@ -2,8 +2,27 @@ import json
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
 
+import pytest
 import requests
-from common.visitors import _fetch_komarev_count, _migrate_legacy, _read_visitors_data, fetch_visitor_count
+from common.visitors import (
+    _fetch_komarev_count,
+    _migrate_legacy,
+    _read_visitors_data,
+    _save_visitors_data,
+    fetch_visitor_count,
+)
+
+
+def test_save_visitors_data_write_failure_raises(tmp_path, monkeypatch):
+    """A failed write must propagate so the caller knows the update was lost."""
+    monkeypatch.setattr("common.visitors.VISITORS_JSON", tmp_path / "visitors.json")
+
+    def _boom(*_a, **_k):
+        raise OSError("read-only filesystem")
+
+    monkeypatch.setattr("pathlib.Path.write_text", _boom)
+    with pytest.raises(OSError, match="read-only filesystem"):
+        _save_visitors_data({"last_komarev": 1, "total": 1, "history": []})
 
 
 def test_migrate_legacy_empty():

@@ -1,6 +1,9 @@
+from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
 
+import pytest
 import requests
+import tamagotchi
 from scoreboard import make_last_commit_svg
 from tamagotchi import fetch_days_since_last_commit, get_state, make_tamagotchi_svg, wrap_msg
 
@@ -38,6 +41,16 @@ def test_fetch_days_non_dict_payload_returns_none(mock_get):
     assert fetch_days_since_last_commit(token="tok") is None
 
 
+@patch("tamagotchi.requests.get")
+def test_fetch_days_valid_response_returns_elapsed_days(mock_get):
+    commit_date = (datetime.now(UTC) - timedelta(days=4)).isoformat().replace("+00:00", "Z")
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.return_value = None
+    mock_resp.json.return_value = {"items": [{"commit": {"author": {"date": commit_date}}}]}
+    mock_get.return_value = mock_resp
+    assert fetch_days_since_last_commit(token="tok") == 4
+
+
 def test_get_state_happy_at_zero_days():
     state = get_state(days=0)
     assert state["status"] == "ON FIRE"
@@ -66,6 +79,12 @@ def test_get_state_dead_at_fifteen_days():
 
 def test_get_state_dead_at_extreme():
     state = get_state(days=9999)
+    assert state["status"] == "RIP"
+
+
+def test_get_state_out_of_range_falls_back_to_dead():
+    # Days beyond every defined range hit the explicit dead fallback.
+    state = get_state(days=100000)
     assert state["status"] == "RIP"
 
 
@@ -169,7 +188,6 @@ def test_main_demo_writes_svgs(tmp_path, monkeypatch):
 
 
 def test_main_no_token_exits(monkeypatch):
-    import pytest
 
     monkeypatch.setattr("sys.argv", ["tamagotchi"])
     monkeypatch.delenv("SNAKE_TOKEN", raising=False)
@@ -177,3 +195,43 @@ def test_main_no_token_exits(monkeypatch):
 
     with pytest.raises(SystemExit):
         main()
+
+
+def test_main_token_success_writes_svgs(tmp_path, monkeypatch):
+    monkeypatch.setattr(tamagotchi, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["tamagotchi"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    monkeypatch.setattr(tamagotchi, "fetch_days_since_last_commit", lambda _t: 1)
+    monkeypatch.setattr(tamagotchi, "fetch_visitor_count", lambda: (42, 420))
+    from tamagotchi import main
+
+    main()
+    assert (tmp_path / "tamagotchi.svg").exists()
+    assert (tmp_path / "last_commit.svg").exists()
+
+
+def test_main_token_unavailable_commit_exits(tmp_path, monkeypatch):
+    monkeypatch.setattr(tamagotchi, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["tamagotchi"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    monkeypatch.setattr(tamagotchi, "fetch_days_since_last_commit", lambda _t: None)
+    from tamagotchi import main
+
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1
+
+
+def test_main_write_failure_exits(tmp_path, monkeypatch):
+    monkeypatch.setattr(tamagotchi, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["tamagotchi", "--demo", "--days", "1"])
+
+    def _boom(*_a, **_k):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("pathlib.Path.write_text", _boom)
+    from tamagotchi import main
+
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1

@@ -106,3 +106,18 @@ def test_main_writes_svg(tmp_path, monkeypatch):
     content = out.read_text(encoding="utf-8")
     assert content.startswith("<svg")
     assert "TODAY IN NBA HISTORY" in content
+
+
+def test_main_write_failure_exits(tmp_path, monkeypatch):
+    import pytest
+    from nba_today import main
+
+    monkeypatch.setattr("nba_today.ASSETS_DIR", tmp_path)
+
+    def _boom(*_a, **_k):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("pathlib.Path.write_text", _boom)
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1

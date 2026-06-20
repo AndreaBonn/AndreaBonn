@@ -1,6 +1,8 @@
 import re
 
-from total_stars import compute_total_stars, make_total_stars_svg
+import pytest
+import total_stars
+from total_stars import compute_total_stars, main, make_total_stars_svg
 
 
 def _badge_width(svg: str) -> int:
@@ -50,3 +52,63 @@ def test_make_svg_aria_label_reports_count():
 
 def test_make_svg_width_grows_with_digits():
     assert _badge_width(make_total_stars_svg(1000000)) > _badge_width(make_total_stars_svg(7))
+
+
+# ---------------------------------------------------------------------------
+# main() — integration tests
+# ---------------------------------------------------------------------------
+
+
+def test_main_demo_writes_badge_with_given_count(tmp_path, monkeypatch):
+    monkeypatch.setattr(total_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["total_stars", "--demo", "--stars", "77"])
+    main()
+    out = tmp_path / "total_stars.svg"
+    assert 'aria-label="stars: 77"' in out.read_text(encoding="utf-8")
+
+
+def test_main_no_token_exits_without_writing(tmp_path, monkeypatch):
+    monkeypatch.setattr(total_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["total_stars"])
+    monkeypatch.delenv("SNAKE_TOKEN", raising=False)
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1
+    assert not (tmp_path / "total_stars.svg").exists()
+
+
+def test_main_token_success_writes_summed_count(tmp_path, monkeypatch):
+    monkeypatch.setattr(total_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["total_stars"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    repos = [
+        {"name": "a", "stargazers_count": 30, "fork": False},
+        {"name": "b", "stargazers_count": 12, "fork": False},
+    ]
+    monkeypatch.setattr(total_stars, "fetch_repos", lambda _t: repos)
+    main()
+    assert 'aria-label="stars: 42"' in (tmp_path / "total_stars.svg").read_text(encoding="utf-8")
+
+
+def test_main_empty_repos_exits_to_avoid_bogus_zero(tmp_path, monkeypatch):
+    monkeypatch.setattr(total_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["total_stars"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    monkeypatch.setattr(total_stars, "fetch_repos", lambda _t: [])
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1
+    assert not (tmp_path / "total_stars.svg").exists()
+
+
+def test_main_write_failure_exits(tmp_path, monkeypatch):
+    monkeypatch.setattr(total_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["total_stars", "--demo", "--stars", "5"])
+
+    def _boom(*_a, **_k):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("pathlib.Path.write_text", _boom)
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1

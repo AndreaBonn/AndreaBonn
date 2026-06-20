@@ -1,6 +1,8 @@
 import re
 
-from repo_stars import build_star_map, make_stars_badge, write_badges
+import pytest
+import repo_stars
+from repo_stars import build_star_map, main, make_stars_badge, write_badges
 
 
 def _badge_width(svg: str) -> int:
@@ -67,3 +69,61 @@ def test_write_badges_creates_missing_dir(tmp_path):
     out = tmp_path / "stars"
     write_badges({"RepoA": 1}, out)
     assert (out / "RepoA.svg").exists()
+
+
+def test_write_badges_write_failure_exits(tmp_path, monkeypatch):
+    def _boom(*_a, **_k):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("pathlib.Path.write_text", _boom)
+    with pytest.raises(SystemExit) as exc:
+        write_badges({"RepoA": 1}, tmp_path)
+    assert exc.value.code == 1
+
+
+# ---------------------------------------------------------------------------
+# main() — integration tests
+# ---------------------------------------------------------------------------
+
+
+def test_main_demo_writes_badges_for_demo_repos(tmp_path, monkeypatch):
+    monkeypatch.setattr(repo_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["repo_stars", "--demo"])
+    main()
+    stars_dir = tmp_path / "stars"
+    assert (stars_dir / "DemoRepo.svg").exists()
+    assert (stars_dir / "AnotherRepo.svg").exists()
+
+
+def test_main_no_token_exits_without_writing(tmp_path, monkeypatch):
+    monkeypatch.setattr(repo_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["repo_stars"])
+    monkeypatch.delenv("SNAKE_TOKEN", raising=False)
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1
+    assert not (tmp_path / "stars").exists()
+
+
+def test_main_token_success_writes_badge_per_repo(tmp_path, monkeypatch):
+    monkeypatch.setattr(repo_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["repo_stars"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    repos = [
+        {"name": "RepoA", "stargazers_count": 8},
+        {"name": "RepoB", "stargazers_count": 0},
+    ]
+    monkeypatch.setattr(repo_stars, "fetch_repos", lambda _t: repos)
+    main()
+    assert ">8</text>" in (tmp_path / "stars" / "RepoA.svg").read_text(encoding="utf-8")
+    assert (tmp_path / "stars" / "RepoB.svg").exists()
+
+
+def test_main_empty_repos_exits_to_avoid_wiping_badges(tmp_path, monkeypatch):
+    monkeypatch.setattr(repo_stars, "ASSETS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["repo_stars"])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    monkeypatch.setattr(repo_stars, "fetch_repos", lambda _t: [])
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert exc.value.code == 1

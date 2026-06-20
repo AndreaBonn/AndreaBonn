@@ -280,3 +280,18 @@ def test_main_no_token_exits(monkeypatch):
 
     with pytest.raises(SystemExit):
         main()
+
+
+def test_main_with_token_fetches_real_data(tmp_path, monkeypatch):
+    """With a token and no --demo, main fetches live data and renders it."""
+    import snake_basket
+
+    out = tmp_path / "snake.gif"
+    monkeypatch.setattr("sys.argv", ["snake_basket", "--output", str(out)])
+    monkeypatch.setenv("SNAKE_TOKEN", "tok")
+    contributions = [[0] * ROWS for _ in range(COLS)]
+    contributions[0] = [1, 1, 1, 1, 1, 1, 1]
+    monkeypatch.setattr(snake_basket, "fetch_github_data", lambda _t: (contributions, []))
+
+    snake_basket.main()
+    assert out.exists()

@@ -182,6 +182,32 @@ def test_fetch_repos_partial_data_warning(mock_urlopen, caplog):
     assert "partial data" in caplog.text
 
 
+@patch("common.github_api.urllib.request.urlopen")
+def test_api_get_other_http_error_logs_body_returns_none(mock_urlopen):
+    """A 5xx (not auth/rate/404) is logged with its body and yields None, not a raise."""
+    from common.github_api import _api_get
+
+    err = urllib.error.HTTPError(url="https://api.github.com/test", code=500, msg="Server Error", hdrs={}, fp=None)
+    err.read = lambda: b"upstream exploded"
+    mock_urlopen.side_effect = err
+    assert _api_get("https://api.github.com/test", token="tok") is None
+
+
+@patch("common.github_api.urllib.request.urlopen")
+def test_api_get_other_http_error_unreadable_body_returns_none(mock_urlopen):
+    """If the error body itself cannot be read, the request still resolves to None."""
+    from common.github_api import _api_get
+
+    err = urllib.error.HTTPError(url="https://api.github.com/test", code=503, msg="Unavailable", hdrs={}, fp=None)
+
+    def _unreadable():
+        raise OSError("stream closed")
+
+    err.read = _unreadable
+    mock_urlopen.side_effect = err
+    assert _api_get("https://api.github.com/test", token="tok") is None
+
+
 def test_sanitize_path_component_valid():
     from common.github_api import _sanitize_path_component
 

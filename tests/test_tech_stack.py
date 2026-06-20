@@ -100,6 +100,23 @@ def test_parse_pyproject_toml_invalid():
     assert parse_pyproject_toml("not valid toml {{{") == []
 
 
+def test_parse_pyproject_toml_dependencies_not_list():
+    """[project] present but dependencies is not a list → empty result."""
+    assert parse_pyproject_toml('[project]\ndependencies = "requests"\n') == []
+
+
+def test_parse_pyproject_toml_skips_specifier_only_entry():
+    """An entry that is pure version specifier yields no name and is skipped."""
+    content = '[project]\ndependencies = [">=1.0", "requests>=2.31"]\n'
+    assert parse_pyproject_toml(content) == ["requests"]
+
+
+def test_parse_requirements_txt_skips_specifier_only_line():
+    """A line with no parseable package name is skipped, not appended as empty."""
+    content = ">=1.0\nrequests==2.31.0\n"
+    assert parse_requirements_txt(content) == ["requests"]
+
+
 def test_measure_text_positive():
     width = measure_text("Python", font_size=14)
     assert width > 0
@@ -271,6 +288,31 @@ def test_scan_repos_python_deps_detected(mock_repos, mock_langs, mock_file, mock
 @patch("tech_stack.fetch_file")
 @patch("tech_stack.fetch_languages")
 @patch("tech_stack.fetch_repos")
+def test_scan_repos_ignores_unmapped_topics_and_deps(mock_repos, mock_langs, mock_file, mock_exists):
+    """Topics and dependencies absent from the maps are silently skipped."""
+    mock_repos.return_value = [{"name": "repo", "fork": False, "topics": ["docker", "totally-unknown-topic"]}]
+    mock_langs.return_value = {}
+    mock_file.side_effect = lambda _tok, _repo, path: {
+        "requirements.txt": "fastapi>=0.100\nsome-obscure-lib>=1.0\n",
+        "package.json": '{"dependencies": {"react": "^18", "left-pad": "^1"}}',
+    }.get(path)
+    mock_exists.return_value = False
+
+    result = scan_repos(token="tok")
+    assert "Docker" in result["tool"]
+    assert "FastAPI" in result["framework"]
+    assert "React" in result["framework"]
+    # Unmapped entries contribute nothing extra to any category.
+    all_names = {name for cat in result.values() for name in cat}
+    assert "totally-unknown-topic" not in all_names
+    assert "some-obscure-lib" not in all_names
+    assert "left-pad" not in all_names
+
+
+@patch("tech_stack.check_file_exists")
+@patch("tech_stack.fetch_file")
+@patch("tech_stack.fetch_languages")
+@patch("tech_stack.fetch_repos")
 def test_scan_repos_js_deps_detected(mock_repos, mock_langs, mock_file, mock_exists):
     mock_repos.return_value = [{"name": "repo", "fork": False, "topics": []}]
     mock_langs.return_value = {}
@@ -366,6 +408,21 @@ def test_main_no_token_exits(monkeypatch):
 
     with pytest.raises(SystemExit):
         main()
+
+
+def test_main_token_skips_empty_categories_in_log(monkeypatch, tmp_path):
+    """A category with no detected tech is skipped (not logged) but the SVG still renders."""
+    import tech_stack
+
+    monkeypatch.setattr("sys.argv", ["tech_stack"])
+    monkeypatch.setenv("SNAKE_TOKEN", "test-token")
+    monkeypatch.setattr(tech_stack, "ASSETS_DIR", tmp_path)
+    data = {key: dict(value) for key, value in DEMO_DATA.items()}
+    data["database"] = {}  # force one empty category through the logging loop
+    monkeypatch.setattr(tech_stack, "scan_repos", lambda _t: data)
+
+    tech_stack.main()
+    assert (tmp_path / "tech_stack.svg").exists()
 
 
 def test_main_write_failure_exits(monkeypatch, tmp_path):

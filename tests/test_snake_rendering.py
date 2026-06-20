@@ -1,6 +1,8 @@
 import os
 import tempfile
+from unittest.mock import MagicMock
 
+import pytest
 from PIL import Image, ImageDraw
 from snake_rendering import (
     BG_COLOR,
@@ -54,6 +56,17 @@ def test_draw_snake_head_paints_head_color():
     # Un pixel vicino al centro (non esattamente il centro perché c'è il testo "5")
     pixel = img.getpixel((17, 25))
     assert pixel == SNAKE_HEAD_COLOR
+
+
+def test_draw_snake_head_falls_back_when_anchor_unsupported():
+    """When the font rejects anchor='mm', the label is still drawn (offset positioning)."""
+    draw = MagicMock()
+    draw.text.side_effect = [ValueError("anchor not supported"), None]
+    draw_snake_head(draw, cx=25, cy=25, r=10)
+    # Two text attempts: the anchored one (failed) and the fallback one.
+    assert draw.text.call_count == 2
+    fallback_call = draw.text.call_args_list[1]
+    assert "anchor" not in fallback_call.kwargs
 
 
 # ---------------------------------------------------------------------------
@@ -153,6 +166,15 @@ def test_generate_gif_small_grid_produces_valid_gif():
         assert img.format == "GIF"
     finally:
         os.unlink(path)
+
+
+def test_generate_gif_write_failure_raises(tmp_path):
+    """An unwritable output path surfaces as OSError, not a silent no-op."""
+    contributions = [[4] * ROWS for _ in range(COLS)]
+    contributions[0][0] = 0  # at least one empty cell so frames are produced
+    bad_path = str(tmp_path / "does_not_exist" / "snake.gif")
+    with pytest.raises(OSError):
+        generate_gif(contributions, month_labels=[], output_path=bad_path)
 
 
 # ---------------------------------------------------------------------------
