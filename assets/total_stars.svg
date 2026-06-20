@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="89" height="20" role="img" aria-label="stars: 13">
+  <title>stars: 13</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="89" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="60" height="20" fill="#555"/>
+    <rect x="60" width="29" height="20" fill="#dfb317"/>
+    <rect width="89" height="20" fill="url(#s)"/>
+  </g>
+  <path d="M11 4.5l1.7 3.4 3.8.6-2.7 2.7.6 3.8L11 13.4 7.6 15.5l.6-3.8L5.5 9l3.8-.6z" fill="#fff"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="40" y="15" fill="#010101" fill-opacity=".3">stars</text>
+    <text x="40" y="14">stars</text>
+    <text x="74" y="15" fill="#010101" fill-opacity=".3">13</text>
+    <text x="74" y="14">13</text>
+  </g>
+</svg>
