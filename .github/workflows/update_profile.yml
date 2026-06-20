@@ -57,6 +57,11 @@ jobs:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
         run: uv run python scripts/total_stars.py
 
+      - name: Per-repo star badges
+        env:
+          SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
+        run: uv run python scripts/repo_stars.py
+
       - name: Tamagotchi and last commit
         env:
           SNAKE_TOKEN: ${{ secrets.SNAKE_TOKEN }}
@@ -66,6 +71,6 @@ jobs:
         run: |
           git config --local user.name  "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/snake_basket.gif assets/quote.svg assets/nba_today.svg assets/tamagotchi.svg assets/last_commit.svg assets/total_stars.svg assets/visitors.json
+          git add assets/snake_basket.gif assets/quote.svg assets/nba_today.svg assets/tamagotchi.svg assets/last_commit.svg assets/total_stars.svg assets/stars assets/visitors.json
           git diff --cached --quiet || git commit -m "chore: update profile $(date +'%Y-%m-%d') [skip ci]"
           git push
