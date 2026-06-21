@@ -64,7 +64,7 @@ AI Engineer · Data Analyst
 
 | Project                                                                    | What it does                                                                                               | Tests | Coverage | Stars                                                                                                          |
 | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |:-----:|:--------:|:--------------------------------------------------------------------------------------------------------------:|
-| [**AutoGPS**](https://github.com/AndreaBonn/AutoGPS-by-Bonn)               | Auto-start GPS in car via Bluetooth/Android Auto. No cloud, no tracking                                    | | | ![Stars](./assets/stars/AutoGPS-by-Bonn.svg)              |
+| [**AutoGPS**](https://github.com/AndreaBonn/AutoGPS-by-Bonn)               | Auto-start GPS in car via Bluetooth/Android Auto. No cloud, no tracking                                    | ![Tests: 299 passed](https://img.shields.io/badge/-299%20passed-brightgreen?style=flat-square) | ![Coverage: 93.9%](https://img.shields.io/badge/-93.9%25-brightgreen?style=flat-square) | ![Stars](./assets/stars/AutoGPS-by-Bonn.svg)              |
 
 ---
 
