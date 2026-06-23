@@ -14,6 +14,12 @@ AI Engineer · Data Analyst
 
 ---
 
+
+https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
+
+
+---
+
 ![Snake Basket](./assets/snake_basket.gif)
 
 ---
