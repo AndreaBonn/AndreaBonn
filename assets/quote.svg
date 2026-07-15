@@ -18,11 +18,11 @@
   <line x1="24" y1="74" x2="656" y2="74" stroke="#30363d" stroke-width="1"/>
 
   <!-- quote text -->
-  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">To be a great champion you must believe you</text>
-<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">are the best. If you&#x27;re not, pretend you are.</text>
+  <text x="340" y="100" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">You have to be able to accept failure to get</text>
+<text x="340" y="128" font-family="monospace" font-size="18" fill="#e6edf3" text-anchor="middle" font-style="italic">better.</text>
 
 
   <!-- author -->
-  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— Muhammad Ali</text>
-  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">14 Jul 2026</text>
+  <text x="656" y="154" font-family="monospace" font-size="18" fill="#e6861a" text-anchor="end" font-weight="bold">— LeBron James</text>
+  <text x="656" y="174" font-family="monospace" font-size="14" fill="#484f58" text-anchor="end">15 Jul 2026</text>
 </svg>
