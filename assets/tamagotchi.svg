@@ -29,12 +29,12 @@
   <!-- days badge -->
   <rect x="300" y="80" width="120" height="40" rx="8" fill="#1c2128" stroke="#e6861a" stroke-width="1"/>
   <text x="360" y="97" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">days without commit</text>
-  <text x="360" y="114" font-family="monospace" font-size="22" fill="#e6861a" text-anchor="middle" font-weight="bold">3</text>
+  <text x="360" y="114" font-family="monospace" font-size="22" fill="#e6861a" text-anchor="middle" font-weight="bold">4</text>
 
   <!-- health bar -->
   <text x="300" y="144" font-family="monospace" font-size="10" fill="#8b949e">health</text>
   <rect x="300" y="150" width="340" height="8" rx="4" fill="#21262d"/>
-  <rect x="300" y="150" width="274" height="8" rx="4" fill="#e6861a"/>
+  <rect x="300" y="150" width="252" height="8" rx="4" fill="#e6861a"/>
 
   <!-- message -->
   <text x="340" y="230" font-family="monospace" font-size="13" fill="#e6861a" text-anchor="middle" font-style="italic">c&#x27;mon, one commit won&#x27;t hurt...</text>
