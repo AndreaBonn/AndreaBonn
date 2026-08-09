@@ -9,22 +9,22 @@
   <text x="440" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>
   <text x="24" y="56" font-family="monospace" font-size="12" fill="#3fb950" letter-spacing="2" font-weight="bold">LANGUAGES</text>
   <line x1="24" y1="62" x2="856" y2="62" stroke="#3fb950" stroke-width="0.5" opacity="0.3"/>
-  <rect x="102" y="66" width="127" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="165" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">JavaScript</text>
-  <rect x="237" y="66" width="80" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="277" y="84" text-anchor="middle" font-family="monospace" font-size="14" fill="#3fb950" font-weight="bold">Python</text>
-  <rect x="325" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="352" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
-  <rect x="388" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="419" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
-  <rect x="458" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="482" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
-  <rect x="514" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="562" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
-  <rect x="618" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="645" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
-  <rect x="681" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="729" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">TypeScript</text>
+  <rect x="101" y="66" width="127" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="164" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">JavaScript</text>
+  <rect x="236" y="66" width="83" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="277" y="85" text-anchor="middle" font-family="monospace" font-size="15" fill="#3fb950" font-weight="bold">Python</text>
+  <rect x="327" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="354" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
+  <rect x="390" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="421" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
+  <rect x="460" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="484" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
+  <rect x="516" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="564" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
+  <rect x="620" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="647" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
+  <rect x="683" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="731" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">TypeScript</text>
   <text x="24" y="136" font-family="monospace" font-size="12" fill="#388bfd" letter-spacing="2" font-weight="bold">FRAMEWORK</text>
   <line x1="24" y1="142" x2="856" y2="142" stroke="#388bfd" stroke-width="0.5" opacity="0.3"/>
   <rect x="138" y="146" width="77" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
