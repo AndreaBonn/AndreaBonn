@@ -10,10 +10,6 @@ AI Engineer · Data Analyst
 
 ---
 
-![Last commit](./assets/last_commit.svg)
-
----
-
 https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
 
 ---
