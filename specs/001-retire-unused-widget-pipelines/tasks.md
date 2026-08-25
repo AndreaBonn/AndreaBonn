@@ -11,4 +11,8 @@
 | T7 | T6 | DoD: floor verde | ruff check, ruff format --check, pytest --cov, bandit | Tutti exit 0, coverage >= 85 |
 | T8 | T7 | - | Gate `code-reviewer` sul diff, poi commit unico | Report senza finding bloccanti |
 
-Stato all'apertura della Fase 3: T1, T2 completati; T3 completato solo per l'input `force_snake`.
+Stato finale: T1-T8 completati nel commit `88e5e26`.
+
+Fuori piano, emerso dal gate `/analyze`: `pip-audit` falliva su `pip 26.1.2` (PYSEC-2026-3721),
+con la CI di `main` già rossa da prima di questo lavoro. Risolto a parte nel commit `5d709f6`.
+La DoD del piano elencava un floor incompleto rispetto a `ci.yml`, che include anche `pip-audit`.
