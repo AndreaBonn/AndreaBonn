@@ -32,7 +32,7 @@
   <!-- days badge -->
   <rect x="300" y="80" width="120" height="40" rx="8" fill="#1c2128" stroke="#484f58" stroke-width="1"/>
   <text x="360" y="97" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">days without commit</text>
-  <text x="360" y="114" font-family="monospace" font-size="22" fill="#484f58" text-anchor="middle" font-weight="bold">16</text>
+  <text x="360" y="114" font-family="monospace" font-size="22" fill="#484f58" text-anchor="middle" font-weight="bold">17</text>
 
   <!-- health bar -->
   <text x="300" y="144" font-family="monospace" font-size="10" fill="#8b949e">health</text>
