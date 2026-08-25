@@ -6,8 +6,6 @@ AI Engineer · Data Analyst
   <a href="https://andreabonn.github.io/"><img src="https://img.shields.io/badge/View_my_CV-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="View my CV"/></a>
 </p>
 
-> Life is all about *one-shot learning*: one example for the prompt, one shot for the basket.
-
 ---
 
 https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
