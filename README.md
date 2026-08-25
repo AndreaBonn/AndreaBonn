@@ -105,6 +105,14 @@ https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
 
 ---
 
+### 🔐 Security Disclosures
+
+| Project                                                    | Contribution                                                                                               |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [**WinBoat**](https://github.com/winboat-org/winboat)      | Reported a critical RCE vulnerability (unauthenticated code execution as SYSTEM). Private, responsible disclosure with runtime-verified patches, fixed within 4 hours of first contact. Credited in the [v0.9.1 security release](https://github.com/winboat-org/winboat/releases/tag/v0.9.1) |
+
+---
+
 ### 
 
 ![Tech Stack](./assets/tech_stack.svg)
