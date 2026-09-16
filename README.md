@@ -1,6 +1,6 @@
 <h1>Andrea Bonacci <a href="https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml"><img src="https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml/badge.svg" alt="CI" align="right" /></a> <a href="https://github.com/AndreaBonn?tab=repositories"><img src="./assets/total_stars.svg" alt="Total stars" align="right" /></a> <a href="https://github.com/AndreaBonn?tab=repositories"><img src="./assets/total_forks.svg" alt="Total forks" align="right" /></a></h1>
 
-AI Engineer · Data Analyst
+AI Engineer
 
 <p align="center">
   <a href="https://andreabonn.github.io/"><img src="https://img.shields.io/badge/View_my_CV-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="View my CV"/></a>
