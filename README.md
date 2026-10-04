@@ -42,7 +42,6 @@ https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
 | [**RoomMates**](https://github.com/AndreaBonn/RoomMatesByBonn)             | Roommate management: shared expenses, AI-powered chores, real-time grocery list. [Available online](https://roommates-app-by-bonn.web.app). React + Firebase          | ![Tests: 3006 passed](https://img.shields.io/badge/-3006%20passed-brightgreen?style=flat-square) | ![Coverage: 87.6%](https://img.shields.io/badge/-87.6%25-green?style=flat-square) | ![Stars](./assets/stars/RoomMatesByBonn.svg)              |
 | [**my-team-ai-config-hub**](https://github.com/AndreaBonn/my-team-ai-config-hub) | Web platform to organize, share and version AI configs across teams. [Available online](https://my-ai-teams-config-hub.vercel.app) | ![Tests: 244 passed](https://img.shields.io/badge/-244%20passed-brightgreen?style=flat-square) | ![Coverage: 99.57%](https://img.shields.io/badge/-99.57%25-brightgreen?style=flat-square) | ![Stars](./assets/stars/my-team-ai-config-hub.svg) |
 | [**Impara l'Italiano**](https://github.com/AndreaBonn/impara-italiano)     | Italian course from A1 to C2 in the browser: 150 lessons, 1514 exercises, 3494 native-voice recordings, spaced repetition and voice conversations. [Available online](https://andreabonn.github.io/impara-italiano/). Static site, offline, no backend, explanations in 5 languages | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/impara-italiano/main/badges/test-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/impara-italiano/main/badges/coverage-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Stars](./assets/stars/impara-italiano.svg) |
-| [**love-pages-by-Bonn**](https://github.com/AndreaBonn/love-pages-by-Bonn) | Forkable GitHub Pages template for romantic seasonal pages. One config, zero deps, live in 5 min | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/love-pages-by-Bonn/main/badges/test-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/love-pages-by-Bonn/main/badges/coverage-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Stars](./assets/stars/love-pages-by-Bonn.svg)           |
 
 ---
 
@@ -102,10 +101,11 @@ https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
 
 ---
 
-### Other projects
+### 📦 Other projects
 
 - [**Campionato Serie C 26/27**](https://github.com/AndreaBonn/campionato-serie-c-26-27) - Fixtures and results for my basketball team (CUS Cagliari, Serie C 2026/27), synced from fip.it. [Live page](https://andreabonn.github.io/campionato-serie-c-26-27/)
 - [**download-organizer**](https://github.com/AndreaBonn/download-organizer) - Sorts the Downloads folder by file type, every 3 hours
+- [**love-pages-by-Bonn**](https://github.com/AndreaBonn/love-pages-by-Bonn) - Forkable GitHub Pages template for romantic seasonal pages. One config, zero deps, live in 5 min
 
 ---
 
