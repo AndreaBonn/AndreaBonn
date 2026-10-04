@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 448" width="100%">
-  <rect width="880" height="448" rx="10" fill="#0d1117"/>
-  <rect x="1" y="1" width="878" height="446" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="100%">
+  <rect width="880" height="484" rx="10" fill="#0d1117"/>
+  <rect x="1" y="1" width="878" height="482" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
   <rect x="1" y="1" width="878" height="26" rx="9" fill="#1c2128"/>
   <rect x="1" y="18" width="878" height="9" fill="#1c2128"/>
   <line x1="1" y1="27" x2="879" y2="27" stroke="#30363d" stroke-width="1"/>
@@ -9,78 +9,84 @@
   <text x="440" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>
   <text x="24" y="56" font-family="monospace" font-size="12" fill="#3fb950" letter-spacing="2" font-weight="bold">LANGUAGES</text>
   <line x1="24" y1="62" x2="856" y2="62" stroke="#3fb950" stroke-width="0.5" opacity="0.3"/>
-  <rect x="106" y="66" width="127" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="169" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">JavaScript</text>
-  <rect x="241" y="66" width="72" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="277" y="84" text-anchor="middle" font-family="monospace" font-size="12" fill="#3fb950" font-weight="normal">Python</text>
-  <rect x="321" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="348" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
-  <rect x="384" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="415" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
-  <rect x="454" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="478" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
-  <rect x="510" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="558" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">TypeScript</text>
-  <rect x="614" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="662" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
-  <rect x="718" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="745" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
+  <rect x="104" y="66" width="127" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="167" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">JavaScript</text>
+  <rect x="239" y="66" width="76" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="277" y="84" text-anchor="middle" font-family="monospace" font-size="13" fill="#3fb950" font-weight="normal">Python</text>
+  <rect x="323" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="350" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
+  <rect x="386" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="410" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
+  <rect x="442" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="473" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
+  <rect x="512" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="560" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">TypeScript</text>
+  <rect x="616" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="664" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
+  <rect x="720" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="747" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
   <text x="24" y="136" font-family="monospace" font-size="12" fill="#388bfd" letter-spacing="2" font-weight="bold">FRAMEWORK</text>
   <line x1="24" y1="142" x2="856" y2="142" stroke="#388bfd" stroke-width="0.5" opacity="0.3"/>
-  <rect x="45" y="146" width="77" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="83" y="165" text-anchor="middle" font-family="monospace" font-size="16" fill="#388bfd" font-weight="bold">React</text>
-  <rect x="130" y="146" width="57" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="158" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Vite</text>
-  <rect x="195" y="146" width="65" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="227" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Flask</text>
-  <rect x="268" y="146" width="82" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="309" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Pydantic</text>
-  <rect x="358" y="146" width="137" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="426" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Telegram Bot API</text>
-  <rect x="503" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="540" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
-  <rect x="586" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="640" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
-  <rect x="703" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="727" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
-  <rect x="759" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="796" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">aiohttp</text>
-  <text x="24" y="216" font-family="monospace" font-size="12" fill="#e6861a" letter-spacing="2" font-weight="bold">AI / ML</text>
-  <line x1="24" y1="222" x2="856" y2="222" stroke="#e6861a" stroke-width="0.5" opacity="0.3"/>
-  <rect x="123" y="226" width="67" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="156" y="245" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">YOLO</text>
-  <rect x="198" y="226" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="241" y="245" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">OpenCV</text>
-  <rect x="293" y="226" width="77" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="331" y="245" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">NumPy</text>
-  <rect x="378" y="226" width="68" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="412" y="243" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Pillow</text>
-  <rect x="454" y="226" width="41" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="474" y="243" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">AI</text>
-  <rect x="503" y="226" width="130" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="568" y="243" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Computer Vision</text>
-  <rect x="641" y="226" width="116" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="699" y="243" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Deep Learning</text>
-  <text x="24" y="296" font-family="monospace" font-size="12" fill="#bc8cff" letter-spacing="2" font-weight="bold">DATABASE</text>
-  <line x1="24" y1="302" x2="856" y2="302" stroke="#bc8cff" stroke-width="0.5" opacity="0.3"/>
-  <rect x="386" y="306" width="107" height="28" rx="14" fill="#2a1a3a" stroke="#bc8cff" stroke-width="0.8" opacity="0.9"/>
-  <text x="439" y="325" text-anchor="middle" font-family="monospace" font-size="16" fill="#bc8cff" font-weight="bold">Firebase</text>
-  <text x="24" y="376" font-family="monospace" font-size="12" fill="#8b949e" letter-spacing="2" font-weight="bold">TOOLS</text>
-  <line x1="24" y1="382" x2="856" y2="382" stroke="#8b949e" stroke-width="0.5" opacity="0.3"/>
-  <rect x="62" y="386" width="57" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="90" y="405" text-anchor="middle" font-family="monospace" font-size="16" fill="#8b949e" font-weight="bold">Git</text>
-  <rect x="127" y="386" width="149" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="201" y="404" text-anchor="middle" font-family="monospace" font-size="14" fill="#8b949e" font-weight="bold">GitHub Actions</text>
-  <rect x="284" y="386" width="72" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="320" y="404" text-anchor="middle" font-family="monospace" font-size="12" fill="#8b949e" font-weight="normal">ESLint</text>
-  <rect x="364" y="386" width="87" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="407" y="404" text-anchor="middle" font-family="monospace" font-size="12" fill="#8b949e" font-weight="normal">Requests</text>
-  <rect x="459" y="386" width="55" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="486" y="403" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Jest</text>
-  <rect x="522" y="386" width="96" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="570" y="403" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Playwright</text>
-  <rect x="626" y="386" width="116" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="684" y="403" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">BeautifulSoup</text>
-  <rect x="750" y="386" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="784" y="403" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Pytest</text>
+  <rect x="43" y="146" width="77" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="81" y="165" text-anchor="middle" font-family="monospace" font-size="16" fill="#388bfd" font-weight="bold">React</text>
+  <rect x="128" y="146" width="87" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="171" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Pydantic</text>
+  <rect x="223" y="146" width="57" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="251" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Vite</text>
+  <rect x="288" y="146" width="65" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="320" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Flask</text>
+  <rect x="361" y="146" width="137" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="429" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Telegram Bot API</text>
+  <rect x="506" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="560" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
+  <rect x="623" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="660" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
+  <rect x="706" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="730" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
+  <rect x="762" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="799" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">FastAPI</text>
+  <rect x="326" y="182" width="62" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="357" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">HTTPX</text>
+  <rect x="396" y="182" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="433" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Uvicorn</text>
+  <rect x="479" y="182" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="516" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">aiohttp</text>
+  <text x="24" y="252" font-family="monospace" font-size="12" fill="#e6861a" letter-spacing="2" font-weight="bold">AI / ML</text>
+  <line x1="24" y1="258" x2="856" y2="258" stroke="#e6861a" stroke-width="0.5" opacity="0.3"/>
+  <rect x="113" y="262" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="156" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">Pillow</text>
+  <rect x="208" y="262" width="67" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="241" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">YOLO</text>
+  <rect x="283" y="262" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="326" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">OpenCV</text>
+  <rect x="378" y="262" width="77" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="416" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">NumPy</text>
+  <rect x="463" y="262" width="41" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="483" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">AI</text>
+  <rect x="512" y="262" width="130" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="577" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Computer Vision</text>
+  <rect x="650" y="262" width="116" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="708" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Deep Learning</text>
+  <text x="24" y="332" font-family="monospace" font-size="12" fill="#bc8cff" letter-spacing="2" font-weight="bold">DATABASE</text>
+  <line x1="24" y1="338" x2="856" y2="338" stroke="#bc8cff" stroke-width="0.5" opacity="0.3"/>
+  <rect x="386" y="342" width="107" height="28" rx="14" fill="#2a1a3a" stroke="#bc8cff" stroke-width="0.8" opacity="0.9"/>
+  <text x="439" y="361" text-anchor="middle" font-family="monospace" font-size="16" fill="#bc8cff" font-weight="bold">Firebase</text>
+  <text x="24" y="412" font-family="monospace" font-size="12" fill="#8b949e" letter-spacing="2" font-weight="bold">TOOLS</text>
+  <line x1="24" y1="418" x2="856" y2="418" stroke="#8b949e" stroke-width="0.5" opacity="0.3"/>
+  <rect x="64" y="422" width="57" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="92" y="441" text-anchor="middle" font-family="monospace" font-size="16" fill="#8b949e" font-weight="bold">Git</text>
+  <rect x="129" y="422" width="149" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="203" y="440" text-anchor="middle" font-family="monospace" font-size="14" fill="#8b949e" font-weight="bold">GitHub Actions</text>
+  <rect x="286" y="422" width="72" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="322" y="440" text-anchor="middle" font-family="monospace" font-size="12" fill="#8b949e" font-weight="normal">ESLint</text>
+  <rect x="366" y="422" width="82" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="407" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Requests</text>
+  <rect x="456" y="422" width="116" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="514" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">BeautifulSoup</text>
+  <rect x="580" y="422" width="55" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="607" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Jest</text>
+  <rect x="643" y="422" width="96" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="691" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Playwright</text>
+  <rect x="747" y="422" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="781" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Pytest</text>
 </svg>
