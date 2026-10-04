@@ -53,20 +53,20 @@
   <text x="516" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">aiohttp</text>
   <text x="24" y="252" font-family="monospace" font-size="12" fill="#e6861a" letter-spacing="2" font-weight="bold">AI / ML</text>
   <line x1="24" y1="258" x2="856" y2="258" stroke="#e6861a" stroke-width="0.5" opacity="0.3"/>
-  <rect x="113" y="262" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="156" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">Pillow</text>
-  <rect x="208" y="262" width="67" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="241" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">YOLO</text>
-  <rect x="283" y="262" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="326" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">OpenCV</text>
-  <rect x="378" y="262" width="77" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="416" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">NumPy</text>
-  <rect x="463" y="262" width="41" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="483" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">AI</text>
-  <rect x="512" y="262" width="130" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="577" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Computer Vision</text>
-  <rect x="650" y="262" width="116" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
-  <text x="708" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Deep Learning</text>
+  <rect x="127" y="262" width="87" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="170" y="281" text-anchor="middle" font-family="monospace" font-size="16" fill="#e6861a" font-weight="bold">Pillow</text>
+  <rect x="222" y="262" width="60" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="252" y="280" text-anchor="middle" font-family="monospace" font-size="13" fill="#e6861a" font-weight="normal">YOLO</text>
+  <rect x="290" y="262" width="76" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="328" y="280" text-anchor="middle" font-family="monospace" font-size="13" fill="#e6861a" font-weight="normal">OpenCV</text>
+  <rect x="374" y="262" width="68" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="408" y="280" text-anchor="middle" font-family="monospace" font-size="13" fill="#e6861a" font-weight="normal">NumPy</text>
+  <rect x="450" y="262" width="41" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="470" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">AI</text>
+  <rect x="499" y="262" width="130" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="564" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Computer Vision</text>
+  <rect x="637" y="262" width="116" height="28" rx="14" fill="#3a2a1a" stroke="#e6861a" stroke-width="0.8" opacity="0.9"/>
+  <text x="695" y="279" text-anchor="middle" font-family="monospace" font-size="11" fill="#e6861a" font-weight="normal">Deep Learning</text>
   <text x="24" y="332" font-family="monospace" font-size="12" fill="#bc8cff" letter-spacing="2" font-weight="bold">DATABASE</text>
   <line x1="24" y1="338" x2="856" y2="338" stroke="#bc8cff" stroke-width="0.5" opacity="0.3"/>
   <rect x="386" y="342" width="107" height="28" rx="14" fill="#2a1a3a" stroke="#bc8cff" stroke-width="0.8" opacity="0.9"/>
