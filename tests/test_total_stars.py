@@ -19,12 +19,12 @@ def test_compute_total_stars_sums_stargazers():
     assert compute_total_stars(repos) == 15
 
 
-def test_compute_total_stars_excludes_forks():
+def test_compute_total_stars_includes_forks():
     repos = [
         {"name": "own", "stargazers_count": 7, "fork": False},
-        {"name": "forked", "stargazers_count": 999, "fork": True},
+        {"name": "forked", "stargazers_count": 3, "fork": True},
     ]
-    assert compute_total_stars(repos) == 7
+    assert compute_total_stars(repos) == 10
 
 
 def test_compute_total_stars_empty_returns_zero():

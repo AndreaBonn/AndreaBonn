@@ -1,7 +1,7 @@
 """
 Total GitHub stars badge.
 
-Sums the stargazers of every non-fork public repo owned by the user and renders
+Sums the stargazers of every public repo owned by the user, forks included, and renders
 a flat shields-style badge to assets/total_stars.svg, meant to sit next to the
 CI badge at the top of the profile README.
 
@@ -33,7 +33,7 @@ ICON_SLOT = 19  # horizontal space reserved for the star glyph
 
 
 def compute_total_stars(repos: list[dict]) -> int:
-    """Sum stargazers across owned (non-fork) repositories.
+    """Sum stargazers across all owned repositories, forks included.
 
     Parameters
     ----------
@@ -43,9 +43,9 @@ def compute_total_stars(repos: list[dict]) -> int:
     Returns
     -------
     int
-        Total stargazers, forks excluded so the count reflects stars earned.
+        Total stargazers across every repository returned.
     """
-    return sum(repo.get("stargazers_count", 0) for repo in repos if not repo.get("fork", False))
+    return sum(repo.get("stargazers_count", 0) for repo in repos)
 
 
 def _text_width(text: str) -> int:
