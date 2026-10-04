@@ -103,9 +103,11 @@ https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
 
 ### 📦 Other projects
 
-- [**Campionato Serie C 26/27**](https://github.com/AndreaBonn/campionato-serie-c-26-27) ![Stars](./assets/stars/campionato-serie-c-26-27.svg) - Fixtures and results for my basketball team (CUS Cagliari, Serie C 2026/27), synced from fip.it. [Live page](https://andreabonn.github.io/campionato-serie-c-26-27/)
-- [**download-organizer**](https://github.com/AndreaBonn/download-organizer) ![Stars](./assets/stars/download-organizer.svg) - Sorts the Downloads folder by file type, every 3 hours
-- [**love-pages-by-Bonn**](https://github.com/AndreaBonn/love-pages-by-Bonn) ![Stars](./assets/stars/love-pages-by-Bonn.svg) - Forkable GitHub Pages template for romantic seasonal pages. One config, zero deps, live in 5 min
+| Project                                                                    | What it does                                                                                               | Tests | Coverage | Stars                                                                                                          |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |:-----:|:--------:|:--------------------------------------------------------------------------------------------------------------:|
+| [**Campionato Serie C 26/27**](https://github.com/AndreaBonn/campionato-serie-c-26-27) | Fixtures and results for my basketball team (CUS Cagliari, Serie C 2026/27), synced from fip.it. [Live page](https://andreabonn.github.io/campionato-serie-c-26-27/) | - | - | ![Stars](./assets/stars/campionato-serie-c-26-27.svg) |
+| [**download-organizer**](https://github.com/AndreaBonn/download-organizer) | Sorts the Downloads folder by file type, every 3 hours | - | - | ![Stars](./assets/stars/download-organizer.svg) |
+| [**love-pages-by-Bonn**](https://github.com/AndreaBonn/love-pages-by-Bonn) | Forkable GitHub Pages template for romantic seasonal pages. One config, zero deps, live in 5 min | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/love-pages-by-Bonn/main/badges/test-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AndreaBonn/love-pages-by-Bonn/main/badges/coverage-badge.json&style=flat-square&label=&cacheSeconds=86400) | ![Stars](./assets/stars/love-pages-by-Bonn.svg) |
 
 ---
 
