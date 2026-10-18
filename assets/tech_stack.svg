@@ -38,13 +38,13 @@
   <rect x="361" y="146" width="137" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
   <text x="429" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Telegram Bot API</text>
   <rect x="506" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="543" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
-  <rect x="589" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="643" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
-  <rect x="706" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="730" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
-  <rect x="762" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="799" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">FastAPI</text>
+  <text x="543" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">FastAPI</text>
+  <rect x="589" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="626" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
+  <rect x="672" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="726" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
+  <rect x="789" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="813" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
   <rect x="326" y="182" width="62" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
   <text x="357" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">HTTPX</text>
   <rect x="396" y="182" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
