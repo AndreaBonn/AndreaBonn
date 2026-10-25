@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" width="100%">
-  <rect width="880" height="520" rx="10" fill="#0d1117"/>
-  <rect x="1" y="1" width="878" height="518" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 484" width="100%">
+  <rect width="880" height="484" rx="10" fill="#0d1117"/>
+  <rect x="1" y="1" width="878" height="482" rx="9" fill="none" stroke="#30363d" stroke-width="1.5"/>
   <rect x="1" y="1" width="878" height="26" rx="9" fill="#1c2128"/>
   <rect x="1" y="18" width="878" height="9" fill="#1c2128"/>
   <line x1="1" y1="27" x2="879" y2="27" stroke="#30363d" stroke-width="1"/>
@@ -9,42 +9,46 @@
   <text x="440" y="19" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" letter-spacing="4" font-weight="bold">TECH STACK</text>
   <text x="24" y="56" font-family="monospace" font-size="12" fill="#3fb950" letter-spacing="2" font-weight="bold">LANGUAGES</text>
   <line x1="24" y1="62" x2="856" y2="62" stroke="#3fb950" stroke-width="0.5" opacity="0.3"/>
-  <rect x="102" y="66" width="127" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="165" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">JavaScript</text>
-  <rect x="237" y="66" width="80" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="277" y="84" text-anchor="middle" font-family="monospace" font-size="14" fill="#3fb950" font-weight="bold">Python</text>
-  <rect x="325" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="373" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">TypeScript</text>
-  <rect x="429" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="456" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
-  <rect x="492" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="516" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
-  <rect x="548" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="579" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
-  <rect x="618" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="666" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
-  <rect x="722" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
-  <text x="749" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
+  <rect x="36" y="66" width="87" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="79" y="85" text-anchor="middle" font-family="monospace" font-size="16" fill="#3fb950" font-weight="bold">Python</text>
+  <rect x="131" y="66" width="121" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="191" y="85" text-anchor="middle" font-family="monospace" font-size="15" fill="#3fb950" font-weight="bold">JavaScript</text>
+  <rect x="260" y="66" width="102" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="311" y="84" text-anchor="middle" font-family="monospace" font-size="12" fill="#3fb950" font-weight="normal">TypeScript</text>
+  <rect x="370" y="66" width="48" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="394" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">CSS</text>
+  <rect x="426" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="453" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">HTML</text>
+  <rect x="489" y="66" width="62" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="520" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Shell</text>
+  <rect x="559" y="66" width="96" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="607" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">PowerShell</text>
+  <rect x="663" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="690" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Make</text>
+  <rect x="726" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="753" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Roff</text>
+  <rect x="789" y="66" width="55" height="28" rx="14" fill="#1a3a2a" stroke="#3fb950" stroke-width="0.8" opacity="0.9"/>
+  <text x="816" y="83" text-anchor="middle" font-family="monospace" font-size="11" fill="#3fb950" font-weight="normal">Mako</text>
   <text x="24" y="136" font-family="monospace" font-size="12" fill="#388bfd" letter-spacing="2" font-weight="bold">FRAMEWORK</text>
   <line x1="24" y1="142" x2="856" y2="142" stroke="#388bfd" stroke-width="0.5" opacity="0.3"/>
-  <rect x="43" y="146" width="77" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="81" y="165" text-anchor="middle" font-family="monospace" font-size="16" fill="#388bfd" font-weight="bold">React</text>
-  <rect x="128" y="146" width="87" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="171" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Pydantic</text>
-  <rect x="223" y="146" width="57" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="251" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Vite</text>
-  <rect x="288" y="146" width="65" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="320" y="164" text-anchor="middle" font-family="monospace" font-size="12" fill="#388bfd" font-weight="normal">Flask</text>
-  <rect x="361" y="146" width="137" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="429" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Telegram Bot API</text>
-  <rect x="506" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="543" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">FastAPI</text>
-  <rect x="589" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="626" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
-  <rect x="672" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="726" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
-  <rect x="789" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
-  <text x="813" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
+  <rect x="48" y="146" width="77" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="86" y="165" text-anchor="middle" font-family="monospace" font-size="16" fill="#388bfd" font-weight="bold">React</text>
+  <rect x="133" y="146" width="82" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="174" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Pydantic</text>
+  <rect x="223" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="260" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">FastAPI</text>
+  <rect x="306" y="146" width="55" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="333" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Vite</text>
+  <rect x="369" y="146" width="62" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="400" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Flask</text>
+  <rect x="439" y="146" width="137" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="507" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Telegram Bot API</text>
+  <rect x="584" y="146" width="109" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="638" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Tailwind CSS</text>
+  <rect x="701" y="146" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="738" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zustand</text>
+  <rect x="784" y="146" width="48" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
+  <text x="808" y="163" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">Zod</text>
   <rect x="326" y="182" width="62" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
   <text x="357" y="199" text-anchor="middle" font-family="monospace" font-size="11" fill="#388bfd" font-weight="normal">HTTPX</text>
   <rect x="396" y="182" width="75" height="28" rx="14" fill="#1a2a3a" stroke="#388bfd" stroke-width="0.8" opacity="0.9"/>
@@ -73,22 +77,22 @@
   <text x="439" y="361" text-anchor="middle" font-family="monospace" font-size="16" fill="#bc8cff" font-weight="bold">Firebase</text>
   <text x="24" y="412" font-family="monospace" font-size="12" fill="#8b949e" letter-spacing="2" font-weight="bold">TOOLS</text>
   <line x1="24" y1="418" x2="856" y2="418" stroke="#8b949e" stroke-width="0.5" opacity="0.3"/>
-  <rect x="64" y="422" width="57" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="92" y="441" text-anchor="middle" font-family="monospace" font-size="16" fill="#8b949e" font-weight="bold">Git</text>
-  <rect x="129" y="422" width="149" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="203" y="440" text-anchor="middle" font-family="monospace" font-size="14" fill="#8b949e" font-weight="bold">GitHub Actions</text>
-  <rect x="286" y="422" width="72" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="322" y="440" text-anchor="middle" font-family="monospace" font-size="12" fill="#8b949e" font-weight="normal">ESLint</text>
-  <rect x="366" y="422" width="82" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="407" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Requests</text>
-  <rect x="456" y="422" width="116" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="514" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">BeautifulSoup</text>
-  <rect x="580" y="422" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="614" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Docker</text>
-  <rect x="656" y="422" width="55" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="683" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Jest</text>
-  <rect x="719" y="422" width="96" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="767" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Playwright</text>
-  <rect x="406" y="458" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
-  <text x="440" y="475" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Pytest</text>
+  <rect x="28" y="422" width="57" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="56" y="441" text-anchor="middle" font-family="monospace" font-size="16" fill="#8b949e" font-weight="bold">Git</text>
+  <rect x="93" y="422" width="149" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="167" y="440" text-anchor="middle" font-family="monospace" font-size="14" fill="#8b949e" font-weight="bold">GitHub Actions</text>
+  <rect x="250" y="422" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="284" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">ESLint</text>
+  <rect x="326" y="422" width="82" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="367" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Requests</text>
+  <rect x="416" y="422" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="450" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Docker</text>
+  <rect x="492" y="422" width="116" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="550" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">BeautifulSoup</text>
+  <rect x="616" y="422" width="96" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="664" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Playwright</text>
+  <rect x="720" y="422" width="55" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="747" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Jest</text>
+  <rect x="783" y="422" width="68" height="28" rx="14" fill="#1c2128" stroke="#8b949e" stroke-width="0.8" opacity="0.9"/>
+  <text x="817" y="439" text-anchor="middle" font-family="monospace" font-size="11" fill="#8b949e" font-weight="normal">Pytest</text>
 </svg>
