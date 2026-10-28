@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/70494f9e-dcc0-4a42-aa8c-6c2a9a714028
+
 <h1>Andrea Bonacci <a href="https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml"><img src="https://github.com/AndreaBonn/AndreaBonn/actions/workflows/ci.yml/badge.svg" alt="CI" align="right" /></a> <a href="https://github.com/AndreaBonn?tab=repositories"><img src="./assets/total_stars.svg" alt="Total stars" align="right" /></a> <a href="https://github.com/AndreaBonn?tab=repositories"><img src="./assets/total_forks.svg" alt="Total forks" align="right" /></a></h1>
 
 AI Engineer
@@ -8,7 +12,7 @@ AI Engineer
 
 ---
 
-https://github.com/user-attachments/assets/e2043715-fb6c-44f8-a665-925f7ef338de
+https://github.com/user-attachments/assets/f482cfb9-64a1-4463-878a-b78e3b8ae95e
 
 ---
 
