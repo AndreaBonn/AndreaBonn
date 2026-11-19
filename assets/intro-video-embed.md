@@ -1,7 +1,7 @@
 # Come incorporare il video di presentazione nel README
 
 File pronti in `assets/`:
-- `intro.mp4` — il video (1080p, 42s, con voce Giuseppe + musica)
+- `intro.mp4` — il video (1080p, 45s, voce Giuseppe in italiano, sottotitoli in inglese, musica; vetrina di Budgee, PlotMark, Cognium Games, ai-pr-reviewer)
 - `intro-poster.jpg` — frame di anteprima (thumbnail)
 
 ## Opzione A (consigliata) — player inline con audio
