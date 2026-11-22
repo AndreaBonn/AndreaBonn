@@ -2,7 +2,7 @@
 Per-repository star-count badges.
 
 Renders one tiny flat-square SVG per owned public repo to assets/stars/<repo>.svg,
-showing just the stargazer count on a blue field. These replace the dynamic
+showing a star icon and the stargazer count on a grey field. These replace the dynamic
 img.shields.io/github/stars badges in the profile README, which intermittently
 render as "invalid" because shields queries GitHub's *anonymous* API (shared,
 ~60 req/h) and trips its rate limit when many star badges load at once.
@@ -27,14 +27,17 @@ from common.svg import escape_svg
 
 logger = logging.getLogger(__name__)
 
-# Flat-square badge geometry: blue field, white count, square corners — matches
-# the look of the previous shields github/stars badges (style=flat-square&label=).
+# Grey badge with a white star icon and the count, rounded like the header
+# total-stars badge so the per-row and header badges read as one family.
 BADGE_HEIGHT = 20
-MESSAGE_BG = "#007ec6"  # shields default blue, the colour the old badges used
+BADGE_BG = "#555"  # same grey as the header total-stars badge label
+CORNER_RADIUS = 3
 TEXT_FILL = "#fff"
 FONT_SIZE = 11
 CHAR_WIDTH = 7  # approx Verdana 11px digit advance (integer: counts are small)
+ICON_WIDTH = 17  # left padding + star icon + gap before the count
 SIDE_PADDING = 6
+STAR_ICON = '<path d="M9 4.5l1.7 3.4 3.8.6-2.7 2.7.6 3.8L9 13.4 5.6 15.5l.6-3.8L3.5 9l3.8-.6z" fill="#fff"/>'
 
 # Repo names are written straight into a filesystem path, so constrain them to a
 # conservative slug to avoid path traversal or odd characters in asset filenames.
@@ -63,17 +66,16 @@ def build_star_map(repos: list[dict]) -> dict[str, int]:
 
 
 def make_stars_badge(count: int) -> str:
-    """Render a flat-square badge showing a single star count on a blue field."""
+    """Render a grey badge with a star icon followed by the star count."""
     message = str(count)
-    width = len(message) * CHAR_WIDTH + SIDE_PADDING * 2
-    text_x = width / 2
+    width = ICON_WIDTH + len(message) * CHAR_WIDTH + SIDE_PADDING
+    text_x = ICON_WIDTH + len(message) * CHAR_WIDTH / 2
     message_safe = escape_svg(message)
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{BADGE_HEIGHT}" role="img" aria-label="stars: {message_safe}">
   <title>stars: {message_safe}</title>
-  <g shape-rendering="crispEdges">
-    <rect width="{width}" height="{BADGE_HEIGHT}" fill="{MESSAGE_BG}"/>
-  </g>
+  <rect width="{width}" height="{BADGE_HEIGHT}" rx="{CORNER_RADIUS}" fill="{BADGE_BG}"/>
+  {STAR_ICON}
   <g fill="{TEXT_FILL}" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="{FONT_SIZE}">
     <text x="{text_x:.0f}" y="14">{message_safe}</text>
   </g>

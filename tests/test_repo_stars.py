@@ -42,10 +42,11 @@ def test_make_badge_shows_count():
     assert 'aria-label="stars: 42"' in svg
 
 
-def test_make_badge_is_blue_flat_square():
+def test_make_badge_is_grey_with_star_icon():
     svg = make_stars_badge(0)
-    assert 'fill="#007ec6"' in svg
-    assert 'shape-rendering="crispEdges"' in svg
+    assert 'fill="#555"' in svg
+    assert "#007ec6" not in svg
+    assert "<path" in svg
 
 
 def test_make_badge_is_svg_element():
