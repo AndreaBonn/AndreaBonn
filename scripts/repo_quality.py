@@ -69,7 +69,8 @@ def parse_coverage(message: str) -> float | None:
     if not match:
         return None
     value = float(match.group(1))
-    return value if value <= 100 else None
+    # 0% is treated like "0 passed": an upstream glitch, never a real result here.
+    return value if 0 < value <= 100 else None
 
 
 def _truncate_one_decimal(value: float) -> str:

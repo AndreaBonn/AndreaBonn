@@ -49,7 +49,7 @@ def test_parse_coverage_reads_percentage(message, expected):
     assert parse_coverage(message) == expected
 
 
-@pytest.mark.parametrize("message", ["pending", "", "101%", "98.4"])
+@pytest.mark.parametrize("message", ["pending", "", "101%", "98.4", "0%", "0.0%"])
 def test_parse_coverage_rejects_invalid_values(message):
     assert parse_coverage(message) is None
 
