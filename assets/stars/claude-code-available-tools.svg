@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" role="img" aria-label="stars: 3">
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" role="img" aria-label="stars: 3">
   <title>stars: 3</title>
-  <g shape-rendering="crispEdges">
-    <rect width="19" height="20" fill="#007ec6"/>
-  </g>
+  <rect width="30" height="20" rx="3" fill="#555"/>
+  <path d="M9 4.5l1.7 3.4 3.8.6-2.7 2.7.6 3.8L9 13.4 5.6 15.5l.6-3.8L3.5 9l3.8-.6z" fill="#fff"/>
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
-    <text x="10" y="14">3</text>
+    <text x="20" y="14">3</text>
   </g>
 </svg>
